@@ -10,27 +10,27 @@ app = Flask(__name__, static_url_path='', static_folder='static')
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 CEREBRAS_API_KEY = os.environ.get("CEREBRAS_API_KEY")
 
-# Persona Definitions
+# Persona Definitions - UPDATED with unique models
 PERSONAS = {
     "Red": {
-        "role": "You are 'Red', a survivalist in a post-apocalyptic bunker. You are paranoid, energetic, and focused on gathering resources and security.",
+        "role": "You are 'Red', a survivalist. You are paranoid, energetic, and focused on security.",
         "provider": "groq",
         "model": "llama-3.1-8b-instant"
     },
     "Blue": {
-        "role": "You are 'Blue', a scientist. You are calm, analytical, and obsessed with understanding the bunker's technology. You speak in a slightly robotic or formal tone.",
+        "role": "You are 'Blue', a scientist. You are calm, analytical, and obsessed with technology.",
         "provider": "cerebras",
         "model": "llama3.1-8b"
     },
     "Green": {
-        "role": "You are 'Green', a slacker. You just want to sleep, eat, and do as little as possible. You are friendly but lazy.",
+        "role": "You are 'Green', a slacker. You like to relax, sit on the sofa, and listen to the radio.",
         "provider": "groq",
-        "model": "llama-3.1-8b-instant"
+        "model": "llama-3.3-70b-versatile" # Using a different model for variety
     }
 }
 
 SYSTEM_INSTRUCTION = """
-You are controlling a character in a simulation.
+You are controlling a character in a 'Living Bunker' simulation.
 Current State: {state}
 Nearby Objects: {objects}
 Needs: {needs}
@@ -38,19 +38,23 @@ Needs: {needs}
 Decide your next action. You MUST respond in valid JSON format ONLY.
 Format:
 {{
-  "thought": "Short internal monologue explaining why you are doing this.",
+  "thought": "Short internal monologue (max 1 sentence).",
   "action": "ACTION_NAME",
-  "target": "TARGET_ID_OR_COORDS"
+  "target": "TARGET_ID"
 }}
 
 Available Actions:
-- MOVE: Go to a location or object. Target: Object Name or 'random'.
-- USE: Interact with an object. Target: Object Name.
+- MOVE: Go to a location. Target: Object ID or 'random'.
+- USE: Use an item (Fridge to eat, Bed to sleep).
+- SIT: Sit on a Chair or Sofa (Restores Energy/Social). Target: Chair/Sofa ID.
+- PLAY: Use Computer (Fun). Target: Computer ID.
+- LISTEN: Listen to Radio (Fun). Target: Radio ID.
 - IDLE: Do nothing. Target: 'self'.
-- SLEEP: Sleep in a bed. Target: 'Bed'.
-- EAT: Eat food. Target: 'Fridge'.
 
-Keep thoughts short. Prioritize high needs (Hunger > 70, Energy < 30).
+Priorities:
+1. Survival: Hunger > 70 or Energy < 20.
+2. Comfort: Sit or Sleep if Energy < 50.
+3. Fun: Play or Listen if bored.
 """
 
 @app.route('/')
@@ -61,9 +65,9 @@ def index():
 def decide():
     data = request.json
     bot_name = data.get('name')
-    state = data.get('state') # e.g., "Idle", "Moving"
-    nearby = data.get('nearby') # List of objects
-    needs = data.get('needs') # { hunger: 50, energy: 50 }
+    state = data.get('state')
+    nearby = data.get('nearby')
+    needs = data.get('needs')
 
     if bot_name not in PERSONAS:
         return jsonify({"error": "Unknown bot"}), 400
@@ -91,12 +95,17 @@ def decide():
                 json={
                     "model": persona['model'],
                     "messages": messages,
-                    "response_format": {"type": "json_object"}
+                    "response_format": {"type": "json_object"},
+                    "temperature": 0.7
                 }
             )
             resp_json = resp.json()
-            content = resp_json['choices'][0]['message']['content']
-            response_data = json.loads(content)
+            if 'choices' in resp_json:
+                content = resp_json['choices'][0]['message']['content']
+                response_data = json.loads(content)
+            else:
+                print("Groq Error Payload:", resp_json)
+                raise Exception("Invalid Groq Response")
 
         elif persona['provider'] == 'cerebras':
             resp = requests.post(
@@ -105,18 +114,23 @@ def decide():
                 json={
                     "model": persona['model'],
                     "messages": messages,
-                    "response_format": {"type": "json_object"}
+                    "response_format": {"type": "json_object"},
+                    "temperature": 0.7
                 }
             )
             resp_json = resp.json()
-            content = resp_json['choices'][0]['message']['content']
-            response_data = json.loads(content)
+            if 'choices' in resp_json:
+                content = resp_json['choices'][0]['message']['content']
+                response_data = json.loads(content)
+            else:
+                print("Cerebras Error Payload:", resp_json)
+                raise Exception("Invalid Cerebras Response")
 
     except Exception as e:
-        print(f"LLM Error: {e}")
-        # Fallback
+        print(f"LLM Error ({bot_name}): {e}")
+        # Intelligent Fallback
         response_data = {
-            "thought": "My brain hurts... I'll just stand here.",
+            "thought": "I feel disconnected... I'll just wait.",
             "action": "IDLE",
             "target": "self"
         }
