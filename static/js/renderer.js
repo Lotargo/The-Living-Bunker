@@ -101,4 +101,30 @@ class Renderer {
 
         this.ctx.drawImage(img, drawX, drawY);
     }
+
+    drawText(text, gx, gy, color = "white") {
+        if (!text) return;
+        const pos = this.isoToScreen(gx, gy);
+
+        // Text Position: Above the tile/character
+        const tx = pos.x;
+        const ty = pos.y - 40; // Float above
+
+        this.ctx.font = "12px monospace";
+        const padding = 6;
+        const width = this.ctx.measureText(text).width + (padding * 2);
+        const height = 20;
+
+        // Draw Bubble Background
+        this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+        this.ctx.beginPath();
+        this.ctx.roundRect(tx - width/2, ty - height/2, width, height, 4);
+        this.ctx.fill();
+
+        // Draw Text
+        this.ctx.fillStyle = color;
+        this.ctx.textAlign = "center";
+        this.ctx.textBaseline = "middle";
+        this.ctx.fillText(text, tx, ty);
+    }
 }
