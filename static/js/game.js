@@ -1,57 +1,105 @@
-const GRID_SIZE = 20;
+const GRID_SIZE = 32;
 const TILE_SIZE = 64;
 
 // Expanded World State
 const world = {
     residents: [],
+    anomalies: [],
     objects: [],
-    walls: [], // For room separation (visual + collision)
-    map: []
+    walls: [],
+    map: [], // Now stores floor types: 0=Concrete, 1=Wall, 2=Wood, 3=Tile
+    floorTypes: [] // Explicit floor type grid
 };
 
-// Map Layout Definition (Rooms)
-// 0: Floor, 1: Wall
-// Let's procedurally generate a layout
 function initMap() {
-    // Fill floor
+    // 0: Concrete, 2: Wood, 3: Tile
     world.map = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
+    world.floorTypes = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0)); // 0 default
 
-    // Define Rooms (Walls)
-    // Vertical Wall at x=10 (splitting Left/Right)
-    for (let y = 0; y < GRID_SIZE; y++) {
-        if (y !== 4 && y !== 15) { // Doors
-             world.map[10][y] = 1;
-             world.walls.push({ x: 10, y: y, type: 'wall_left.png' }); // Visual placeholder logic
+    // Helper to build room
+    function buildRoom(x, y, w, h, floorType, wallType) {
+        // Set Floor
+        for(let i=x; i<x+w; i++) {
+            for(let j=y; j<y+h; j++) {
+                if(i>=0 && i<GRID_SIZE && j>=0 && j<GRID_SIZE) {
+                    world.floorTypes[i][j] = floorType;
+                }
+            }
+        }
+        // Walls
+        for(let i=x; i<x+w; i++) {
+             // Top
+             world.walls.push({ x: i, y: y, type: 'wall_right.png' });
+             world.map[i][y] = 1;
+             // Bottom
+             world.walls.push({ x: i, y: y+h, type: 'wall_right.png' }); // Usually not needed if it's the edge of another room, but let's seal
+             world.map[i][y+h] = 1;
+        }
+        for(let j=y; j<y+h; j++) {
+             // Left
+             world.walls.push({ x: x, y: j, type: 'wall_left.png' });
+             world.map[x][j] = 1;
+             // Right
+             world.walls.push({ x: x+w, y: j, type: 'wall_left.png' });
+             world.map[x+w][j] = 1;
         }
     }
 
-    // Horizontal Wall at y=10 (splitting Top/Bottom)
-    for (let x = 0; x < GRID_SIZE; x++) {
-        if (x !== 4 && x !== 15) { // Doors
-            world.map[x][10] = 1;
-            // Visuals for internal walls need care, let's just use obstacles for now
-            // world.walls.push({ x: x, y: 10, type: 'wall_right.png' });
-        }
+    // -- Layout --
+    world.walls = [];
+
+    // Kitchen
+    buildRoom(2, 2, 10, 8, 3, 'wall');
+    world.objects.push({ id: 'Fridge', x: 3, y: 3, type: 'fridge.png' });
+    world.objects.push({ id: 'Stove', x: 5, y: 3, type: 'stove.png' });
+    world.objects.push({ id: 'Table', x: 7, y: 6, type: 'table.png' });
+    world.objects.push({ id: 'Chair1', x: 6, y: 6, type: 'chair.png' });
+    world.objects.push({ id: 'Chair2', x: 8, y: 6, type: 'chair.png' });
+
+    // Living Room
+    buildRoom(2, 10, 10, 12, 2, 'wall');
+    world.objects.push({ id: 'Rug1', x: 7, y: 16, type: 'rug.png' }); // Under sofa?
+    world.objects.push({ id: 'Sofa1', x: 4, y: 14, type: 'sofa.png' });
+    world.objects.push({ id: 'TV', x: 4, y: 20, type: 'tv.png' });
+    world.objects.push({ id: 'Plant1', x: 10, y: 11, type: 'plant.png' });
+    world.objects.push({ id: 'Radio', x: 9, y: 18, type: 'radio.png' });
+
+    // Bathroom
+    buildRoom(2, 22, 10, 8, 3, 'wall');
+    world.objects.push({ id: 'Shower', x: 3, y: 23, type: 'shower.png' });
+    world.objects.push({ id: 'Toilet', x: 6, y: 23, type: 'toilet.png' });
+    world.objects.push({ id: 'Sink', x: 9, y: 23, type: 'sink.png' });
+
+    // Bedroom 1 (Red)
+    buildRoom(20, 2, 10, 8, 2, 'wall');
+    world.objects.push({ id: 'Bed_Red', x: 22, y: 3, type: 'bed.png', owner: 'Red' });
+    world.objects.push({ id: 'Desk1', x: 28, y: 4, type: 'table.png' });
+
+    // Bedroom 2 (Blue)
+    buildRoom(20, 12, 10, 8, 2, 'wall');
+    world.objects.push({ id: 'Bed_Blue', x: 22, y: 13, type: 'bed.png', owner: 'Blue' });
+    world.objects.push({ id: 'Plant2', x: 29, y: 13, type: 'plant.png' });
+
+    // Lab / Bedroom 3 (Green)
+    buildRoom(20, 22, 10, 8, 0, 'wall');
+    world.objects.push({ id: 'Bed_Green', x: 28, y: 28, type: 'bed.png', owner: 'Green' });
+    world.objects.push({ id: 'Computer', x: 22, y: 23, type: 'computer.png' });
+    world.objects.push({ id: 'ChairLab', x: 23, y: 24, type: 'chair.png' });
+
+    // Doors (Clear walls)
+    function makeDoor(x, y) {
+        // Remove wall visual
+        world.walls = world.walls.filter(w => !(w.x === x && w.y === y));
+        // Remove collision
+        world.map[x][y] = 0;
     }
 
-    // Room 1 (Top Left): Kitchen
-    world.objects.push({ id: 'Fridge', x: 2, y: 2, type: 'fridge.png' });
-    world.objects.push({ id: 'KitchenTable', x: 5, y: 5, type: 'table.png' });
-    world.objects.push({ id: 'Chair1', x: 4, y: 5, type: 'chair.png' });
-    world.objects.push({ id: 'Chair2', x: 6, y: 5, type: 'chair.png' });
-
-    // Room 2 (Top Right): Bedroom
-    world.objects.push({ id: 'Bed_Red', x: 12, y: 2, type: 'bed.png', owner: 'Red' });
-    world.objects.push({ id: 'Bed_Blue', x: 14, y: 2, type: 'bed.png', owner: 'Blue' });
-    world.objects.push({ id: 'Bed_Green', x: 16, y: 2, type: 'bed.png', owner: 'Green' });
-
-    // Room 3 (Bottom Left): Lounge
-    world.objects.push({ id: 'Sofa1', x: 2, y: 15, type: 'sofa.png' });
-    world.objects.push({ id: 'Radio', x: 5, y: 18, type: 'radio.png' });
-
-    // Room 4 (Bottom Right): Tech / Lab
-    world.objects.push({ id: 'Computer', x: 15, y: 15, type: 'computer.png' });
-    world.objects.push({ id: 'DeskChair', x: 16, y: 16, type: 'chair.png' });
+    makeDoor(12, 6); makeDoor(12, 7);
+    makeDoor(12, 16); makeDoor(12, 17);
+    makeDoor(12, 26);
+    makeDoor(20, 6);
+    makeDoor(20, 16);
+    makeDoor(20, 26);
 }
 
 class Resident {
@@ -69,7 +117,8 @@ class Resident {
         this.needs = {
             hunger: 50,
             energy: 60,
-            fun: 50
+            fun: 50,
+            hygiene: 50
         };
 
         this.lastThought = "Initializing...";
@@ -82,6 +131,7 @@ class Resident {
         this.needs.hunger += 0.03;
         this.needs.energy -= 0.01;
         this.needs.fun -= 0.02;
+        this.needs.hygiene -= 0.02;
 
         if (this.cooldown > 0) {
             this.cooldown--;
@@ -95,9 +145,7 @@ class Resident {
                 const nextAction = this.actionQueue.shift();
                 this.executeAction(nextAction);
             } else {
-                // Autonomy Loop
-                // Think if Needs are high or just random chance (more frequent)
-                if (Math.random() < 0.02 || this.needs.hunger > 70 || this.needs.energy < 30) {
+                if (Math.random() < 0.02 || this.needs.hunger > 70 || this.needs.energy < 30 || this.needs.hygiene < 30) {
                     this.think();
                 }
             }
@@ -110,7 +158,7 @@ class Resident {
             return;
         }
         const next = this.path[0];
-        const speed = 0.1; // Faster movement
+        const speed = 0.1;
         const dx = next.x - this.x;
         const dy = next.y - this.y;
 
@@ -127,21 +175,26 @@ class Resident {
     async think() {
         this.state = "THINKING";
 
-        // Find nearest 5 objects to keep prompt small
-        // Simple distance check
         let nearby = world.objects.map(o => {
             return {
                 id: o.id,
                 type: o.type,
                 dist: Math.abs(o.x - this.x) + Math.abs(o.y - this.y)
             };
-        }).sort((a,b) => a.dist - b.dist).slice(0, 5);
+        }).sort((a,b) => a.dist - b.dist).slice(0, 8);
+
+        // Add Anomalies to awareness
+        let visibleAnomalies = world.anomalies.map(a => ({
+             type: a.type,
+             dist: Math.abs(a.x - this.x) + Math.abs(a.y - this.y)
+        })).filter(a => a.dist < 10);
 
         const context = {
             name: this.name,
-            state: "IDLE", // Always pass idle state to LLM when asking for new plan
+            state: "IDLE",
             needs: this.needs,
-            nearby: nearby.map(o => ({ id: o.id, type: o.type }))
+            nearby: nearby.map(o => ({ id: o.id, type: o.type })),
+            anomalies: visibleAnomalies
         };
 
         try {
@@ -160,20 +213,17 @@ class Resident {
         } catch (e) {
             console.error(e);
             this.state = "IDLE";
-            this.cooldown = 100; // Wait before retrying
+            this.cooldown = 100;
         }
     }
 
     processDecision(d) {
-        // Convert LLM decision to Actions
         const target = d.target;
 
         if (d.action === "MOVE") {
             this.actionQueue.push({ type: 'MOVE', target: target });
         }
-        else if (["EAT", "SLEEP", "SIT", "PLAY", "LISTEN", "USE"].includes(d.action)) {
-            // Need to move there first?
-            // Check distance
+        else if (["EAT", "SLEEP", "SIT", "PLAY", "LISTEN", "USE", "SHOWER", "WATCH"].includes(d.action)) {
             const targetObj = world.objects.find(o => o.id === target);
             if (targetObj) {
                 const dist = Math.abs(targetObj.x - this.x) + Math.abs(targetObj.y - this.y);
@@ -182,7 +232,6 @@ class Resident {
                 }
                 this.actionQueue.push({ type: 'INTERACT', action: d.action, target: target });
             } else {
-                 // If target not found or self
                  this.actionQueue.push({ type: 'WAIT', duration: 30 });
             }
         }
@@ -203,43 +252,48 @@ class Resident {
                  tx = Math.floor(Math.random() * GRID_SIZE);
                  ty = Math.floor(Math.random() * GRID_SIZE);
             } else {
-                 return; // Fail silently
+                 return;
             }
 
-            // Pathfinding
             const path = pf.findPath(Math.round(this.x), Math.round(this.y), tx, ty);
             if (path && path.length > 0) {
-                // Remove last step if it's an object (occupied)
-                // Actually residents can stand ON objects like floors, but furniture usually blocks?
-                // Let's assume they stand ON the tile of the furniture to use it.
                 this.path = path;
                 this.state = "MOVING";
             } else {
-                // No path
                 addLog(this.name, "Can't reach target.");
             }
         }
         else if (act.type === 'INTERACT') {
             const op = act.action;
-            // Visual feedback?
-            this.cooldown = 100; // Busy interacting
+            this.cooldown = 100;
 
             if (op === 'EAT') {
                 this.needs.hunger = Math.max(0, this.needs.hunger - 50);
                 addLog(this.name, "Ate food.");
             } else if (op === 'SLEEP') {
                 this.needs.energy = 100;
-                this.cooldown = 300; // Sleep long
+                this.cooldown = 300;
                 addLog(this.name, "Sleeping...");
             } else if (op === 'SIT') {
                 this.needs.energy += 10;
-                addLog(this.name, "Sat down to rest.");
+                addLog(this.name, "Sat down.");
             } else if (op === 'PLAY' || op === 'USE') {
-                this.needs.fun = 100;
-                addLog(this.name, "Used computer.");
+                if (act.target.includes('Toilet')) {
+                    this.needs.hygiene += 20;
+                    addLog(this.name, "Used Toilet.");
+                } else {
+                    this.needs.fun = 100;
+                    addLog(this.name, "Used computer.");
+                }
             } else if (op === 'LISTEN') {
                 this.needs.fun += 30;
                 addLog(this.name, "Listened to radio.");
+            } else if (op === 'SHOWER') {
+                this.needs.hygiene = 100;
+                addLog(this.name, "Took a shower.");
+            } else if (op === 'WATCH') {
+                this.needs.fun += 40;
+                addLog(this.name, "Watched TV.");
             }
         }
         else if (act.type === 'WAIT') {
@@ -247,6 +301,94 @@ class Resident {
         }
     }
 }
+
+class Anomaly {
+    constructor(type, x, y) {
+        this.type = type; // Ghost, Glitch
+        this.x = x;
+        this.y = y;
+        this.lifespan = 500 + Math.random() * 500; // Ticks
+        this.goal = "Cause confusion";
+        this.lastThought = "Manifesting...";
+        this.cooldown = 0;
+        this.sprite = type === 'Ghost' ? 'ghost.png' : 'glitch.png';
+    }
+
+    update() {
+        this.lifespan--;
+        if (this.lifespan <= 0) return false; // Dead
+
+        if (this.cooldown > 0) {
+            this.cooldown--;
+            return true;
+        }
+
+        // Action Logic
+        if (Math.random() < 0.02) {
+            this.think();
+        } else {
+            // Random movement jitter
+            this.x += (Math.random() - 0.5) * 0.2;
+            this.y += (Math.random() - 0.5) * 0.2;
+        }
+        return true;
+    }
+
+    async think() {
+        const context = {
+            type: 'anomaly',
+            anomalyType: this.type,
+            lifespan: Math.floor(this.lifespan),
+            goal: this.goal,
+            nearbyResidents: world.residents.map(r => r.name)
+        };
+
+        try {
+            const res = await fetch('/api/decide', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(context)
+            });
+            const decision = await res.json();
+            this.lastThought = decision.thought || "...";
+            addLog(this.type, `Said: "${this.lastThought}"`);
+
+            if (decision.action === 'HAUNT' || decision.action === 'MOVE') {
+                // Find a resident to move towards
+                if (world.residents.length > 0) {
+                    const target = world.residents[Math.floor(Math.random() * world.residents.length)];
+                    this.x = target.x + (Math.random() - 0.5) * 4;
+                    this.y = target.y + (Math.random() - 0.5) * 4;
+                }
+            } else if (decision.action === 'GLITCH') {
+                this.x = Math.random() * GRID_SIZE;
+                this.y = Math.random() * GRID_SIZE;
+            }
+            this.cooldown = 60;
+        } catch(e) {
+            console.error(e);
+        }
+    }
+}
+
+// Anomaly Manager
+const AnomalyManager = {
+    spawnChance: 0.002, // Low chance per tick
+    update: () => {
+        // Update existing
+        world.anomalies = world.anomalies.filter(a => a.update());
+
+        // Spawn new
+        if (Math.random() < AnomalyManager.spawnChance && world.anomalies.length < 2) {
+            const types = ['Ghost', 'Glitch'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            const x = Math.random() * GRID_SIZE;
+            const y = Math.random() * GRID_SIZE;
+            world.anomalies.push(new Anomaly(type, x, y));
+            addLog("SYSTEM", `ANOMALY DETECTED: ${type}`);
+        }
+    }
+};
 
 // Init
 const canvas = document.getElementById('gameCanvas');
@@ -256,9 +398,9 @@ const pf = new Pathfinding(GRID_SIZE);
 initMap();
 
 // Init Residents
-world.residents.push(new Resident("Red", "Red", 2, 2));
-world.residents.push(new Resident("Blue", "Blue", 14, 2));
-world.residents.push(new Resident("Green", "Green", 2, 15));
+world.residents.push(new Resident("Red", "Red", 15, 15));
+world.residents.push(new Resident("Blue", "Blue", 15, 17));
+world.residents.push(new Resident("Green", "Green", 15, 19));
 
 // Walls to Pathfinding
 for(let x=0; x<GRID_SIZE; x++) {
@@ -266,7 +408,6 @@ for(let x=0; x<GRID_SIZE; x++) {
         if (world.map[x][y] === 1) pf.setObstacle(x, y);
     }
 }
-
 
 function addLog(who, msg) {
     const log = document.getElementById('logs');
@@ -288,6 +429,7 @@ function updateUI() {
             <div class="bar-container" title="Hunger"><div class="bar-fill" style="width:${r.needs.hunger}%; background:#e74c3c;"></div></div>
             <div class="bar-container" title="Energy"><div class="bar-fill" style="width:${r.needs.energy}%; background:#f1c40f;"></div></div>
             <div class="bar-container" title="Fun"><div class="bar-fill" style="width:${r.needs.fun}%; background:#3498db;"></div></div>
+            <div class="bar-container" title="Hygiene"><div class="bar-fill" style="width:${r.needs.hygiene}%; background:#27ae60;"></div></div>
         `;
         list.appendChild(div);
     });
@@ -300,16 +442,18 @@ function loop() {
     // Draw Floor
     for (let x = 0; x < GRID_SIZE; x++) {
         for (let y = 0; y < GRID_SIZE; y++) {
-            renderer.drawTile('floor.png', x, y);
+            let ft = world.floorTypes[x][y]; // 0, 2, 3
+            let fSprite = 'floor.png';
+            if (ft === 2) fSprite = 'floor_wood.png';
+            if (ft === 3) fSprite = 'floor_tile.png';
+
+            renderer.drawTile(fSprite, x, y);
         }
     }
 
-    // Draw Walls (Outer)
-    for (let y = 0; y < GRID_SIZE; y++) renderer.drawTile('wall_left.png', 0, y);
-    for (let x = 0; x < GRID_SIZE; x++) renderer.drawTile('wall_right.png', x, 0);
-
-    // Update Residents
+    // Update
     world.residents.forEach(r => r.update());
+    AnomalyManager.update();
 
     // Render Sorted
     let renderList = [];
@@ -319,10 +463,8 @@ function loop() {
         renderList.push({ type: 'obj', ref: o, x: o.x, y: o.y, sortZ: o.x + o.y });
     });
 
-    // Internal Walls (from world.walls)
+    // Walls
     world.walls.forEach(w => {
-        // Use wall_left or wall_right based on orientation context, or just default.
-        // In initMap we set type.
         renderList.push({ type: 'wall', ref: w, x: w.x, y: w.y, sortZ: w.x + w.y });
     });
 
@@ -331,32 +473,41 @@ function loop() {
         renderList.push({ type: 'res', ref: r, x: r.x, y: r.y, sortZ: r.x + r.y });
     });
 
+    // Anomalies
+    world.anomalies.forEach(a => {
+        renderList.push({ type: 'anomaly', ref: a, x: a.x, y: a.y, sortZ: a.x + a.y + 1 }); // Float slightly above?
+    });
+
     renderList.sort((a, b) => a.sortZ - b.sortZ);
 
     renderList.forEach(item => {
         if (item.type === 'obj' || item.type === 'wall') {
             renderer.drawTile(item.ref.type, item.x, item.ref.y);
-        } else {
+        } else if (item.type === 'res') {
             renderer.drawTile(item.ref.sprite, item.x, item.y);
-            // Draw Thought Bubble for Residents
-            if (item.type === 'res') {
-                const thought = item.ref.state === 'THINKING' ? "..." : item.ref.lastThought;
-                // Truncate if too long
-                const display = thought.length > 20 ? thought.substring(0, 18) + '..' : thought;
-                renderer.drawText(display, item.x, item.y, '#FFFFFF');
+            const thought = item.ref.state === 'THINKING' ? "..." : item.ref.lastThought;
+            const display = thought.length > 20 ? thought.substring(0, 18) + '..' : thought;
+            renderer.drawText(display, item.x, item.y, '#FFFFFF');
+        } else if (item.type === 'anomaly') {
+            renderer.drawTile(item.ref.sprite, item.x, item.y);
+            // Anomaly Text
+            if (item.ref.lastThought && item.ref.lastThought !== "Manifesting...") {
+                 renderer.drawText(item.ref.lastThought.substring(0, 15), item.x, item.y, '#FF00FF');
             }
         }
     });
 
     updateUI();
-
     requestAnimationFrame(loop);
 }
 
 const assetNames = [
-    'floor.png', 'wall_left.png', 'wall_right.png',
+    'floor.png', 'floor_wood.png', 'floor_tile.png',
+    'wall_left.png', 'wall_right.png',
     'char_red.png', 'char_blue.png', 'char_green.png',
-    'fridge.png', 'bed.png', 'table.png', 'chair.png', 'sofa.png', 'computer.png', 'radio.png'
+    'fridge.png', 'bed.png', 'table.png', 'chair.png', 'sofa.png', 'computer.png', 'radio.png',
+    'toilet.png', 'sink.png', 'shower.png', 'stove.png', 'tv.png', 'plant.png', 'rug.png',
+    'ghost.png', 'glitch.png'
 ];
 
 renderer.loadAssets(assetNames, () => {

@@ -24,3 +24,34 @@ Port 5000 is in use by another program. Either identify and stop that program, o
 127.0.0.1 - - [02/Jan/2026 14:31:59] "POST /api/decide HTTP/1.1" 200 -
 127.0.0.1 - - [02/Jan/2026 14:32:00] "POST /api/decide HTTP/1.1" 200 -
 127.0.0.1 - - [02/Jan/2026 14:32:03] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /js/pathfinding.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /js/renderer.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /js/game.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/char_green.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/wall_left.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/floor.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/char_red.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/char_blue.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/wall_right.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/fridge.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/sofa.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/bed.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/table.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/chair.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/radio.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/computer.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:42] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:42] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:44] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:46] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 14:45:47] "POST /api/decide HTTP/1.1" 200 -
+ * Detected change in '/app/generate_assets.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 123-022-506
+ * Detected change in '/app/app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 123-022-506

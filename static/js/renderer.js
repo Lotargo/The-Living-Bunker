@@ -99,7 +99,18 @@ class Renderer {
              drawY = pos.y + (this.tileH) - img.height;
         }
 
+        if (imgName.includes('ghost')) {
+            this.ctx.globalAlpha = 0.6; // Transparent
+        }
+        if (imgName.includes('glitch')) {
+            // Flicker effect
+            if (Math.random() > 0.5) this.ctx.globalAlpha = 0.8;
+            drawX += (Math.random() - 0.5) * 5;
+            drawY += (Math.random() - 0.5) * 5;
+        }
+
         this.ctx.drawImage(img, drawX, drawY);
+        this.ctx.globalAlpha = 1.0; // Reset
     }
 
     drawText(text, gx, gy, color = "white") {

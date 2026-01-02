@@ -10,29 +10,37 @@ app = Flask(__name__, static_url_path='', static_folder='static')
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 CEREBRAS_API_KEY = os.environ.get("CEREBRAS_API_KEY")
 
-# Persona Definitions - UPDATED with unique models
+# Persona Definitions
 PERSONAS = {
     "Red": {
-        "role": "You are 'Red', a survivalist. You are paranoid, energetic, and focused on security.",
+        "role": "You are 'Red', a survivalist. You are paranoid, energetic, and focused on security. You react strongly to anomalies.",
         "provider": "groq",
         "model": "llama-3.1-8b-instant"
     },
     "Blue": {
-        "role": "You are 'Blue', a scientist. You are calm, analytical, and obsessed with technology.",
+        "role": "You are 'Blue', a scientist. You are calm, analytical, and obsessed with technology. You try to study anomalies.",
         "provider": "cerebras",
         "model": "llama3.1-8b"
     },
     "Green": {
-        "role": "You are 'Green', a slacker. You like to relax, sit on the sofa, and listen to the radio.",
+        "role": "You are 'Green', a slacker. You like to relax. You think anomalies are hallucinations or 'glitches in the matrix'.",
         "provider": "groq",
-        "model": "llama-3.3-70b-versatile" # Using a different model for variety
+        "model": "llama-3.3-70b-versatile"
     }
+}
+
+# Anomaly System Prompts
+ANOMALY_PROMPTS = {
+    "Ghost": "You are a Ghost. You are a lost soul trapped in this bunker. You exist for only a short time. You want to communicate something cryptic before you fade. You are melancholy or angry.",
+    "Glitch": "You are a Reality Glitch. You are a bug in the simulation. You speak in code fragments or broken sentences. You want to disrupt order.",
+    "Poltergeist": "You are a Poltergeist possessed object. You are chaotic and mischievous. You want to trick residents."
 }
 
 SYSTEM_INSTRUCTION = """
 You are controlling a character in a 'Living Bunker' simulation.
 Current State: {state}
 Nearby Objects: {objects}
+Nearby Anomalies: {anomalies}
 Needs: {needs}
 
 Decide your next action. You MUST respond in valid JSON format ONLY.
@@ -45,16 +53,38 @@ Format:
 
 Available Actions:
 - MOVE: Go to a location. Target: Object ID or 'random'.
-- USE: Use an item (Fridge to eat, Bed to sleep).
-- SIT: Sit on a Chair or Sofa (Restores Energy/Social). Target: Chair/Sofa ID.
-- PLAY: Use Computer (Fun). Target: Computer ID.
-- LISTEN: Listen to Radio (Fun). Target: Radio ID.
+- USE: Use an item (Fridge, Bed, Toilet, Shower, Stove, TV).
+- SIT: Sit on a Chair or Sofa.
+- PLAY: Use Computer.
+- LISTEN: Listen to Radio.
 - IDLE: Do nothing. Target: 'self'.
 
 Priorities:
 1. Survival: Hunger > 70 or Energy < 20.
-2. Comfort: Sit or Sleep if Energy < 50.
-3. Fun: Play or Listen if bored.
+2. React to Anomalies: If you see a Ghost or Glitch, you might investigate or flee depending on your personality.
+3. Comfort/Fun.
+"""
+
+ANOMALY_INSTRUCTION = """
+You are an Anomaly in the bunker.
+Type: {type}
+Lifespan Remaining: {lifespan} ticks.
+Goal: {goal}
+Nearby Residents: {residents}
+
+Decide your action. JSON Only.
+Format:
+{{
+  "thought": "Cryptic thought.",
+  "action": "ACTION_NAME",
+  "target": "TARGET_ID"
+}}
+
+Actions:
+- HAUNT: Move towards a resident or object.
+- SPOOK: Do something scary/weird near a target.
+- GLITCH: Teleport or act erratic.
+- IDLE: Fade/Wait.
 """
 
 @app.route('/')
@@ -65,38 +95,55 @@ def index():
 def decide():
     data = request.json
     bot_name = data.get('name')
-    state = data.get('state')
-    nearby = data.get('nearby')
-    needs = data.get('needs')
+    bot_type = data.get('type', 'resident') # resident or anomaly
 
-    if bot_name not in PERSONAS:
-        return jsonify({"error": "Unknown bot"}), 400
+    if bot_type == 'resident':
+        if bot_name not in PERSONAS:
+            return jsonify({"error": "Unknown bot"}), 400
+        persona = PERSONAS[bot_name]
+        prompt = SYSTEM_INSTRUCTION.format(
+            state=data.get('state'),
+            objects=json.dumps(data.get('nearby')),
+            anomalies=json.dumps(data.get('anomalies', [])),
+            needs=json.dumps(data.get('needs'))
+        )
+        sys_role = persona['role']
+        provider = persona['provider']
+        model = persona['model']
 
-    persona = PERSONAS[bot_name]
-
-    prompt = SYSTEM_INSTRUCTION.format(
-        state=state,
-        objects=json.dumps(nearby),
-        needs=json.dumps(needs)
-    )
+    elif bot_type == 'anomaly':
+        a_type = data.get('anomalyType')
+        prompt = ANOMALY_INSTRUCTION.format(
+            type=a_type,
+            lifespan=data.get('lifespan'),
+            goal=data.get('goal', 'Exist'),
+            residents=json.dumps(data.get('nearbyResidents', []))
+        )
+        sys_role = ANOMALY_PROMPTS.get(a_type, "You are an anomaly.")
+        # Use Groq for fast anomalies
+        provider = 'groq'
+        model = 'llama-3.1-8b-instant'
+    else:
+        return jsonify({"error": "Invalid type"}), 400
 
     messages = [
-        {"role": "system", "content": persona['role']},
+        {"role": "system", "content": sys_role},
         {"role": "user", "content": prompt}
     ]
 
     response_data = {}
 
     try:
-        if persona['provider'] == 'groq':
+        # Provider Logic
+        if provider == 'groq':
             resp = requests.post(
                 "https://api.groq.com/openai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {GROQ_API_KEY}"},
                 json={
-                    "model": persona['model'],
+                    "model": model,
                     "messages": messages,
                     "response_format": {"type": "json_object"},
-                    "temperature": 0.7
+                    "temperature": 0.8 # Higher temp for chaos
                 }
             )
             resp_json = resp.json()
@@ -107,12 +154,12 @@ def decide():
                 print("Groq Error Payload:", resp_json)
                 raise Exception("Invalid Groq Response")
 
-        elif persona['provider'] == 'cerebras':
+        elif provider == 'cerebras':
             resp = requests.post(
                 "https://api.cerebras.ai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {CEREBRAS_API_KEY}"},
                 json={
-                    "model": persona['model'],
+                    "model": model,
                     "messages": messages,
                     "response_format": {"type": "json_object"},
                     "temperature": 0.7
@@ -128,9 +175,8 @@ def decide():
 
     except Exception as e:
         print(f"LLM Error ({bot_name}): {e}")
-        # Intelligent Fallback
         response_data = {
-            "thought": "I feel disconnected... I'll just wait.",
+            "thought": "...",
             "action": "IDLE",
             "target": "self"
         }
