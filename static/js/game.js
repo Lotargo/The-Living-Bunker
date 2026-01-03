@@ -483,8 +483,11 @@ function updateUI() {
         div.innerHTML = `
             <h4>${r.name}</h4>
             <div style="font-size:10px">${r.lastThought}</div>
-            <div class="bar-container" title="Hunger"><div class="bar-fill" style="width:${r.needs.hunger}%; background:#e74c3c;"></div></div>
-            <div class="bar-container" title="Health"><div class="bar-fill" style="width:${r.health}%; background:#c0392b;"></div></div>
+            <div class="bar-container" title="Health"><div class="bar-fill" style="width:${Math.min(100, r.health)}%; background:#2ecc71;"></div></div>
+            <div class="bar-container" title="Hunger"><div class="bar-fill" style="width:${Math.min(100, r.needs.hunger)}%; background:#e74c3c;"></div></div>
+            <div class="bar-container" title="Energy"><div class="bar-fill" style="width:${Math.min(100, r.needs.energy)}%; background:#f1c40f;"></div></div>
+            <div class="bar-container" title="Fun"><div class="bar-fill" style="width:${Math.min(100, r.needs.fun)}%; background:#3498db;"></div></div>
+            <div class="bar-container" title="Hygiene"><div class="bar-fill" style="width:${Math.min(100, r.needs.hygiene)}%; background:#27ae60;"></div></div>
         `;
         list.appendChild(div);
     });

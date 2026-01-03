@@ -45,3 +45,369 @@
 127.0.0.1 - - [02/Jan/2026 16:35:32] "POST /api/decide HTTP/1.1" 200 -
 127.0.0.1 - - [02/Jan/2026 16:35:33] "POST /api/decide HTTP/1.1" 200 -
 127.0.0.1 - - [02/Jan/2026 16:35:35] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /js/renderer.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /js/pathfinding.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /js/game.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/floor_tile.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/char_red.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/wall_right.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/floor.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/wall_left.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/floor_wood.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/fridge.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/table.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/char_blue.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/char_green.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/chair.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/bed.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/sofa.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/computer.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/radio.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/shower.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/sink.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/toilet.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/tv.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/stove.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/plant.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/rug.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/ghost.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/glitch.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/cat_luna.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:56] "GET /assets/cat_evil.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:57] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:57] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:58] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:59] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:27:59] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:00] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:01] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:02] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:03] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:03] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:04] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:04] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:05] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:05] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:06] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:06] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:06] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:06] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:07] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:07] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:08] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:08] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:08] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:09] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:09] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:09] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:10] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:10] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:10] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:10] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:11] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:11] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:11] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:12] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:12] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:13] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:13] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:14] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:14] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:14] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:14] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:14] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:14] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:15] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:15] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:15] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:16] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:16] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:17] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:17] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:17] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:18] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:18] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:18] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:18] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:19] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:19] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:19] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:19] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:19] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:19] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:19] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:20] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:20] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:20] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:20] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:21] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:21] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:22] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:22] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:22] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:22] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:22] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:23] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:23] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:23] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:24] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:24] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:24] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:24] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:25] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:25] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:25] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:25] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:26] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:26] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:26] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:26] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:27] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:28] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:28] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:28] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:29] "POST /api/decide HTTP/1.1" 200 -
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5497, Requested 504. Please try again in 10ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5940, Requested 258. Please try again in 1.98s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5877, Requested 503. Please try again in 3.8s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5823, Requested 258. Please try again in 810ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5810, Requested 503. Please try again in 3.13s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5745, Requested 503. Please try again in 2.48s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5978, Requested 503. Please try again in 4.81s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5912, Requested 503. Please try again in 4.15s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5847, Requested 503. Please try again in 3.5s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5819, Requested 258. Please try again in 770ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5778, Requested 503. Please try again in 2.81s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5708, Requested 503. Please try again in 2.109999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5938, Requested 503. Please try again in 4.41s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5872, Requested 503. Please try again in 3.75s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5807, Requested 503. Please try again in 3.1s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5782, Requested 258. Please try again in 400ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5740, Requested 503. Please try again in 2.43s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5674, Requested 479. Please try again in 1.529999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5607, Requested 479. Please try again in 860ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5539, Requested 477. Please try again in 160ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5795, Requested 456. Please try again in 2.51s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+127.0.0.1 - - [03/Jan/2026 02:28:30] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:30] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:31] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:31] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:31] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:32] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:32] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:32] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:32] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:33] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:34] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:35] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:35] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:35] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:36] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:36] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:37] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:37] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:38] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:38] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:38] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:39] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:39] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:39] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:40] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:40] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:40] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:41] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:42] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:42] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:42] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:43] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:43] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:44] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:28:44] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:03] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:16] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:17] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:17] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:17] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:20] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:22] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:23] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:23] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:23] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:24] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:29:25] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:49:37] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:49:37] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:49:37] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:50:25] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:50:25] "GET /js/renderer.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:50:25] "GET /js/game.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:50:25] "GET /js/pathfinding.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:50:25] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:52:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:52:26] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:52:26] "GET /js/pathfinding.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:52:26] "GET /js/game.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 02:52:26] "GET /js/renderer.js HTTP/1.1" 200 -
+ * Detected change in '/app/verification/simulate_scenario.py', reloading
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5730, Requested 456. Please try again in 1.859999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5665, Requested 456. Please try again in 1.21s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5594, Requested 456. Please try again in 500ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5813, Requested 457. Please try again in 2.699999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5747, Requested 458. Please try again in 2.049999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5683, Requested 457. Please try again in 1.4s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5617, Requested 458. Please try again in 750ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error groq: {"error":{"message":"Rate limit reached for model `llama-3.1-8b-instant` in organization `org_01jzdrva8ef2tvq7pvvay1qm2s` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5549, Requested 458. Please try again in 70ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+API Error cerebras: {"message":"Requests per minute limit exceeded - too many requests sent.","type":"too_many_requests_error","param":"quota","code":"request_quota_exceeded"}
+API Error cerebras: {"message":"Requests per minute limit exceeded - too many requests sent.","type":"too_many_requests_error","param":"quota","code":"request_quota_exceeded"}
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 969-355-207
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /js/renderer.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /js/pathfinding.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /js/game.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/wall_left.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/floor.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/char_red.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/floor_wood.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/floor_tile.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/wall_right.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/char_green.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/char_blue.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/table.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/chair.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/sofa.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/bed.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/fridge.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/computer.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/radio.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/toilet.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/sink.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/shower.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/stove.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/plant.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/tv.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/ghost.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/glitch.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/rug.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/cat_evil.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:57] "GET /assets/cat_luna.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:58] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:58] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:58] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:05:59] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:01] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:03] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:03] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:04] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:04] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:06] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:06] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:07] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:07] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:07] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:08] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:09] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:09] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:10] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:11] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:11] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:12] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:12] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:12] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:13] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:14] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:14] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:14] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:15] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:16] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:16] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:16] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:16] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:17] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:17] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:18] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:18] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:18] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:19] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:19] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:20] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:20] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:20] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:20] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:21] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:21] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:22] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:22] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:22] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:22] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:23] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:06:25] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /js/renderer.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /js/pathfinding.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /js/game.js HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/char_red.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/floor.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/wall_left.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/floor_wood.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/floor_tile.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/wall_right.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/char_blue.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/fridge.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/char_green.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/bed.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/table.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/sofa.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/chair.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/computer.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/radio.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/toilet.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/sink.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/shower.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/tv.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/plant.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/stove.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/rug.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/ghost.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/cat_luna.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/glitch.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:03] "GET /assets/cat_evil.png HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:04] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:04] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:05] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:05] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [03/Jan/2026 03:07:08] "POST /api/decide HTTP/1.1" 200 -
