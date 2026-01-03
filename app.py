@@ -299,6 +299,19 @@ def process_mutations(commands):
     has_ghost = any(c.get('action') == 'SPAWN' and c.get('type') == 'Ghost' for c in commands)
     has_bad_atmosphere = any(c.get('action') == 'ATMOSPHERE' and c.get('type') in ['Heavy Static', 'Darkness', 'Red Mist'] for c in commands)
 
+    # Check for Cold Draft + Whisper(All) -> Mass Hysteria
+    has_cold_draft = any(c.get('action') == 'ATMOSPHERE' and c.get('type') == 'Cold Draft' for c in commands)
+    has_whisper_all = any(c.get('action') == 'WHISPER' and c.get('target') == 'All' for c in commands)
+
+    # Apply global events
+    if has_cold_draft and has_whisper_all:
+         print("MUTATION TRIGGERED: Cold Draft + Whisper(All) -> Mass Hysteria")
+         mutated_commands.append({
+             "action": "EVENT",
+             "type": "MASS_HYSTERIA",
+             "location": "LivingRoom" # Gather point
+         })
+
     for cmd in commands:
         new_cmd = cmd.copy()
 
@@ -369,9 +382,23 @@ def architect():
             content = resp_json['choices'][0]['message']['content']
             try:
                 architect_response = json.loads(content)
-            except:
+            except ValueError:
+                 # Diegetic error handling
+                 print(f"Architect Error: Invalid JSON received. Content: {content}")
+                 return jsonify({
+                     "response": "Connection interference... Signal lost. (Invalid Protocol)",
+                     "commands": []
+                 })
+            except Exception as e:
+                # Fallback for other parsing errors
                 content = content.replace("```json", "").replace("```", "")
-                architect_response = json.loads(content)
+                try:
+                    architect_response = json.loads(content)
+                except:
+                     return jsonify({
+                        "response": "Connection interference... Signal lost. (Decryption Failed)",
+                        "commands": []
+                     })
 
             # Apply Mutation Logic
             raw_commands = architect_response.get('commands', [])
@@ -384,7 +411,7 @@ def architect():
 
     except Exception as e:
         print(f"Architect Error: {e}")
-        return jsonify({"response": "The Architect is silent...", "commands": []})
+        return jsonify({"response": "Connection interference... Signal lost.", "commands": []})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
