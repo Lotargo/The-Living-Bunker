@@ -1,4 +1,4 @@
-const GRID_SIZE = 32;
+const GRID_SIZE = 64;
 const TILE_SIZE = 64;
 
 // Expanded World State
@@ -9,15 +9,49 @@ const world = {
     walls: [],
     map: [],
     floorTypes: [],
-    atmosphere: "Normal"
+    atmosphere: "Normal",
+    rooms: [] // Track room definitions for "NEAR" logic
+};
+
+// Asset & Room Templates
+const FurnitureTemplates = {
+    'Kitchen': [
+        { id: 'Fridge', type: 'fridge.png', dx: 1, dy: 1 },
+        { id: 'Stove', type: 'stove.png', dx: 3, dy: 1 },
+        { id: 'Table', type: 'table.png', dx: 5, dy: 4 },
+        { id: 'Chair', type: 'chair.png', dx: 4, dy: 4 }
+    ],
+    'Bedroom': [
+        { id: 'Bed', type: 'bed.png', dx: 1, dy: 1 },
+        { id: 'Rug', type: 'rug.png', dx: 3, dy: 4 }
+    ],
+    'LivingRoom': [
+        { id: 'Sofa', type: 'sofa.png', dx: 2, dy: 2 },
+        { id: 'TV', type: 'tv.png', dx: 2, dy: 8 },
+        { id: 'Rug', type: 'rug.png', dx: 5, dy: 5 }
+    ],
+    'Library': [
+        { id: 'Bookshelf', type: 'fridge.png', dx: 1, dy: 1 }, // Reuse fridge as bookshelf placeholder
+        { id: 'Desk', type: 'table.png', dx: 3, dy: 3 },
+        { id: 'Chair', type: 'chair.png', dx: 2, dy: 3 }
+    ],
+    'Medbay': [
+        { id: 'Bed_Med', type: 'bed.png', dx: 2, dy: 2 },
+        { id: 'Scanner', type: 'computer.png', dx: 4, dy: 2 }
+    ],
+    'Empty': []
 };
 
 function initMap() {
     // 0: Concrete, 2: Wood, 3: Tile
     world.map = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
     world.floorTypes = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
+    world.rooms = [];
 
-    function buildRoom(x, y, w, h, floorType, wallType) {
+    function buildRoom(x, y, w, h, floorType, wallType, name="Room") {
+        // Track Room
+        world.rooms.push({ name: name, x: x, y: y, w: w, h: h });
+
         for(let i=x; i<x+w; i++) {
             for(let j=y; j<y+h; j++) {
                 if(i>=0 && i<GRID_SIZE && j>=0 && j<GRID_SIZE) {
@@ -41,7 +75,7 @@ function initMap() {
 
     world.walls = [];
     // Kitchen
-    buildRoom(2, 2, 10, 8, 3, 'wall');
+    buildRoom(2, 2, 10, 8, 3, 'wall', 'Kitchen');
     world.objects.push({ id: 'Fridge', x: 3, y: 3, type: 'fridge.png' });
     world.objects.push({ id: 'Stove', x: 5, y: 3, type: 'stove.png' });
     world.objects.push({ id: 'Table', x: 7, y: 6, type: 'table.png' });
@@ -49,7 +83,7 @@ function initMap() {
     world.objects.push({ id: 'Chair2', x: 8, y: 6, type: 'chair.png' });
 
     // Living Room
-    buildRoom(2, 10, 10, 12, 2, 'wall');
+    buildRoom(2, 10, 10, 12, 2, 'wall', 'LivingRoom');
     world.objects.push({ id: 'Rug1', x: 7, y: 16, type: 'rug.png' });
     world.objects.push({ id: 'Sofa1', x: 4, y: 14, type: 'sofa.png' });
     world.objects.push({ id: 'TV', x: 4, y: 20, type: 'tv.png' });
@@ -57,23 +91,23 @@ function initMap() {
     world.objects.push({ id: 'Radio', x: 9, y: 18, type: 'radio.png' });
 
     // Bathroom
-    buildRoom(2, 22, 10, 8, 3, 'wall');
+    buildRoom(2, 22, 10, 8, 3, 'wall', 'Bathroom');
     world.objects.push({ id: 'Shower', x: 3, y: 23, type: 'shower.png' });
     world.objects.push({ id: 'Toilet', x: 6, y: 23, type: 'toilet.png' });
     world.objects.push({ id: 'Sink', x: 9, y: 23, type: 'sink.png' });
 
     // Bedroom 1 (Red)
-    buildRoom(20, 2, 10, 8, 2, 'wall');
+    buildRoom(20, 2, 10, 8, 2, 'wall', 'BedroomRed');
     world.objects.push({ id: 'Bed_Red', x: 22, y: 3, type: 'bed.png', owner: 'Red' });
     world.objects.push({ id: 'Desk1', x: 28, y: 4, type: 'table.png' });
 
     // Bedroom 2 (Blue)
-    buildRoom(20, 12, 10, 8, 2, 'wall');
+    buildRoom(20, 12, 10, 8, 2, 'wall', 'BedroomBlue');
     world.objects.push({ id: 'Bed_Blue', x: 22, y: 13, type: 'bed.png', owner: 'Blue' });
     world.objects.push({ id: 'Plant2', x: 29, y: 13, type: 'plant.png' });
 
     // Lab / Bedroom 3 (Green)
-    buildRoom(20, 22, 10, 8, 0, 'wall');
+    buildRoom(20, 22, 10, 8, 0, 'wall', 'Lab');
     world.objects.push({ id: 'Bed_Green', x: 28, y: 28, type: 'bed.png', owner: 'Green' });
     world.objects.push({ id: 'Computer', x: 22, y: 23, type: 'computer.png' });
     world.objects.push({ id: 'ChairLab', x: 23, y: 24, type: 'chair.png' });
@@ -451,6 +485,147 @@ const AnomalyManager = {
     }
 };
 
+// Room Builder "The Smart Foreman"
+const RoomBuilder = {
+    // Attempt to build a room of `type` near `targetRoomName`
+    build: (type, targetRoomName) => {
+        const target = world.rooms.find(r => r.name === targetRoomName);
+        if (!target) {
+            logConsole('system', `Builder Error: Room '${targetRoomName}' not found.`);
+            return false;
+        }
+
+        const width = 10;
+        const height = 8;
+        const padding = 2; // Corridor space
+
+        // Potential positions: North, South, East, West of target
+        const candidates = [
+            { x: target.x, y: target.y - height - padding, w: width, h: height }, // North
+            { x: target.x, y: target.y + target.h + padding, w: width, h: height }, // South
+            { x: target.x + target.w + padding, y: target.y, w: width, h: height }, // East
+            { x: target.x - width - padding, y: target.y, w: width, h: height }  // West
+        ];
+
+        let bestSpot = null;
+        for (let spot of candidates) {
+            if (RoomBuilder.isValid(spot)) {
+                bestSpot = spot;
+                break;
+            }
+        }
+
+        if (bestSpot) {
+            RoomBuilder.construct(bestSpot, type);
+            // Connect with door/corridor
+            RoomBuilder.connect(target, bestSpot);
+            logConsole('system', `Construction Complete: ${type} built near ${targetRoomName}.`);
+            return true;
+        } else {
+            logConsole('system', `Builder Error: No space near ${targetRoomName}.`);
+            return false;
+        }
+    },
+
+    isValid: (rect) => {
+        // Check bounds
+        if (rect.x < 1 || rect.y < 1 || rect.x + rect.w >= GRID_SIZE - 1 || rect.y + rect.h >= GRID_SIZE - 1) return false;
+
+        // Check overlap with existing rooms
+        for (let r of world.rooms) {
+            if (rect.x < r.x + r.w && rect.x + rect.w > r.x &&
+                rect.y < r.y + r.h && rect.y + rect.h > r.y) {
+                return false;
+            }
+        }
+
+        // Check overlap with floorTypes (corridors/map) just in case
+        // Sampling corners
+        if (world.floorTypes[rect.x][rect.y] !== 0) return false;
+
+        return true;
+    },
+
+    construct: (rect, type) => {
+        const name = `${type}_${Math.floor(Math.random()*100)}`;
+        // Determine floor style based on type
+        let floor = 0; // Concrete
+        if (['Library', 'LivingRoom', 'Bedroom'].includes(type)) floor = 2; // Wood
+        if (['Kitchen', 'Medbay'].includes(type)) floor = 3; // Tile
+
+        // Update Map Logic (Inline from initMap simplified)
+        world.rooms.push({ name: name, x: rect.x, y: rect.y, w: rect.w, h: rect.h });
+
+        // Floors
+        for(let i=rect.x; i<rect.x+rect.w; i++) {
+            for(let j=rect.y; j<rect.y+rect.h; j++) {
+                world.floorTypes[i][j] = floor;
+            }
+        }
+
+        // Walls
+        for(let i=rect.x; i<rect.x+rect.w; i++) {
+             world.walls.push({ x: i, y: rect.y, type: 'wall_right.png' });
+             world.map[i][rect.y] = 1;
+             world.walls.push({ x: i, y: rect.y+rect.h, type: 'wall_right.png' });
+             world.map[i][rect.y+rect.h] = 1;
+             pf.setObstacle(i, rect.y);
+             pf.setObstacle(i, rect.y+rect.h);
+        }
+        for(let j=rect.y; j<rect.y+rect.h; j++) {
+             world.walls.push({ x: rect.x, y: j, type: 'wall_left.png' });
+             world.map[rect.x][j] = 1;
+             world.walls.push({ x: rect.x+rect.w, y: j, type: 'wall_left.png' });
+             world.map[rect.x+rect.w][j] = 1;
+             pf.setObstacle(rect.x, j);
+             pf.setObstacle(rect.x+rect.w, j);
+        }
+
+        // Furnish
+        const template = FurnitureTemplates[type] || FurnitureTemplates['Empty'];
+        template.forEach(item => {
+            world.objects.push({
+                id: `${item.id}_${Math.floor(Math.random()*999)}`,
+                type: item.type,
+                x: rect.x + item.dx,
+                y: rect.y + item.dy
+            });
+        });
+    },
+
+    connect: (roomA, roomB) => {
+        // Simple corridor connection logic
+        // Find closest points?
+        // Or just brute force a path between centers and clear walls.
+
+        const cx1 = Math.floor(roomA.x + roomA.w/2);
+        const cy1 = Math.floor(roomA.y + roomA.h/2);
+        const cx2 = Math.floor(roomB.x + roomB.w/2);
+        const cy2 = Math.floor(roomB.y + roomB.h/2);
+
+        // Horizontal then Vertical dig
+        // We need to clear walls and set floor
+
+        const dig = (x, y) => {
+            world.walls = world.walls.filter(w => !(w.x === x && w.y === y));
+            world.map[x][y] = 0;
+            if (world.floorTypes[x][y] === 0) world.floorTypes[x][y] = 1; // Generic floor for hallway
+            pf.clearObstacle(x, y);
+        };
+
+        // Naive L-shape corridor
+        let x = cx1, y = cy1;
+        while(x !== cx2) {
+            dig(x, y);
+            x += Math.sign(cx2 - x);
+        }
+        while(y !== cy2) {
+            dig(x, y);
+            y += Math.sign(cy2 - y);
+        }
+    }
+};
+
 const canvas = document.getElementById('gameCanvas');
 const renderer = new Renderer('gameCanvas');
 const pf = new Pathfinding(GRID_SIZE);
@@ -752,5 +927,23 @@ function executeGodCommand(cmd) {
              // Increment whisper count for stress tracking (RAG prep)
              r.whisperCount += 5;
         });
+    }
+
+    else if (cmd.action === 'BUILD') {
+        // Expects cmd.roomType and cmd.near
+        const type = cmd.roomType || 'Empty';
+        const near = cmd.near || 'Kitchen';
+
+        logConsole('system', `Initiating construction: ${type} near ${near}...`);
+
+        // Visual delay?
+        setTimeout(() => {
+            const success = RoomBuilder.build(type, near);
+            if (!success) {
+                addLog('SYSTEM', 'Construction failed: No suitable terrain.');
+            } else {
+                addLog('SYSTEM', `New Sector Added: ${type}`);
+            }
+        }, 1000);
     }
 }
