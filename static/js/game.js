@@ -566,3 +566,144 @@ renderer.loadAssets(assetNames, () => {
     console.log("Assets Loaded");
     loop();
 });
+
+// God Console Logic
+const consoleInput = document.getElementById('console-input');
+const consoleOutput = document.getElementById('console-output');
+
+consoleInput.addEventListener('keydown', async (e) => {
+    if (e.key === 'Enter') {
+        const text = consoleInput.value.trim();
+        if (!text) return;
+
+        // Log User Input
+        logConsole('user', text);
+        consoleInput.value = '';
+        consoleInput.disabled = true;
+
+        try {
+            const res = await fetch('/api/architect', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: text })
+            });
+            const data = await res.json();
+
+            // Log Architect Response
+            if (data.response) {
+                logConsole('architect', data.response);
+            }
+
+            // Execute Commands
+            if (data.commands && Array.isArray(data.commands)) {
+                data.commands.forEach(cmd => executeGodCommand(cmd));
+            }
+
+        } catch (err) {
+            logConsole('system', "Error contacting Architect.");
+            console.error(err);
+        } finally {
+            consoleInput.disabled = false;
+            consoleInput.focus();
+        }
+    }
+});
+
+function logConsole(type, text) {
+    const div = document.createElement('div');
+    div.className = `console-line ${type}`;
+    div.innerText = (type === 'user' ? '> ' : '') + text;
+    consoleOutput.appendChild(div);
+    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+}
+
+function executeGodCommand(cmd) {
+    console.log("Executing:", cmd);
+
+    if (cmd.action === 'SPAWN') {
+        const type = cmd.type; // Ghost, Glitch, Doppelganger, Poltergeist
+        let loc = cmd.location || 'Random';
+
+        let x = 0, y = 0;
+
+        // Resolve Location
+        if (loc === 'Kitchen') { x = 4; y = 4; }
+        else if (loc === 'LivingRoom') { x = 6; y = 14; }
+        else if (loc === 'BedroomRed') { x = 25; y = 4; }
+        else if (loc === 'BedroomBlue') { x = 25; y = 14; }
+        else if (loc === 'Lab') { x = 25; y = 25; }
+        else {
+            // Random
+            x = Math.random() * GRID_SIZE;
+            y = Math.random() * GRID_SIZE;
+        }
+
+        // Offset slightly to avoid stacking exactly
+        x += (Math.random() - 0.5) * 3;
+        y += (Math.random() - 0.5) * 3;
+
+        // Clamp
+        x = Math.max(1, Math.min(GRID_SIZE-2, x));
+        y = Math.max(1, Math.min(GRID_SIZE-2, y));
+
+        // Create Entity
+        // Note: Poltergeist is a mutated Ghost in this simplified model,
+        // or we can treat it as a Ghost with high stats.
+        // For visual simplicity, we use Ghost sprite for Poltergeist unless we add one.
+        // Let's reuse Ghost class but modify stats if needed.
+
+        const anomaly = new Anomaly(type, x, y);
+        if (type === 'Poltergeist') {
+             anomaly.sprite = 'ghost.png'; // Reuse ghost sprite for now
+             anomaly.lifespan = 2000; // Lives longer
+             anomaly.stage = 'ACTIVE'; // Instant manifest
+             addLog('SYSTEM', 'WARNING: POLTERGEIST DETECTED!');
+        } else {
+             // Normal spawn logic handling
+             // If User explicitly spawned it, maybe skip gestation?
+             // Let's set to Active immediately for instant gratification
+             // unless specified otherwise.
+             // Actually, "Gestating" is cool for suspense. Let's keep defaults
+             // unless User implies urgency. For now, defaults.
+        }
+
+        world.anomalies.push(anomaly);
+        logConsole('system', `Spawned ${type} at ${loc}.`);
+    }
+
+    else if (cmd.action === 'ATMOSPHERE') {
+        world.atmosphere = cmd.type;
+        logConsole('system', `Atmosphere changed to: ${cmd.type}`);
+        // Visual effect? handled by UI update
+    }
+
+    else if (cmd.action === 'WHISPER') {
+        const targetName = cmd.target;
+        const msg = cmd.content;
+
+        const targets = [];
+        if (targetName === 'All') {
+            targets.push(...world.residents);
+        } else {
+            const t = world.residents.find(r => r.name === targetName);
+            if (t) targets.push(t);
+        }
+
+        targets.forEach(r => {
+            // Inception: Insert fake thought into their context for next turn
+            // We can't easily push to their memory in this simple system,
+            // BUT we can force their 'lastThought' to be this,
+            // OR we can make the NEXT decide call include this 'whisper'.
+
+            // Hack: We append it to their 'lastThought' so it appears on screen
+            // and maybe they react to their own thought next cycle?
+            // Better: We treat it as an event log that they might "hear".
+
+            // Let's just flash it on screen for them
+            r.lastThought = `(Voice): ${msg}`;
+            addLog(r.name, `Hears whisper: "${msg}"`);
+        });
+
+        logConsole('system', `Whispered to ${targetName}.`);
+    }
+}

@@ -7,8 +7,8 @@ import random
 app = Flask(__name__, static_url_path='', static_folder='static')
 
 # Configuration
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY") or "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"
-Cerebras_API_KEY = os.environ.get("CEREBRAS_API_KEY") or "csk-x2hdxmtwerfer2khnn9w64fmxxndmnr9y3c5c4tctt69mv3r"
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+CEREBRAS_API_KEY = os.environ.get("CEREBRAS_API_KEY")
 
 # Persona Definitions
 PERSONAS = {
@@ -151,6 +151,28 @@ Actions:
 - SCAR: (Doppelganger) Reveal and terrify.
 """
 
+ARCHITECT_SYSTEM = """
+You are the 'Architect' (or Dungeon Master) of a simulation.
+You receive natural language requests from the user (e.g., "Scare them", "Make it rain", "Summon a ghost").
+Your job is to interpret this and return a set of JSON commands to manipulate the world.
+You can also speak back to the user.
+
+Available Commands:
+1. SPAWN: Create an entity. Types: 'Ghost', 'Glitch', 'Doppelganger'. Location: 'Kitchen', 'LivingRoom', 'BedroomRed', 'BedroomBlue', 'Lab', or 'Random'.
+2. ATMOSPHERE: Change the global vibe. Types: 'Normal', 'Cold Draft', 'Heavy Static', 'Red Mist', 'Darkness'.
+3. WHISPER: Inject a thought into residents' minds. Target: 'Red', 'Blue', 'Green', 'Luna', or 'All'. Content: The message string.
+
+Response Format (JSON ONLY):
+{
+  "response": "Your narrative response to the user.",
+  "commands": [
+    { "action": "SPAWN", "type": "Ghost", "location": "Kitchen" },
+    { "action": "ATMOSPHERE", "type": "Heavy Static" },
+    { "action": "WHISPER", "target": "All", "content": "You feel watched..." }
+  ]
+}
+"""
+
 @app.route('/')
 def index():
     return send_from_directory('static', 'index.html')
@@ -222,12 +244,8 @@ def decide():
 
     try:
         # Provider Logic
-        api_key = GROQ_API_KEY if provider == 'groq' else Cerebras_API_KEY
+        api_key = GROQ_API_KEY if provider == 'groq' else CEREBRAS_API_KEY
         api_url = "https://api.groq.com/openai/v1/chat/completions" if provider == 'groq' else "https://api.cerebras.ai/v1/chat/completions"
-
-        # Cerebras requires specific models, Groq others.
-        # Fallback logic in case of 400/rate limit?
-        # For now we assume happy path based on initial check.
 
         payload = {
             "model": model,
@@ -268,6 +286,105 @@ def decide():
         }
 
     return jsonify(response_data)
+
+def process_mutations(commands):
+    """
+    Hybrid Mutation Logic:
+    Intercepts architect commands and modifies them based on combinations.
+    Variant 1: Direct Combo Checks.
+    """
+    mutated_commands = []
+
+    # Check for Ghost + Static/Darkness combo -> Poltergeist
+    has_ghost = any(c.get('action') == 'SPAWN' and c.get('type') == 'Ghost' for c in commands)
+    has_bad_atmosphere = any(c.get('action') == 'ATMOSPHERE' and c.get('type') in ['Heavy Static', 'Darkness', 'Red Mist'] for c in commands)
+
+    for cmd in commands:
+        new_cmd = cmd.copy()
+
+        if cmd.get('action') == 'SPAWN' and cmd.get('type') == 'Ghost':
+            if has_bad_atmosphere:
+                # MUTATION: Ghost in bad atmosphere becomes Poltergeist (Stronger)
+                new_cmd['type'] = 'Poltergeist'
+                print("MUTATION TRIGGERED: Ghost + Atmosphere -> Poltergeist")
+
+        mutated_commands.append(new_cmd)
+
+    return mutated_commands
+
+@app.route('/api/architect', methods=['POST'])
+def architect():
+    data = request.json
+    user_prompt = data.get('prompt')
+
+    # Use Cerebras/Groq with high intelligence model
+    # Prefer cerebras for 120b if available, else Groq
+    provider = 'cerebras' # Default to Cerebras for 70b/120b
+    model = 'llama-3.3-70b' # Reliable fallback
+
+    # Try to use gpt-oss-120b if user requested high power, or just stick to 70b
+    # Let's try 120b if valid
+    # Based on planning check: gpt-oss-120b is available on Cerebras
+    model = "gpt-oss-120b"
+
+    messages = [
+        {"role": "system", "content": ARCHITECT_SYSTEM},
+        {"role": "user", "content": user_prompt}
+    ]
+
+    try:
+        api_key = CEREBRAS_API_KEY
+        api_url = "https://api.cerebras.ai/v1/chat/completions"
+
+        payload = {
+            "model": model,
+            "messages": messages,
+            "response_format": {"type": "json_object"},
+            "temperature": 0.9 # Creativity
+        }
+
+        resp = requests.post(
+            api_url,
+            headers={"Authorization": f"Bearer {api_key}"},
+            json=payload
+        )
+
+        if resp.status_code != 200:
+             # Fallback to Groq if Cerebras fails
+             print(f"Cerebras Error: {resp.text}, falling back to Groq")
+             provider = 'groq'
+             api_key = GROQ_API_KEY
+             api_url = "https://api.groq.com/openai/v1/chat/completions"
+             model = "llama-3.3-70b-versatile" # Groq version
+             payload["model"] = model
+
+             resp = requests.post(
+                api_url,
+                headers={"Authorization": f"Bearer {api_key}"},
+                json=payload
+             )
+
+        if resp.status_code == 200:
+            resp_json = resp.json()
+            content = resp_json['choices'][0]['message']['content']
+            try:
+                architect_response = json.loads(content)
+            except:
+                content = content.replace("```json", "").replace("```", "")
+                architect_response = json.loads(content)
+
+            # Apply Mutation Logic
+            raw_commands = architect_response.get('commands', [])
+            mutated = process_mutations(raw_commands)
+            architect_response['commands'] = mutated
+
+            return jsonify(architect_response)
+        else:
+            return jsonify({"response": "System Error: Connection to Architect failed.", "commands": []})
+
+    except Exception as e:
+        print(f"Architect Error: {e}")
+        return jsonify({"response": "The Architect is silent...", "commands": []})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
