@@ -119,6 +119,10 @@ class Resident {
         this.lastThought = "Initializing...";
         this.actionQueue = [];
         this.cooldown = 0;
+
+        // Memory/RAG Prep
+        this.whisperCount = 0;
+        this.memories = []; // Placeholder for long-term memory
     }
 
     update(dt) {
@@ -203,7 +207,12 @@ class Resident {
             health: this.health,
             nearby: nearby.map(o => ({ id: o.id, type: o.type, behavior: o.behavior })),
             anomalies: visibleAnomalies,
-            atmosphere: world.atmosphere
+            atmosphere: world.atmosphere,
+            // Memory Context for Future RAG
+            memory: {
+                whisper_count: this.whisperCount,
+                recent_memories: this.memories.slice(-3) // Send last 3 memories
+            }
         };
 
         try {
@@ -702,8 +711,46 @@ function executeGodCommand(cmd) {
             // Let's just flash it on screen for them
             r.lastThought = `(Voice): ${msg}`;
             addLog(r.name, `Hears whisper: "${msg}"`);
+
+            // Track for Memory
+            r.whisperCount++;
+            r.memories.push(`Heard a voice say: "${msg}"`);
         });
 
         logConsole('system', `Whispered to ${targetName}.`);
+    }
+
+    else if (cmd.action === 'EVENT' && cmd.type === 'MASS_HYSTERIA') {
+        const loc = cmd.location || 'LivingRoom';
+        logConsole('system', 'EVENT TRIGGERED: MASS HYSTERIA');
+        addLog('SYSTEM', 'WARNING: Residents exhibiting pack panic behavior.');
+
+        // Force all residents to move to Location and Stay
+        let targetX = 15, targetY = 15;
+        if (loc === 'LivingRoom') { targetX = 6; targetY = 14; }
+
+        world.residents.forEach(r => {
+             // Override queue
+             r.actionQueue = [];
+             r.state = "IDLE";
+             // Force move
+             // Spread them out slightly
+             const tx = targetX + Math.random() * 4;
+             const ty = targetY + Math.random() * 4;
+
+             // Manually inject a long move and wait
+             r.path = pf.findPath(Math.round(r.x), Math.round(r.y), Math.round(tx), Math.round(ty));
+             if (r.path && r.path.length > 0) {
+                 r.state = "MOVING";
+                 // After moving, add a long wait/panic action
+                 r.actionQueue.push({ type: 'WAIT', duration: 500 }); // Huddle for ~8 seconds
+             }
+
+             r.lastThought = "WE NEED TO STICK TOGETHER!";
+             addLog(r.name, "Screams: 'EVERYONE TO THE LIVING ROOM!'");
+
+             // Increment whisper count for stress tracking (RAG prep)
+             r.whisperCount += 5;
+        });
     }
 }
