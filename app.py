@@ -15,17 +15,17 @@ PERSONAS = {
     "Red": {
         "role": "You are 'Red', a survivalist. You are paranoid, energetic, and focused on security. You react strongly to anomalies. Pay close attention to Luna the cat; if she acts weird, something is wrong.",
         "provider": "groq",
-        "model": "llama-3.1-8b-instant"
+        "model": "qwen/qwen3-32b"
     },
     "Blue": {
         "role": "You are 'Blue', a scientist. You are calm, analytical, and obsessed with technology. You try to study anomalies. You trust Luna the cat's senses more than your own eyes.",
         "provider": "cerebras",
-        "model": "llama-3.3-70b"
+        "model": "llama3.1-8b"
     },
     "Green": {
         "role": "You are 'Green', a slacker. You like to relax. You think anomalies are hallucinations or 'glitches in the matrix'. You think the cat is just a cat, unless it does something really scary.",
         "provider": "cerebras",
-        "model": "llama3.1-8b"
+        "model": "llama-3.3-70b"
     },
     "Luna": {
         "role": """You are Luna, a black cat in a simulation bunker.
@@ -60,7 +60,7 @@ If you are near a human, you can choose to:
 WARNING: If you REVEAL yourself, you will be unstable and might despawn soon, but you will have succeeded in terrifying them.
 """,
         "provider": "groq",
-        "model": "llama-3.3-70b-versatile"
+        "model": "openai/gpt-oss-20b"
     }
 }
 
@@ -161,6 +161,7 @@ Available Commands:
 1. SPAWN: Create an entity. Types: 'Ghost', 'Glitch', 'Doppelganger'. Location: 'Kitchen', 'LivingRoom', 'BedroomRed', 'BedroomBlue', 'Lab', or 'Random'.
 2. ATMOSPHERE: Change the global vibe. Types: 'Normal', 'Cold Draft', 'Heavy Static', 'Red Mist', 'Darkness'.
 3. WHISPER: Inject a thought into residents' minds. Target: 'Red', 'Blue', 'Green', 'Luna', or 'All'. Content: The message string.
+4. BUILD: Construct a new room. RoomTypes: 'Kitchen', 'Bedroom', 'LivingRoom', 'Library', 'Medbay'. Near: Existing Room Name (e.g. 'Kitchen', 'LivingRoom').
 
 Response Format (JSON ONLY):
 {
@@ -168,7 +169,8 @@ Response Format (JSON ONLY):
   "commands": [
     { "action": "SPAWN", "type": "Ghost", "location": "Kitchen" },
     { "action": "ATMOSPHERE", "type": "Heavy Static" },
-    { "action": "WHISPER", "target": "All", "content": "You feel watched..." }
+    { "action": "WHISPER", "target": "All", "content": "You feel watched..." },
+    { "action": "BUILD", "roomType": "Library", "near": "LivingRoom" }
   ]
 }
 """
@@ -330,15 +332,11 @@ def architect():
     data = request.json
     user_prompt = data.get('prompt')
 
-    # Use Cerebras/Groq with high intelligence model
-    # Prefer cerebras for 120b if available, else Groq
-    provider = 'cerebras' # Default to Cerebras for 70b/120b
-    model = 'llama-3.3-70b' # Reliable fallback
+    # Updated Architect Models per user request
+    # Primary: Cerebras Llama-3.3-70b
+    # Fallback: Groq OpenAI/GPT-OSS-120b
 
-    # Try to use gpt-oss-120b if user requested high power, or just stick to 70b
-    # Let's try 120b if valid
-    # Based on planning check: gpt-oss-120b is available on Cerebras
-    model = "gpt-oss-120b"
+    model = "llama-3.3-70b" # Primary Cerebras
 
     messages = [
         {"role": "system", "content": ARCHITECT_SYSTEM},
@@ -368,7 +366,7 @@ def architect():
              provider = 'groq'
              api_key = GROQ_API_KEY
              api_url = "https://api.groq.com/openai/v1/chat/completions"
-             model = "llama-3.3-70b-versatile" # Groq version
+             model = "openai/gpt-oss-120b" # Groq version
              payload["model"] = model
 
              resp = requests.post(

@@ -12,12 +12,64 @@ class Renderer {
         this.toLoad = 0;
 
         // Iso constants
-        this.tileW = 64;
-        this.tileH = 32; // Half height (top face)
+        this.baseTileW = 64;
+        this.baseTileH = 32;
 
-        // Camera offset
+        // Zoom Level
+        this.zoom = 1.0;
+
+        // Calculated tile size
+        this.tileW = this.baseTileW * this.zoom;
+        this.tileH = this.baseTileH * this.zoom;
+
+        // Camera offset (Pan)
         this.offsetX = this.width / 2;
         this.offsetY = 100;
+
+        // Input Handling
+        this.setupInput();
+    }
+
+    setupInput() {
+        // Panning with Mouse Drag
+        this.isDragging = false;
+        this.lastMouseX = 0;
+        this.lastMouseY = 0;
+
+        this.canvas.addEventListener('mousedown', (e) => {
+            this.isDragging = true;
+            this.lastMouseX = e.clientX;
+            this.lastMouseY = e.clientY;
+        });
+
+        window.addEventListener('mouseup', () => {
+            this.isDragging = false;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (this.isDragging) {
+                const dx = e.clientX - this.lastMouseX;
+                const dy = e.clientY - this.lastMouseY;
+                this.offsetX += dx;
+                this.offsetY += dy;
+                this.lastMouseX = e.clientX;
+                this.lastMouseY = e.clientY;
+            }
+        });
+
+        // Zooming with Wheel
+        this.canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomSpeed = 0.1;
+            if (e.deltaY < 0) {
+                this.zoom = Math.min(2.0, this.zoom + zoomSpeed);
+            } else {
+                this.zoom = Math.max(0.5, this.zoom - zoomSpeed);
+            }
+            // Recalculate tile dimensions
+            this.tileW = this.baseTileW * this.zoom;
+            this.tileH = this.baseTileH * this.zoom;
+        }, { passive: false });
     }
 
     loadAssets(assetList, callback) {
@@ -84,19 +136,30 @@ class Renderer {
         // Let's use Bottom-Center alignment for everything except floor?
         // Floor Top-Left is easiest.
 
+        // Scale Image based on Zoom
+        const scaledW = img.width * this.zoom;
+        const scaledH = img.height * this.zoom;
+
         if (imgName.includes('wall')) {
              // Wall (64x96).
-             // Bottom of wall should be at Bottom of Floor Tile.
-             // Floor Tile Top is at pos.y. Bottom is at pos.y + 32.
-             // Wall Image Height is 96.
-             // Top-Left = pos.x - 32, pos.y + 32 - 96 = pos.y - 64.
-             drawY = pos.y - 64;
-        } else if (imgName.includes('char') || imgName.includes('fridge')) {
-             // Furniture/Char (varying height).
-             // Anchor: Bottom Center matches Grid Center (pos.x, pos.y + 16).
-             // Image Bottom Center -> Grid Center.
-             drawX = pos.x - (img.width / 2);
-             drawY = pos.y + (this.tileH) - img.height;
+             // Top-Left Logic adapted for scale
+             // Original: pos.y - 64.
+             // With Scale: pos.y + this.tileH - scaledH
+             // Assuming wall base is at bottom of tile
+             drawY = pos.y + this.tileH - scaledH;
+             drawX = pos.x - (scaledW / 2);
+        } else if (imgName.includes('char') || imgName.includes('fridge') || imgName.includes('chair') || imgName.includes('table') || imgName.includes('bed') || imgName.includes('toilet')) {
+             // Furniture/Char
+             // Anchor: Bottom Center matches Grid Center.
+             // Pos is Top Center of tile. Tile Center is pos.y + tileH/2.
+             // Let's say we anchor to the "floor" level which is typically pos.y + tileH/2 for 2D sprites standing on it?
+             // Actually, in ISO, the "feet" are at the center of the tile.
+             drawX = pos.x - (scaledW / 2);
+             drawY = pos.y + this.tileH - scaledH; // Align bottom
+        } else {
+             // Floor
+             drawX = pos.x - (scaledW / 2);
+             drawY = pos.y;
         }
 
         if (imgName.includes('ghost')) {
@@ -109,7 +172,7 @@ class Renderer {
             drawY += (Math.random() - 0.5) * 5;
         }
 
-        this.ctx.drawImage(img, drawX, drawY);
+        this.ctx.drawImage(img, drawX, drawY, scaledW, scaledH);
         this.ctx.globalAlpha = 1.0; // Reset
     }
 
