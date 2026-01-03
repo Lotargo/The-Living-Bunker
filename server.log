@@ -1,57 +1,47 @@
  * Serving Flask app 'app'
  * Debug mode: on
-Address already in use
-Port 5000 is in use by another program. Either identify and stop that program, or start the server with a different port.
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /js/pathfinding.js HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /js/game.js HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /css/style.css HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /js/renderer.js HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/floor.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/wall_left.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/char_red.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/wall_right.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/char_green.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/fridge.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/char_blue.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/sofa.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/bed.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/table.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/radio.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/computer.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:57] "GET /assets/chair.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:58] "POST /api/decide HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:31:59] "POST /api/decide HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:32:00] "POST /api/decide HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:32:03] "POST /api/decide HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET / HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /css/style.css HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /js/pathfinding.js HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /js/renderer.js HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /js/game.js HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/char_green.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/wall_left.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/floor.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/char_red.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/char_blue.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/wall_right.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/fridge.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/sofa.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/bed.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/table.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/chair.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/radio.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:41] "GET /assets/computer.png HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:42] "POST /api/decide HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:42] "POST /api/decide HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:44] "POST /api/decide HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:46] "POST /api/decide HTTP/1.1" 200 -
-127.0.0.1 - - [02/Jan/2026 14:45:47] "POST /api/decide HTTP/1.1" 200 -
- * Detected change in '/app/generate_assets.py', reloading
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.2:5000
+[33mPress CTRL+C to quit[0m
  * Restarting with stat
  * Debugger is active!
- * Debugger PIN: 123-022-506
- * Detected change in '/app/app.py', reloading
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 123-022-506
+ * Debugger PIN: 969-355-207
+127.0.0.1 - - [02/Jan/2026 16:35:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:28] "GET /js/renderer.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:28] "GET /js/game.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:28] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:28] "GET /js/pathfinding.js HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/char_red.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/floor_wood.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/wall_right.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/floor_tile.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/wall_left.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/floor.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/char_blue.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/char_green.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/table.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/fridge.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/bed.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/chair.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/sofa.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/computer.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/radio.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/toilet.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/sink.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/shower.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/stove.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/tv.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/plant.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/cat_evil.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/rug.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/cat_luna.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/glitch.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:29] "GET /assets/ghost.png HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:30] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:30] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:31] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:32] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:33] "POST /api/decide HTTP/1.1" 200 -
+127.0.0.1 - - [02/Jan/2026 16:35:35] "POST /api/decide HTTP/1.1" 200 -

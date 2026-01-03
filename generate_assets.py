@@ -172,6 +172,40 @@ def create_character(filename, color="red"):
     img.save(os.path.join(ASSET_DIR, filename))
     print(f"Generated {filename}")
 
+def create_cat_asset(filename, eyes_color="green"):
+    # Isometric cat is tricky, let's do a simple one
+    img = Image.new("RGBA", (32, 32), (0,0,0,0))
+    draw = ImageDraw.Draw(img)
+
+    # Shadow
+    draw.ellipse((6, 24, 26, 30), fill="#00000080")
+
+    # Body (Sitting)
+    draw.ellipse((8, 14, 24, 28), fill="#111", outline="black")
+
+    # Head
+    draw.ellipse((10, 6, 22, 18), fill="#111", outline="black")
+
+    # Ears
+    draw.polygon([(10, 8), (8, 2), (14, 6)], fill="#111", outline="black") # Left
+    draw.polygon([(22, 8), (24, 2), (18, 6)], fill="#111", outline="black") # Right
+
+    # Eyes
+    draw.ellipse((12, 10, 15, 13), fill=eyes_color)
+    draw.ellipse((17, 10, 20, 13), fill=eyes_color)
+
+    # Pupils
+    draw.line((13.5, 10, 13.5, 13), fill="black", width=1)
+    draw.line((18.5, 10, 18.5, 13), fill="black", width=1)
+
+    # Tail
+    draw.arc((20, 18, 30, 28), 0, 180, fill="#111", width=3)
+
+    img = TextureGenerator.add_noise(img, 5)
+    img.save(os.path.join(ASSET_DIR, filename))
+    print(f"Generated {filename}")
+
+
 def create_detailed_furniture(filename, type):
     img = Image.new("RGBA", (64, 64), (0,0,0,0))
     draw = ImageDraw.Draw(img)
@@ -336,5 +370,9 @@ if __name__ == "__main__":
     for item in ["fridge", "bed", "table", "chair", "sofa", "computer", "radio",
                  "toilet", "sink", "shower", "stove", "tv", "plant", "rug"]:
         create_detailed_furniture(f"{item}.png", item)
+
+    # New Assets
+    create_cat_asset("cat_luna.png", "lime")
+    create_cat_asset("cat_evil.png", "red")
 
     create_anomaly_assets()
