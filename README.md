@@ -41,6 +41,7 @@ It features 3 human residents and **Luna**, a sentient AI cat who communicates s
 *   [Architecture Overview](docs/architecture.md)
 *   [Agents & Luna (The Cat)](docs/agents.md)
 *   [Anomalies & Atmosphere](docs/anomalies.md)
+*   [Architect Mode (God Console)](docs/architect_mode.md)
 
 ## The Experiment
 
