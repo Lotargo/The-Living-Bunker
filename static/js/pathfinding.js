@@ -1,14 +1,17 @@
 class BinaryHeap {
+    /** @param {Function} scoreFn - returns the priority score for an element. */
     constructor(scoreFn) {
         this.content = [];
         this.scoreFn = scoreFn;
     }
 
+    /** Inserts an element and restores heap order upward. */
     push(element) {
         this.content.push(element);
         this._bubbleUp(this.content.length - 1);
     }
 
+    /** Removes and returns the lowest-scored element, restoring heap order downward. */
     pop() {
         const result = this.content[0];
         const end = this.content.pop();
@@ -19,10 +22,12 @@ class BinaryHeap {
         return result;
     }
 
+    /** Returns the number of elements in the heap. */
     size() {
         return this.content.length;
     }
 
+    /** Moves element at index n up until heap order is satisfied. */
     _bubbleUp(n) {
         const element = this.content[n];
         const score = this.scoreFn(element);
@@ -36,6 +41,7 @@ class BinaryHeap {
         }
     }
 
+    /** Moves element at index n down until heap order is satisfied. */
     _sinkDown(n) {
         const length = this.content.length;
         const element = this.content[n];
@@ -71,27 +77,32 @@ class BinaryHeap {
 }
 
 class Pathfinding {
+    /** @param {number} gridSize - width/height of the square grid. */
     constructor(gridSize) {
         this.size = gridSize;
         this.grid = create2DGrid(gridSize, 0);
     }
 
+    /** Marks cell (x, y) as an obstacle. */
     setObstacle(x, y) {
         if (x >= 0 && x < this.size && y >= 0 && y < this.size) {
             this.grid[x][y] = 1;
         }
     }
 
+    /** Removes obstacle at cell (x, y). */
     clearObstacle(x, y) {
         if (x >= 0 && x < this.size && y >= 0 && y < this.size) {
             this.grid[x][y] = 0;
         }
     }
 
+    /** Returns true if cell (x, y) is within bounds and not an obstacle. */
     isWalkable(x, y) {
         return x >= 0 && x < this.size && y >= 0 && y < this.size && this.grid[x][y] === 0;
     }
 
+    /** A* search from (startX, startY) to (endX, endY). Returns an array of {x,y} nodes or null. */
     findPath(startX, startY, endX, endY) {
         if (!this.isWalkable(startX, startY) || !this.isWalkable(endX, endY)) return null;
 

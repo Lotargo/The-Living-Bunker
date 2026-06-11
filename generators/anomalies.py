@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import random
 from PIL import Image, ImageDraw
@@ -6,7 +8,7 @@ from . import ASSET_DIR
 from .textures import TextureGenerator
 
 
-def create_anomaly_assets():
+def create_anomaly_assets() -> None:
     img = Image.new("RGBA", (32, 48), (0,0,0,0))
     draw = ImageDraw.Draw(img)
     points = [(8, 40), (4, 20), (10, 4), (22, 4), (28, 20), (24, 40)]

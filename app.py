@@ -1,6 +1,11 @@
+from __future__ import annotations
+
 from flask import Flask, request, jsonify, send_from_directory
 import json
 import os
+import time
+from functools import wraps
+from typing import Any
 
 from config import (
     PERSONAS, ANOMALY_PROMPTS, GROQ_API_KEY, CEREBRAS_API_KEY,
@@ -12,14 +17,33 @@ from mutations import process_mutations
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
+RATE_LIMIT = {}
+RATE_WINDOW = 1.0
+RATE_MAX = 5
+
+def rate_limit(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        ip = request.remote_addr or 'unknown'
+        now = time.time()
+        window = RATE_LIMIT.get(ip, [])
+        window = [t for t in window if now - t < RATE_WINDOW]
+        if len(window) >= RATE_MAX:
+            return jsonify({"error": "Rate limit exceeded"}), 429
+        window.append(now)
+        RATE_LIMIT[ip] = window
+        return f(*args, **kwargs)
+    return wrapper
+
 
 @app.route('/')
-def index():
+def index() -> Any:
     return send_from_directory('static', 'index.html')
 
 
 @app.route('/api/decide', methods=['POST'])
-def decide():
+@rate_limit
+def decide() -> Any:
     data = request.json
     bot_name = data.get('name')
     bot_type = data.get('type', 'resident')
@@ -103,7 +127,8 @@ def decide():
 
 
 @app.route('/api/architect', methods=['POST'])
-def architect():
+@rate_limit
+def architect() -> Any:
     data = request.json
     user_prompt = data.get('prompt')
 

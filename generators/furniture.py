@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import random
 from PIL import Image, ImageDraw
@@ -6,14 +8,14 @@ from . import ASSET_DIR
 from .textures import TextureGenerator
 
 
-FURNITURE_TYPES = [
+FURNITURE_TYPES: list[str] = [
     "fridge", "bed", "table", "chair", "sofa",
     "computer", "radio", "toilet", "sink", "shower",
     "stove", "tv", "plant", "rug",
 ]
 
 
-def create_detailed_furniture(filename, type):
+def create_detailed_furniture(filename: str, type: str) -> None:
     img = Image.new("RGBA", (64, 64), (0,0,0,0))
     draw = ImageDraw.Draw(img)
 

@@ -1,3 +1,4 @@
+/** Appends a log entry (who + msg) to the log panel. */
 function addLog(who, msg) {
     const log = document.getElementById('logs');
     const div = document.createElement('div');
@@ -9,6 +10,7 @@ function addLog(who, msg) {
     log.prepend(div);
 }
 
+/** Rebuilds the residents UI panel with current stats, thoughts, and atmosphere. */
 function updateUI() {
     const list = document.getElementById('residents-list');
     list.innerHTML = '';
@@ -56,6 +58,7 @@ function updateUI() {
     });
 }
 
+/** Writes a line to the developer console output. */
 function logConsole(type, text) {
     const consoleOutput = document.getElementById('console-output');
     const div = document.createElement('div');

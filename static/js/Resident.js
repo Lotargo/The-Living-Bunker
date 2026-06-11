@@ -1,4 +1,5 @@
 class Resident {
+    /** @param {string} name @param {string} color @param {number} startX @param {number} startY @param {string} [type] */
     constructor(name, color, startX, startY, type) {
         this.name = name;
         this.color = color;
@@ -31,6 +32,7 @@ class Resident {
         this.memories = [];
     }
 
+    /** Decays needs each tick; processes movement, action queue, or triggers think(). */
     update(dt) {
         this.needs.hunger += NEEDS.DECAY_HUNGER;
         this.needs.energy += NEEDS.DECAY_ENERGY;
@@ -56,6 +58,7 @@ class Resident {
         }
     }
 
+    /** Moves the resident one step toward the next path node. */
     moveAlongPath() {
         if (this.path.length === 0) {
             this.state = "IDLE";
@@ -76,6 +79,7 @@ class Resident {
         }
     }
 
+    /** Gathers context and asks the AI for a decision, then processes it. */
     async think() {
         this.state = "THINKING";
 
@@ -139,6 +143,7 @@ class Resident {
         }
     }
 
+    /** Pushes actions onto the queue based on the AI decision object. */
     processDecision(d) {
         const target = d.target;
 
@@ -168,6 +173,7 @@ class Resident {
         this.state = "IDLE";
     }
 
+    /** Executes a single action: MOVE, INTERACT, or WAIT. */
     executeAction(act) {
         if (act.type === 'MOVE') {
             let tx, ty;

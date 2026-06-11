@@ -9,6 +9,7 @@ const world = {
     rooms: []
 };
 
+/** Initialises the world grid, builds all rooms, adds furniture objects, and cuts doorways. */
 function initMap() {
     world.map = create2DGrid(GRID_SIZE, 0);
     world.floorTypes = create2DGrid(GRID_SIZE, 0);

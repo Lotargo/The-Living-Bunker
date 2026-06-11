@@ -1,4 +1,5 @@
 class Renderer {
+    /** Sets up canvas, initialises iso constants, zoom, camera offset, and input handlers. */
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
@@ -30,6 +31,7 @@ class Renderer {
         this.setupInput();
     }
 
+    /** Binds mouse drag for panning and scroll wheel for zoom. */
     setupInput() {
         // Panning with Mouse Drag
         this.isDragging = false;
@@ -72,6 +74,7 @@ class Renderer {
         }, { passive: false });
     }
 
+    /** Loads all image assets and invokes callback once every image has loaded. */
     loadAssets(assetList, callback) {
         this.toLoad = assetList.length;
         assetList.forEach(name => {
@@ -86,6 +89,7 @@ class Renderer {
     }
 
     // Convert Grid (x,y) to Screen (px, py)
+    /** Converts isometric grid coordinates to screen pixel coordinates. */
     isoToScreen(gx, gy) {
         return {
             x: (gx - gy) * (this.tileW / 2) + this.offsetX,
@@ -93,11 +97,13 @@ class Renderer {
         };
     }
 
+    /** Fills the entire canvas with a dark background. */
     clear() {
         this.ctx.fillStyle = '#111';
         this.ctx.fillRect(0, 0, this.width, this.height);
     }
 
+    /** Draws a sprite at the given grid position with isometric projection and special effects. */
     drawTile(imgName, gx, gy, zIndexOffset = 0) {
         if (!this.assets[imgName]) return;
         const pos = this.isoToScreen(gx, gy);
@@ -176,6 +182,7 @@ class Renderer {
         this.ctx.globalAlpha = 1.0; // Reset
     }
 
+    /** Draws a speech-bubble style text above a grid tile. */
     drawText(text, gx, gy, color = "white") {
         if (!text) return;
         const pos = this.isoToScreen(gx, gy);

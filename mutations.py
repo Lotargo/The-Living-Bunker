@@ -1,4 +1,6 @@
-def process_mutations(commands):
+from __future__ import annotations
+
+def process_mutations(commands: list[dict]) -> list[dict]:
     mutated_commands = []
 
     has_ghost = any(c.get('action') == 'SPAWN' and c.get('type') == 'Ghost' for c in commands)

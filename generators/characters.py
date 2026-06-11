@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 from PIL import Image, ImageDraw
 
@@ -5,7 +7,7 @@ from . import ASSET_DIR
 from .textures import TextureGenerator
 
 
-def create_character(filename, color="red"):
+def create_character(filename: str, color: str = "red") -> None:
     img = Image.new("RGBA", (32, 48), (0,0,0,0))
     draw = ImageDraw.Draw(img)
     draw.ellipse((4, 40, 28, 46), fill="#00000080")
@@ -22,7 +24,7 @@ def create_character(filename, color="red"):
     print(f"Generated {filename}")
 
 
-def create_cat_asset(filename, eyes_color="green"):
+def create_cat_asset(filename: str, eyes_color: str = "green") -> None:
     img = Image.new("RGBA", (32, 32), (0,0,0,0))
     draw = ImageDraw.Draw(img)
     draw.ellipse((6, 24, 26, 30), fill="#00000080")

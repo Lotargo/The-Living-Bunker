@@ -1,3 +1,4 @@
+/** Dispatches a god command object: SPAWN, ATMOSPHERE, WHISPER, EVENT, or BUILD. */
 function executeGodCommand(cmd) {
     if (cmd.action === 'SPAWN') {
         const type = cmd.type;

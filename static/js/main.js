@@ -15,6 +15,7 @@ for(let x=0; x<GRID_SIZE; x++) {
     }
 }
 
+/** Returns true if the grid tile (gx, gy) falls within the visible screen area (with margin). */
 function isTileVisible(gx, gy) {
     const pos = renderer.isoToScreen(gx, gy);
     const margin = renderer.tileW * 2;
@@ -22,6 +23,7 @@ function isTileVisible(gx, gy) {
            pos.y > -margin && pos.y < renderer.height + margin;
 }
 
+/** Main game loop: clears canvas, draws floors/walls/objects/residents/anomalies, and updates UI. */
 function loop() {
     renderer.clear();
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import os
 import re
@@ -14,7 +16,7 @@ PROVIDER_KEYS = {
     "cerebras": CEREBRAS_API_KEY
 }
 
-def call_llm(provider, model, messages, temperature=0.8):
+def call_llm(provider: str, model: str, messages: list[dict], temperature: float = 0.8) -> requests.Response:
     api_key = PROVIDER_KEYS.get(provider)
     api_url = PROVIDER_URLS.get(provider)
 
@@ -37,7 +39,7 @@ def call_llm(provider, model, messages, temperature=0.8):
     return resp
 
 
-def parse_json_response(content):
+def parse_json_response(content: str) -> dict:
     content = content.strip()
     try:
         return json.loads(content)
@@ -53,5 +55,5 @@ def parse_json_response(content):
     return json.loads(cleaned)
 
 
-def get_fallback_response():
+def get_fallback_response() -> dict:
     return {"thought": "...", "action": "IDLE", "target": "self"}

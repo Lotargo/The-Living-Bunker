@@ -1,4 +1,5 @@
 const RoomBuilder = {
+    /** Finds a valid spot near targetRoomName and builds a new room of the given type. */
     build: function(type, targetRoomName) {
         const target = world.rooms.find(function(r) { return r.name === targetRoomName; });
         if (!target) {
@@ -36,6 +37,7 @@ const RoomBuilder = {
         }
     },
 
+    /** Returns true if the rect does not overlap existing rooms and is within bounds. */
     isValid: function(rect) {
         if (rect.x < 1 || rect.y < 1 || rect.x + rect.w >= GRID_SIZE || rect.y + rect.h >= GRID_SIZE) return false;
 
@@ -51,6 +53,7 @@ const RoomBuilder = {
         return true;
     },
 
+    /** Places floors, walls, and furniture for a new room rect. */
     construct: function(rect, type) {
         const name = type + "_" + Math.floor(Math.random()*100);
         let floor = FLOOR_CONCRETE;
@@ -72,6 +75,7 @@ const RoomBuilder = {
         });
     },
 
+    /** Digs a corridor between the centers of two rooms. */
     connect: function(roomA, roomB) {
         const cx1 = Math.floor(roomA.x + roomA.w/2);
         const cy1 = Math.floor(roomA.y + roomA.h/2);

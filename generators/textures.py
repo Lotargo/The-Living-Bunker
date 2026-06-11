@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import random
 from PIL import Image, ImageDraw
@@ -7,7 +9,7 @@ from . import ASSET_DIR
 
 class TextureGenerator:
     @staticmethod
-    def add_noise(img, intensity=20):
+    def add_noise(img: Image.Image, intensity: int = 20) -> Image.Image:
         pixels = img.load()
         width, height = img.size
         for x in range(width):
@@ -22,7 +24,7 @@ class TextureGenerator:
         return img
 
     @staticmethod
-    def create_brick_texture(width, height, base_color="#7F8C8D", grout_color="#2C3E50"):
+    def create_brick_texture(width: int, height: int, base_color: str = "#7F8C8D", grout_color: str = "#2C3E50") -> Image.Image:
         img = Image.new("RGBA", (width, height), base_color)
         draw = ImageDraw.Draw(img)
         brick_h = 12
@@ -37,7 +39,7 @@ class TextureGenerator:
         return TextureGenerator.add_noise(img, 15)
 
     @staticmethod
-    def create_wood_texture(width, height, base_color="#8B4513"):
+    def create_wood_texture(width: int, height: int, base_color: str = "#8B4513") -> Image.Image:
         img = Image.new("RGBA", (width, height), base_color)
         draw = ImageDraw.Draw(img)
         plank_w = 10
@@ -50,7 +52,7 @@ class TextureGenerator:
         return TextureGenerator.add_noise(img, 10)
 
     @staticmethod
-    def create_tile_texture(width, height, base_color="#ECF0F1", grout="#BDC3C7"):
+    def create_tile_texture(width: int, height: int, base_color: str = "#ECF0F1", grout: str = "#BDC3C7") -> Image.Image:
         img = Image.new("RGBA", (width, height), base_color)
         draw = ImageDraw.Draw(img)
         tile_size = 16
@@ -61,7 +63,7 @@ class TextureGenerator:
         return TextureGenerator.add_noise(img, 5)
 
 
-def create_floor_tile(filename, type="concrete"):
+def create_floor_tile(filename: str, type: str = "concrete") -> None:
     img = Image.new("RGBA", (64, 48), (0,0,0,0))
     draw = ImageDraw.Draw(img)
     diamond = [(32, 0), (64, 16), (32, 32), (0, 16)]
@@ -92,7 +94,7 @@ def create_floor_tile(filename, type="concrete"):
     print(f"Generated {filename}")
 
 
-def create_wall_tile(filename, side="left"):
+def create_wall_tile(filename: str, side: str = "left") -> None:
     img = Image.new("RGBA", (64, 96), (0,0,0,0))
     draw = ImageDraw.Draw(img)
     brick_color = "#A0522D"

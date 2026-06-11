@@ -1,4 +1,5 @@
 class Anomaly {
+    /** @param {string} type @param {number} x @param {number} y */
     constructor(type, x, y) {
         this.type = type;
         this.x = x;
@@ -17,6 +18,7 @@ class Anomaly {
         if (type === 'Doppelganger') this.sprite = 'cat_luna.png';
     }
 
+    /** Tick the anomaly: gestate, move, or decay. Returns false when it expires. */
     update() {
         this.lifespan--;
         if (this.lifespan <= 0) return false;
@@ -118,6 +120,7 @@ class Anomaly {
 
 const AnomalyManager = {
     spawnChance: ANOMALY.SPAWN_CHANCE,
+    /** Updates all anomalies, manages atmosphere, and randomly spawns new ones. */
     update: function() {
         world.anomalies = world.anomalies.filter(function(a) { return a.update(); });
 
