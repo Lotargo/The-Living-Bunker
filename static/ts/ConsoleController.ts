@@ -118,6 +118,14 @@ consoleInput.addEventListener('keydown', async function(e: KeyboardEvent): Promi
 
         logConsole('user', text);
         consoleInput.value = '';
+
+        if (text.startsWith('/scenario ')) {
+            const name: string = text.substring('/scenario '.length).trim();
+            const ok: boolean = ScenarioRunner.run(name);
+            logConsole('system', ok ? 'Scenario started: ' + name : 'Unknown scenario: ' + name);
+            return;
+        }
+
         consoleInput.disabled = true;
 
         try {

@@ -6,8 +6,122 @@ body {
     font-family: 'Courier New', Courier, monospace;
 }
 
+button,
+input,
+select {
+    font-family: 'Courier New', Courier, monospace;
+}
+
 #gameCanvas {
     display: block;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.menu-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.82)),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+.menu-panel,
+.settings-panel {
+    width: min(520px, calc(100vw - 32px));
+    background: #11161b;
+    border: 4px solid #d8f3dc;
+    box-shadow: 0 0 0 4px #18232b, 0 18px 0 rgba(0,0,0,0.35);
+    padding: 24px;
+    image-rendering: pixelated;
+}
+
+.settings-panel {
+    width: min(660px, calc(100vw - 32px));
+}
+
+.menu-title {
+    color: #f7d774;
+    font-size: 34px;
+    line-height: 1;
+    letter-spacing: 2px;
+    text-shadow: 3px 3px #582f0e;
+    margin-bottom: 8px;
+}
+
+.menu-title.small {
+    font-size: 24px;
+    margin-bottom: 18px;
+}
+
+.menu-subtitle,
+.menu-hint {
+    color: #9be7c2;
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+.pixel-button {
+    width: 100%;
+    display: block;
+    margin: 10px 0;
+    padding: 12px 14px;
+    color: #111;
+    background: #d8f3dc;
+    border: 0;
+    box-shadow: inset -4px -4px 0 #8fb996, inset 4px 4px 0 #ffffff, 0 5px 0 #26382d;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+}
+
+.pixel-button:hover {
+    background: #f7d774;
+    box-shadow: inset -4px -4px 0 #b0893b, inset 4px 4px 0 #fff3bf, 0 5px 0 #26382d;
+}
+
+.pixel-button.secondary {
+    background: #a7c7e7;
+    box-shadow: inset -4px -4px 0 #5d7fa3, inset 4px 4px 0 #e8f4ff, 0 5px 0 #26382d;
+}
+
+.pixel-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.settings-row {
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    gap: 12px;
+    align-items: center;
+    margin: 10px 0;
+    color: #eee;
+}
+
+.settings-row input,
+.settings-row select {
+    width: 100%;
+    box-sizing: border-box;
+    background: #05080a;
+    color: #e8f4ff;
+    border: 2px solid #4f6f7f;
+    padding: 8px;
+    outline: none;
+}
+
+.settings-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 18px;
 }
 
 #ui-layer {

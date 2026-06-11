@@ -5,6 +5,7 @@ import pytest
 sys.path.insert(0, ".")
 
 import ai_orchestrator
+from runtime_settings import update_settings
 
 
 class FakeResponse:
@@ -134,3 +135,42 @@ def test_run_architect_prompt_uses_demo_when_enabled(monkeypatch):
 
     assert result["response"].startswith("Demo Architect")
     assert any(command["action"] == "SPAWN" for command in result["commands"])
+
+
+def test_openai_compatible_provider_override(monkeypatch):
+    calls = []
+    monkeypatch.delenv("LIVING_BUNKER_DEMO", raising=False)
+    update_settings(
+        {
+            "providerMode": "openai_compatible",
+            "demoMode": False,
+            "openaiBaseUrl": "https://example.test/v1/chat/completions",
+            "openaiApiKey": "test-key",
+            "openaiModel": "custom-model",
+        }
+    )
+
+    def fake_call_llm(provider, model, messages, temperature):
+        calls.append({"provider": provider, "model": model})
+        return FakeResponse(
+            200,
+            {"choices": [{"message": {"content": '{"thought":"ok","action":"IDLE"}'}}]},
+        )
+
+    monkeypatch.setattr(ai_orchestrator, "call_llm", fake_call_llm)
+
+    result = ai_orchestrator.decide_for_actor(
+        {
+            "type": "resident",
+            "name": "Red",
+            "state": "IDLE",
+            "nearby": [],
+            "anomalies": [],
+            "needs": {},
+        }
+    )
+
+    update_settings({"providerMode": "default", "demoMode": False, "openaiApiKey": ""})
+
+    assert result == {"thought": "ok", "action": "IDLE"}
+    assert calls[0] == {"provider": "openai_compatible", "model": "custom-model"}

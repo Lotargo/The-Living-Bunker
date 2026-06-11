@@ -45,6 +45,24 @@
 
 ## Running the Simulation
 
+### Launcher
+
+For the easiest local check, run:
+
+```bash
+python launch.py
+```
+
+On Windows you can also double-click or run:
+
+```bash
+launch.bat
+```
+
+The launcher checks dependencies, builds TypeScript, generates missing assets, starts Flask, opens `http://127.0.0.1:5000`, and enables demo mode automatically when no API keys are present.
+
+### Manual
+
 1.  **Start the Server:**
     ```bash
     python app.py
@@ -53,6 +71,29 @@
 2.  **Access the Interface:**
     Open your web browser and navigate to:
     `http://localhost:5000`
+
+## Main Menu & Settings
+
+The main menu provides:
+
+*   **Начать новую игру:** resets the bunker simulation and starts a fresh run.
+*   **Продолжить:** resumes the current browser session when a run was started before.
+*   **Настройки:** opens runtime settings.
+
+Settings include:
+
+*   **Provider:** default Groq/Cerebras environment keys, demo mode, or OpenAI-compatible provider.
+*   **OpenAI-compatible URL:** a `/v1/chat/completions` endpoint such as `https://api.openai.com/v1/chat/completions`.
+*   **API key:** runtime key for the selected OpenAI-compatible provider.
+*   **Model:** model name sent to the compatible provider.
+*   **Anomaly spawn rate:** local simulation tuning for anomaly frequency.
+
+The console also supports local demo scenarios:
+
+```txt
+/scenario first_ghost
+/scenario luna_warning_ignored
+```
 
 ## Troubleshooting
 

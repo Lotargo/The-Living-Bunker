@@ -17,14 +17,22 @@ from config import (
 from demo_mode import demo_architect_response, demo_decision
 from llm_client import call_llm, get_fallback_response, has_provider_config, parse_json_response
 from mutations import process_mutations
+from runtime_settings import custom_provider_config, provider_mode
 
 
 def _demo_enabled() -> bool:
-    return os.environ.get("LIVING_BUNKER_DEMO", "0").lower() in ("1", "true", "yes", "on")
+    return provider_mode() == "demo" or os.environ.get("LIVING_BUNKER_DEMO", "0").lower() in ("1", "true", "yes", "on")
 
 
 def _should_use_demo(provider: str) -> bool:
     return _demo_enabled() or not has_provider_config(provider)
+
+
+def _apply_provider_override(provider: str, model: str) -> tuple[str, str]:
+    if provider_mode() == "openai_compatible":
+        custom = custom_provider_config()
+        return "openai_compatible", custom["model"] or model
+    return provider, model
 
 
 def _chat_content(response_json: dict[str, Any]) -> str:
@@ -107,6 +115,7 @@ def decide_for_actor(data: dict[str, Any]) -> dict[str, Any]:
         {"role": "system", "content": system_role},
         {"role": "user", "content": prompt},
     ]
+    provider, model = _apply_provider_override(provider, model)
 
     if _should_use_demo(provider):
         return demo_decision(data)
@@ -130,13 +139,15 @@ def run_architect_prompt(user_prompt: str) -> dict[str, Any]:
         {"role": "user", "content": user_prompt},
     ]
 
-    if _should_use_demo("cerebras"):
+    provider, model = _apply_provider_override("cerebras", ARCHITECT_MODEL)
+
+    if _should_use_demo(provider):
         return demo_architect_response(user_prompt)
 
     try:
-        response = call_llm("cerebras", ARCHITECT_MODEL, messages, temperature=0.9)
+        response = call_llm(provider, model, messages, temperature=0.9)
         if response.status_code != 200:
-            print(f"Cerebras Error: {response.text}, falling back to Groq")
+            print(f"{provider} Error: {response.text}, falling back to Groq")
             response = call_llm("groq", ARCHITECT_FALLBACK_MODEL, messages, temperature=0.9)
 
         if response.status_code != 200:

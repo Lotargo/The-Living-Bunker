@@ -7,16 +7,20 @@ from functools import wraps
 from typing import Any
 
 from ai_orchestrator import decide_for_actor, run_architect_prompt
+from runtime_settings import get_settings, provider_mode, update_settings
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
 RATE_LIMIT = {}
 RATE_WINDOW = 1.0
-RATE_MAX = 5
+RATE_MAX = int(os.environ.get('RATE_MAX_PER_WINDOW', '30'))
 
 def rate_limit(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
+        if provider_mode() == 'demo' or os.environ.get('LIVING_BUNKER_DEMO', '0').lower() in ('1', 'true', 'yes', 'on'):
+            return f(*args, **kwargs)
+
         ip = request.remote_addr or 'unknown'
         now = time.time()
         window = RATE_LIMIT.get(ip, [])
@@ -59,6 +63,17 @@ def architect() -> Any:
         return jsonify({"response": "Architect requires a non-empty prompt.", "commands": []}), 400
 
     return jsonify(run_architect_prompt(user_prompt.strip()))
+
+
+@app.route('/api/settings', methods=['GET', 'POST'])
+def settings() -> Any:
+    if request.method == 'GET':
+        return jsonify(get_settings())
+
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"error": "Invalid JSON body"}), 400
+    return jsonify(update_settings(data))
 
 
 if __name__ == '__main__':

@@ -16,6 +16,22 @@ It features 3 human residents and **Luna**, a sentient AI cat who communicates s
 
 ## Quick Start
 
+### One-click-ish launcher
+
+On Windows, run:
+```bash
+launch.bat
+```
+
+Or from any shell:
+```bash
+python launch.py
+```
+
+The launcher installs/checks dependencies, builds TypeScript, generates missing assets, starts Flask, and opens the browser. If no API keys are configured, it enables demo mode automatically.
+
+### Manual start
+
 1.  **Install:**
     ```bash
     pip install -r requirements.txt
@@ -49,6 +65,15 @@ It features 3 human residents and **Luna**, a sentient AI cat who communicates s
 *   [Agents & Luna (The Cat)](docs/agents.md)
 *   [Anomalies & Atmosphere](docs/anomalies.md)
 *   [Architect Mode (God Console)](docs/architect_mode.md)
+
+## Local Scenarios
+
+From the Architect console, you can run repeatable local scenarios:
+
+```txt
+/scenario first_ghost
+/scenario luna_warning_ignored
+```
 
 ## The Experiment
 

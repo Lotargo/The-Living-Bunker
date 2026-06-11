@@ -25,8 +25,22 @@ Make the bunker easier to extend and demo while preserving the scrappy Flask/Pyt
 
 ## Stretch
 
-- [ ] **Scenario Runner Draft**
+- [x] **Scenario Runner Draft**
   Sketch or implement the first repeatable scenario, such as `first_ghost` or `luna_warning_ignored`.
+
+## Added During Sprint
+
+- [x] **Pixel Main Menu**
+  Add "Начать новую игру", "Продолжить", and "Настройки" as a 2D pixel-style overlay.
+
+- [x] **Runtime Settings Screen**
+  Move provider mode, OpenAI-compatible URL/key/model, and anomaly spawn rate into the in-game settings UI.
+
+- [x] **OpenAI-Compatible Provider**
+  Allow a custom `/v1/chat/completions` provider to drive all LLM decisions through one API key, URL, and model.
+
+- [x] **Local Launcher**
+  Add `launch.py` and `launch.bat` for quick local startup, build, asset generation, and automatic demo mode.
 
 ## Done Means
 

@@ -231,6 +231,26 @@ POST /api/decide
 POST /api/architect
   body: ArchitectRequest
   response: ArchitectResponse
+
+GET /api/settings
+  response: RuntimeSettings
+
+POST /api/settings
+  body: RuntimeSettings
+  response: RuntimeSettings
+```
+
+## RuntimeSettings
+
+```ts
+interface RuntimeSettings {
+  providerMode: "default" | "demo" | "openai_compatible";
+  demoMode?: boolean;
+  openaiBaseUrl?: string;
+  openaiApiKey?: string;
+  openaiApiKeyConfigured?: boolean;
+  openaiModel?: string;
+}
 ```
 
 ## Next Implementation Step

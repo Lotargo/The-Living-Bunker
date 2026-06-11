@@ -54,6 +54,19 @@ class StateManager {
         this._staticDirty = true;
     }
 
+    resetObjects(): void {
+        this.objects = [];
+        this._staticDirty = true;
+    }
+
+    resetResidents(): void {
+        this.residents = [];
+    }
+
+    resetAnomalies(): void {
+        this.anomalies = [];
+    }
+
     addRoom(room: Room): void {
         this.rooms.push(room);
         this._staticDirty = true;

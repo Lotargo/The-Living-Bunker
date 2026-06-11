@@ -151,3 +151,12 @@ interface RuntimeEvent {
 }
 
 type RuntimeEventHandler = (event: RuntimeEvent) => void;
+
+interface RuntimeSettings {
+    providerMode: string;
+    demoMode?: boolean;
+    openaiBaseUrl?: string;
+    openaiApiKey?: string;
+    openaiApiKeyConfigured?: boolean;
+    openaiModel?: string;
+}

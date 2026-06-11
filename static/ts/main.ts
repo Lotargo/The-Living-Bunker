@@ -4,14 +4,29 @@ let pf: Pathfinding = new Pathfinding(GRID_SIZE);
 
 initMap();
 
-world.addResident(new Resident("Red", "Red", 15, 15));
-world.addResident(new Resident("Blue", "Blue", 15, 17));
-world.addResident(new Resident("Green", "Green", 15, 19));
-world.addResident(new Resident("Luna", "Black", 10, 10, 'cat'));
+function restartSimulation(): void {
+    world.resetMap(GRID_SIZE);
+    world.resetRooms();
+    world.resetWalls();
+    world.resetObjects();
+    world.resetResidents();
+    world.resetAnomalies();
+    world.setAtmosphere('Normal');
+    pf = new Pathfinding(GRID_SIZE);
+    initMap();
+    world.addResident(new Resident("Red", "Red", 15, 15));
+    world.addResident(new Resident("Blue", "Blue", 15, 17));
+    world.addResident(new Resident("Green", "Green", 15, 19));
+    world.addResident(new Resident("Luna", "Black", 10, 10, 'cat'));
+    syncPathfindingObstacles();
+    rebuildStaticList();
+}
 
-for (let x: number = 0; x < GRID_SIZE; x++) {
-    for (let y: number = 0; y < GRID_SIZE; y++) {
-        if (world.map[x][y] === 1 && pf) pf.setObstacle(x, y);
+function syncPathfindingObstacles(): void {
+    for (let x: number = 0; x < GRID_SIZE; x++) {
+        for (let y: number = 0; y < GRID_SIZE; y++) {
+            if (world.map[x][y] === 1 && pf) pf.setObstacle(x, y);
+        }
     }
 }
 
@@ -115,5 +130,7 @@ const assetNames: string[] = [
 ];
 
 renderer.loadAssets(assetNames, function(): void {
+    restartSimulation();
+    MainMenu.init();
     loop();
 });
