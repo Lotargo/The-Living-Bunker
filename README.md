@@ -38,6 +38,7 @@ It features 3 human residents and **Luna**, a sentient AI cat who communicates s
 ## Documentation
 
 *   [Setup & Installation](docs/setup.md)
+*   [Working Map](docs/working_map.md)
 *   [Architecture Overview](docs/architecture.md)
 *   [Agents & Luna (The Cat)](docs/agents.md)
 *   [Anomalies & Atmosphere](docs/anomalies.md)
