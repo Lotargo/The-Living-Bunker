@@ -12,7 +12,7 @@ It features 3 human residents and **Luna**, a sentient AI cat who communicates s
 *   **The "Semiotic Alien":** Luna (The Cat) understands the world perfectly but is constrained to communicate only via "Meow", forcing other agents (and the LLM itself) to encode meaning into rhythm and punctuation.
 *   **Invisible Threats:** Anomalies (Ghosts, Doppelgängers) "gestate" invisibly. Only the cat can see them forming, acting as a living Geiger counter.
 *   **Doppelgänger Mechanic:** A shapeshifting entity that mimics the cat to deceive residents, but is destroyed by the presence of the real cat.
-*   **Procedural Assets:** All graphics are generated programmatically at runtime using Python (`generate_assets.py`).
+*   **Procedural Assets:** All graphics are generated programmatically using Python (`scripts/generate_assets.py`).
 
 ## Quick Start
 
@@ -47,7 +47,7 @@ The launcher installs/checks dependencies, builds TypeScript, generates missing 
     ```
 3.  **Generate Assets:**
     ```bash
-    python generate_assets.py
+    python scripts/generate_assets.py
     ```
 4.  **Run:**
     ```bash
@@ -65,6 +65,15 @@ The launcher installs/checks dependencies, builds TypeScript, generates missing 
 *   [Agents & Luna (The Cat)](docs/agents.md)
 *   [Anomalies & Atmosphere](docs/anomalies.md)
 *   [Architect Mode (God Console)](docs/architect_mode.md)
+
+## Repository Layout
+
+*   `app.py` / `launch.py`: simple pip-friendly entry points.
+*   `bunker/`: Flask-adjacent backend logic, LLM orchestration, runtime settings, and demo mode.
+*   `scripts/`: one-off utility scripts for assets, model checks, graphics, and manual verification.
+*   `static/`: browser simulation, TypeScript sources, CSS, data, and generated game bundle.
+*   `generators/`: procedural asset generation library used by `scripts/generate_assets.py`.
+*   `tests/`: Python and Node test coverage.
 
 ## Local Scenarios
 

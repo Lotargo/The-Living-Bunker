@@ -9,7 +9,7 @@ The **Living Bunker** is a hybrid simulation combining a thin Python HTTP backen
     *   **LLM Integration:** Connects to Groq (Llama 3.1 8b/70b) and Cerebras (Llama 3.3 70b) APIs.
     *   **Context Management:** Constructs prompt payloads containing World State, Agent Needs, and Nearby Entities.
     *   **HTTP Adapter:** `app.py` owns Flask route parsing, rate limiting, static files, and JSON responses.
-    *   **Orchestration:** `ai_orchestrator.py` owns prompt construction, model/provider selection, LLM fallback behavior, and Architect command mutation.
+    *   **Orchestration:** `bunker/ai_orchestrator.py` owns prompt construction, model/provider selection, LLM fallback behavior, and Architect command mutation.
     *   **Endpoints:**
         *   `/api/decide`: Receives agent/anomaly state, returns JSON thought/action.
         *   `/api/architect`: Receives user narrative input, returns narrative response and world commands.
@@ -23,7 +23,7 @@ The **Living Bunker** is a hybrid simulation combining a thin Python HTTP backen
         *   `AnomalyManager`: Spawns and updates anomalies.
     *   **Assets:** Isometric sprites loaded from `static/assets/`.
 
-## Asset Generation (`generate_assets.py`)
+## Asset Generation (`scripts/generate_assets.py`)
 
 *   **Procedural Generation:** Uses the `Pillow` library to draw pixel-art style assets programmatically.
 *   **Techniques:**
@@ -37,8 +37,8 @@ The **Living Bunker** is a hybrid simulation combining a thin Python HTTP backen
     *   Resident decides it needs to think (based on random chance or needs).
     *   Frontend sends `POST /api/decide` with current context (Nearby objects, visible anomalies, atmosphere).
 2.  **Backend Processing:**
-    *   `app.py` validates the request body and delegates to `ai_orchestrator.py`.
-    *   `ai_orchestrator.py` selects the appropriate Persona and LLM Provider.
+    *   `app.py` validates the request body and delegates to `bunker/ai_orchestrator.py`.
+    *   `bunker/ai_orchestrator.py` selects the appropriate Persona and LLM Provider.
     *   Constructs a system prompt (e.g., "You are Luna the cat...") and user prompt.
     *   Calls LLM API.
     *   Parses JSON response (`thought`, `action`, `target`).

@@ -3,11 +3,14 @@ import time
 import subprocess
 import sys
 import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
 
 def test_architect():
     print("Starting Flask server...")
     # Start server in background
-    server = subprocess.Popen([sys.executable, 'app.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    server = subprocess.Popen([sys.executable, 'app.py'], cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     try:
         # Wait for server to start

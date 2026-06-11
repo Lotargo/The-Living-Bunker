@@ -4,8 +4,8 @@ import pytest
 
 sys.path.insert(0, ".")
 
-import ai_orchestrator
-from runtime_settings import update_settings
+from bunker import ai_orchestrator
+from bunker.runtime_settings import update_settings
 
 
 class FakeResponse:

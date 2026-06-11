@@ -4,7 +4,7 @@ import json
 import os
 from typing import Any
 
-from config import (
+from bunker.config import (
     ANOMALY_INSTRUCTION,
     ANOMALY_PROMPTS,
     ARCHITECT_FALLBACK_MODEL,
@@ -14,10 +14,10 @@ from config import (
     PERSONAS,
     SYSTEM_INSTRUCTION,
 )
-from demo_mode import demo_architect_response, demo_decision
-from llm_client import call_llm, get_fallback_response, has_provider_config, parse_json_response
-from mutations import process_mutations
-from runtime_settings import custom_provider_config, provider_mode
+from bunker.demo_mode import demo_architect_response, demo_decision
+from bunker.llm_client import call_llm, get_fallback_response, has_provider_config, parse_json_response
+from bunker.mutations import process_mutations
+from bunker.runtime_settings import custom_provider_config, provider_mode
 
 
 def _demo_enabled() -> bool:

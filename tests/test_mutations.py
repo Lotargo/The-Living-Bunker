@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0, '.')
 
-from mutations import process_mutations
+from bunker.mutations import process_mutations
 
 
 def test_ghost_plus_bad_atmosphere_becomes_poltergeist():

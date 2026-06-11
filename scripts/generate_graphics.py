@@ -1,7 +1,9 @@
 import os
 import sys
+from pathlib import Path
 
-sys.path.insert(0, os.path.dirname(__file__))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from generators.animation import init_cells, get_state
 from generators.gif_output import render_frame, render_gif, render_png
@@ -16,7 +18,7 @@ GRID_SIZE = 10
 CELL_SIZE = WIDTH // GRID_SIZE
 SHAPE_SIZE = CELL_SIZE * 0.6
 
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'avatars')
+OUTPUT_DIR = os.path.join(ROOT, 'avatars')
 GIF_DIR = os.path.join(OUTPUT_DIR, 'gif')
 PNG_DIR = os.path.join(OUTPUT_DIR, 'png')
 SVG_DIR = os.path.join(OUTPUT_DIR, 'svg')

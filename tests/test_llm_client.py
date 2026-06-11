@@ -3,7 +3,7 @@ import pytest
 import sys
 sys.path.insert(0, '.')
 
-from llm_client import parse_json_response, get_fallback_response
+from bunker.llm_client import parse_json_response, get_fallback_response
 
 
 class TestParseJsonResponse:

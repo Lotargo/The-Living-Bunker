@@ -6,8 +6,8 @@ import time
 from functools import wraps
 from typing import Any
 
-from ai_orchestrator import decide_for_actor, run_architect_prompt
-from runtime_settings import get_settings, provider_mode, update_settings
+from bunker.ai_orchestrator import decide_for_actor, run_architect_prompt
+from bunker.runtime_settings import get_settings, provider_mode, update_settings
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 

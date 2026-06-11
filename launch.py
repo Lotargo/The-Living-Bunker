@@ -27,7 +27,7 @@ def main() -> int:
             run_step(["npm", "run", "build"], "building TypeScript")
 
         if not ASSET_SENTINEL.exists():
-            run_step([sys.executable, "generate_assets.py"], "generating assets")
+            run_step([sys.executable, "scripts/generate_assets.py"], "generating assets")
 
         env = os.environ.copy()
         env.setdefault("FLASK_HOST", "127.0.0.1")

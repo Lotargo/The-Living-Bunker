@@ -4,8 +4,8 @@ import json
 import os
 import re
 import requests
-from config import GROQ_API_KEY, CEREBRAS_API_KEY
-from runtime_settings import custom_provider_config
+from bunker.config import GROQ_API_KEY, CEREBRAS_API_KEY
+from bunker.runtime_settings import custom_provider_config
 
 PROVIDER_URLS = {
     "groq": os.environ.get("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions"),

@@ -39,7 +39,7 @@
     The game uses procedurally generated 16-bit isometric assets. Run the generator script before starting the server.
 
     ```bash
-    python generate_assets.py
+    python scripts/generate_assets.py
     ```
     *This creates `static/assets/` populated with furniture, characters, and anomaly sprites.*
 
@@ -97,6 +97,6 @@ The console also supports local demo scenarios:
 
 ## Troubleshooting
 
-*   **Missing Assets:** If images are broken, ensure `generate_assets.py` ran successfully.
+*   **Missing Assets:** If images are broken, ensure `python scripts/generate_assets.py` ran successfully.
 *   **API Errors:** Check `server.log` or console output. Ensure API keys are valid and you are not rate-limited, or use `LIVING_BUNKER_DEMO=1`.
 *   **UI Glitches:** Clear browser cache if asset generation changed sprites significantly.
