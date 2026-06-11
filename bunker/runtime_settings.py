@@ -3,6 +3,8 @@ from __future__ import annotations
 import os
 from typing import Any
 
+from bunker.token_manager import set_max_tokens
+
 
 DEFAULT_SETTINGS: dict[str, Any] = {
     "providerMode": os.environ.get("LIVING_BUNKER_PROVIDER_MODE", "default"),
@@ -14,9 +16,11 @@ DEFAULT_SETTINGS: dict[str, Any] = {
     "opencodeZenModel": os.environ.get("OPENCODE_ZEN_MODEL", "gpt-5.4-mini"),
     "ollamaBaseUrl": os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434/v1/chat/completions"),
     "ollamaModel": os.environ.get("OLLAMA_MODEL", "llama3.1"),
+    "maxContextTokens": int(os.environ.get("LLM_MAX_CONTEXT_TOKENS", "20000")),
 }
 
 _settings: dict[str, Any] = DEFAULT_SETTINGS.copy()
+set_max_tokens(_settings["maxContextTokens"])
 
 
 def get_settings(include_secret: bool = False) -> dict[str, Any]:
@@ -34,6 +38,15 @@ def update_settings(data: dict[str, Any]) -> dict[str, Any]:
         value = data.get(key)
         if isinstance(value, str) and value.strip():
             _settings[key] = value.strip()
+
+    if "maxContextTokens" in data:
+        value = data.get("maxContextTokens")
+        if isinstance(value, (int, float)) and value > 0:
+            _settings["maxContextTokens"] = int(value)
+            set_max_tokens(int(value))
+        elif isinstance(value, str) and value.strip().isdigit():
+            _settings["maxContextTokens"] = int(value.strip())
+            set_max_tokens(int(value.strip()))
 
     if "demoMode" in data:
         _settings["demoMode"] = bool(data.get("demoMode"))

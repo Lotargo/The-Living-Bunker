@@ -54,7 +54,7 @@ def main() -> int:
         env = os.environ.copy()
         env.setdefault("FLASK_HOST", "127.0.0.1")
         if not env.get("GROQ_API_KEY") and not env.get("CEREBRAS_API_KEY") and not env.get("OPENAI_COMPATIBLE_API_KEY") and not env.get("OPENCODE_ZEN_API_KEY"):
-            env["LIVING_BUNKER_DEMO"] = "1"
+            env["LIVING_BUNKER_DEMO"] = "true"
             print("[launcher] no API keys detected, demo mode enabled")
 
         print(f"[launcher] starting server at {URL}")

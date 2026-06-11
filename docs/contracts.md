@@ -255,6 +255,7 @@ interface RuntimeSettings {
   opencodeZenModel?: string;
   ollamaBaseUrl?: string;
   ollamaModel?: string;
+  maxContextTokens?: number;
 }
 ```
 

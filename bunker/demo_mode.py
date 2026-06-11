@@ -56,12 +56,38 @@ def _demo_resident_decision(data: dict[str, Any]) -> dict[str, Any]:
     if needs.get("hunger", 0) > 70:
         return {"thought": "I need food before I can think straight.", "action": "EAT", "target": "Fridge"}
 
+    if needs.get("energy", 100) < 30:
+        return {"thought": "I can barely keep my eyes open...", "action": "SLEEP", "target": "Bed"}
+
+    if needs.get("fun", 100) < 30:
+        return {"thought": "I need to unwind a bit.", "action": "USE", "target": "Computer"}
+
+    import random
+    roll = random.random()
+
     if name == "Red":
-        return {"thought": "I should check the perimeter again.", "action": "INSPECT", "target": "Radio"}
+        if anomalies:
+            return {"thought": "Something's not right. I need to check the perimeter.", "action": "MOVE", "target": "random"}
+        if roll < 0.4:
+            return {"thought": "I should check the perimeter again.", "action": "MOVE", "target": "random"}
+        return {"thought": "Radio's been quiet. Too quiet.", "action": "IDLE", "target": "self"}
+
     if name == "Blue":
-        return {"thought": "The equipment is picking up odd noise.", "action": "USE", "target": "Computer"}
+        if anomalies:
+            return {"thought": "Fascinating... the readings are off the charts.", "action": "MOVE", "target": "random"}
+        if roll < 0.4:
+            return {"thought": "I should run some more tests.", "action": "MOVE", "target": "random"}
+        return {"thought": "The equipment is picking up odd noise.", "action": "IDLE", "target": "self"}
+
     if name == "Green":
-        return {"thought": "Everyone is being dramatic. I need to sit down.", "action": "SIT", "target": "Sofa"}
+        if anomalies:
+            return {"thought": "Okay, that's definitely not normal. I'm going back to bed.", "action": "MOVE", "target": "random"}
+        if roll < 0.3:
+            return {"thought": "Everyone is being dramatic. I need to sit down.", "action": "MOVE", "target": "random"}
+        return {"thought": "What a boring day...", "action": "IDLE", "target": "self"}
+
+    if roll < 0.3:
+        return {"thought": "Maybe I'll take a walk.", "action": "MOVE", "target": "random"}
 
     return {"thought": "The bunker hums quietly.", "action": "IDLE", "target": "self"}
 

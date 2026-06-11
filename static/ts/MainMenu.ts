@@ -94,7 +94,8 @@ const MainMenu = {
             opencodeZenApiKey: (document.getElementById('opencode-zen-api-key') as HTMLInputElement).value,
             opencodeZenModel: (document.getElementById('opencode-zen-model') as HTMLInputElement).value,
             ollamaBaseUrl: (document.getElementById('ollama-base-url') as HTMLInputElement).value,
-            ollamaModel: (document.getElementById('ollama-model') as HTMLInputElement).value
+            ollamaModel: (document.getElementById('ollama-model') as HTMLInputElement).value,
+            maxContextTokens: Number((document.getElementById('max-context-tokens') as HTMLInputElement).value)
         };
     },
 
@@ -106,6 +107,7 @@ const MainMenu = {
         (document.getElementById('opencode-zen-model') as HTMLInputElement).value = settings.opencodeZenModel || '';
         (document.getElementById('ollama-base-url') as HTMLInputElement).value = settings.ollamaBaseUrl || '';
         (document.getElementById('ollama-model') as HTMLInputElement).value = settings.ollamaModel || '';
+        (document.getElementById('max-context-tokens') as HTMLInputElement).value = String(settings.maxContextTokens || 20000);
         (document.getElementById('spawn-rate') as HTMLInputElement).value = String(AnomalyManager.spawnChance);
         MainMenu.updateProviderFields();
     },
@@ -140,7 +142,8 @@ const MainMenu = {
             openaiModel: settings.openaiModel,
             opencodeZenModel: settings.opencodeZenModel,
             ollamaBaseUrl: settings.ollamaBaseUrl,
-            ollamaModel: settings.ollamaModel
+            ollamaModel: settings.ollamaModel,
+            maxContextTokens: settings.maxContextTokens
         }));
 
         BrainClient.updateSettings(settings).then(function(): void {

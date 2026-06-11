@@ -64,10 +64,10 @@ This file tracks observed gameplay, AI, UX, and visual problems before we start 
 
 ## Feature Requests
 
-- [ ] **Per-character provider assignment**
+- [x] **Per-character provider assignment**
   Currently characters use hardcoded providers (Groq for Red/Doppelganger, Cerebras for Blue/Green/Luna). Need ability to assign custom provider + model per character via config. Custom provider should have higher priority than `LIVING_BUNKER_PROVIDER_MODE=default`.
 
-- [ ] **Provider fallback system with retry logic**
+- [x] **Provider fallback system with retry logic**
   Implement fallback chain: per-character provider → default provider → demo mode.
   - 3 retries with 1/2/4 second delays
   - After 3 failures on per-character provider, switch to default provider
@@ -76,11 +76,33 @@ This file tracks observed gameplay, AI, UX, and visual problems before we start 
   - After 3 failures on each level, stop retrying and stay on that level
   - Same logic applies when default provider fails → demo mode
 
-- [ ] **Demo mode behavior detection**
+- [x] **Demo mode behavior detection**
   When characters are in demo mode, other characters should notice strange behavior and react based on their role (e.g., Red gets paranoid, Blue analyzes, Green dismisses).
 
-- [ ] **Token context window limit**
+- [x] **Token context window limit**
   Implement sliding window for token context to avoid overwhelming models. Default limit: 20000 tokens. Should be configurable via settings.
 
-- [ ] **LIVING_BUNKER_DEMO env var UX**
+- [x] **LIVING_BUNKER_DEMO env var UX**
   Current value `0` is confusing. Change to accept `true/false` in addition to `1/0` for better intuitiveness.
+
+- [x] **OpenCode Zen provider support**
+  Added `opencode_zen` provider mode with endpoint `https://opencode.ai/zen/v1/chat/completions`. Requires API key.
+
+- [x] **Ollama/LM Studio provider support**
+  Added `ollama` provider mode with default endpoint `http://localhost:11434/v1/chat/completions`. No API key required.
+
+## Session 2 Changes (2026-06-12)
+
+- [x] **Demo mode character movement fixed**
+  Characters in demo mode were returning static actions (INSPECT, USE, SIT) with fixed targets. If object not found, character stayed in place. Now characters use MOVE random with context-aware decisions based on needs and anomalies.
+
+- [x] **Character talk frequency reduced**
+  Characters were too talkative (2% think chance per frame). Reduced to 0.5% base chance with urgent scenarios (anomalies, hunger, fatigue) at 3%. Added random think intervals (3-8 seconds) and social multiplier (1.5x when near other characters).
+
+## TODO Next Session
+
+- [ ] **Brain queue full error**
+  Error "Brain queue is full" when too many anomalies/think calls queue up. Need to implement graceful degradation (skip instead of error) and increase queue size or improve processing speed.
+
+- [ ] **Constructor/designer mode**
+  No way to manually place assets from asset library into bunker. Need UI for selecting, placing, and rotating assets on grid.

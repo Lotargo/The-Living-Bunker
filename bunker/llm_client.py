@@ -6,6 +6,7 @@ import re
 import requests
 from bunker.config import GROQ_API_KEY, CEREBRAS_API_KEY
 from bunker.runtime_settings import custom_provider_config
+from bunker.token_manager import truncate_to_token_limit
 
 PROVIDER_URLS = {
     "groq": os.environ.get("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions"),
@@ -36,6 +37,8 @@ def call_llm(provider: str, model: str, messages: list[dict], temperature: float
 
     if not api_key or not api_url:
         raise ValueError(f"No configuration for provider: {provider}")
+
+    messages = truncate_to_token_limit(messages)
 
     payload = {
         "model": model,
