@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 ASSET_SENTINEL = ROOT / "static" / "assets" / "cat_luna.png"
+VENDOR_ASSET_SENTINEL = ROOT / "static" / "assets" / "vendor" / "characters" / "village_man_idle_down.png"
 URL = "http://127.0.0.1:5000"
 
 
@@ -46,6 +47,9 @@ def main() -> int:
 
         if not ASSET_SENTINEL.exists():
             run_step([sys.executable, "scripts/generate_assets.py"], "generating assets")
+
+        if not VENDOR_ASSET_SENTINEL.exists() and (ROOT / "third_party_assets" / "raw").exists():
+            run_step([sys.executable, "scripts/import_vendor_assets.py"], "importing third-party assets")
 
         env = os.environ.copy()
         env.setdefault("FLASK_HOST", "127.0.0.1")

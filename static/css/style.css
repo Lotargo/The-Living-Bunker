@@ -144,6 +144,19 @@ select {
     width: 250px;
 }
 
+.hud-button {
+    position: absolute;
+    top: 10px;
+    left: 284px;
+    pointer-events: auto;
+    background: #11161b;
+    color: #f7d774;
+    border: 2px solid #d8f3dc;
+    padding: 8px 12px;
+    box-shadow: 0 3px 0 #26382d;
+    cursor: pointer;
+}
+
 .resident-card {
     border-bottom: 1px solid #444;
     padding: 5px 0;

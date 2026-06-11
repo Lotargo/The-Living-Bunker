@@ -1,0 +1,756 @@
+{
+  "archives": [
+    {
+      "archive": "Basic_GUI_Bundle.zip",
+      "files": 543,
+      "png": [
+        {
+          "path": "BoxesBanners/Banner_Blank.png",
+          "width": 1139,
+          "height": 456
+        },
+        {
+          "path": "BoxesBanners/Banner_Blue.png",
+          "width": 1139,
+          "height": 457
+        },
+        {
+          "path": "BoxesBanners/Banner_Green.png",
+          "width": 1139,
+          "height": 456
+        },
+        {
+          "path": "BoxesBanners/Banner_Grey.png",
+          "width": 1139,
+          "height": 456
+        },
+        {
+          "path": "BoxesBanners/Banner_Orange.png",
+          "width": 1139,
+          "height": 457
+        },
+        {
+          "path": "BoxesBanners/Banner_Red.png",
+          "width": 1139,
+          "height": 456
+        },
+        {
+          "path": "BoxesBanners/Banner_WhiteOutine.png",
+          "width": 1152,
+          "height": 471
+        },
+        {
+          "path": "BoxesBanners/Box_Blank_Rounded.png",
+          "width": 1510,
+          "height": 1510
+        },
+        {
+          "path": "BoxesBanners/Box_Blank_Square.png",
+          "width": 1523,
+          "height": 1522
+        },
+        {
+          "path": "BoxesBanners/Box_Blue_Rounded.png",
+          "width": 1509,
+          "height": 1510
+        },
+        {
+          "path": "BoxesBanners/Box_Blue_Square.png",
+          "width": 1524,
+          "height": 1522
+        },
+        {
+          "path": "BoxesBanners/Box_Orange_Rounded.png",
+          "width": 1510,
+          "height": 1510
+        },
+        {
+          "path": "BoxesBanners/Box_Orange_Square.png",
+          "width": 1523,
+          "height": 1522
+        },
+        {
+          "path": "BoxesBanners/Box_Rounded.png",
+          "width": 1510,
+          "height": 1510
+        },
+        {
+          "path": "BoxesBanners/Box_Square.png",
+          "width": 1523,
+          "height": 1522
+        },
+        {
+          "path": "BoxesBanners/Box_WhiteOutline_Rounded.png",
+          "width": 1524,
+          "height": 1524
+        },
+        {
+          "path": "BoxesBanners/Box_WhiteOutline_Square.png",
+          "width": 1536,
+          "height": 1535
+        },
+        {
+          "path": "BoxesBanners/TextBox_Blank_Middle.png",
+          "width": 1132,
+          "height": 660
+        },
+        {
+          "path": "BoxesBanners/TextBox_Blank_Side.png",
+          "width": 1132,
+          "height": 659
+        },
+        {
+          "path": "BoxesBanners/TextBox_Green_Middle.png",
+          "width": 1133,
+          "height": 659
+        },
+        {
+          "path": "BoxesBanners/TextBox_Green_Side.png",
+          "width": 1133,
+          "height": 659
+        },
+        {
+          "path": "BoxesBanners/TextBox_Middle.png",
+          "width": 1132,
+          "height": 660
+        },
+        {
+          "path": "BoxesBanners/TextBox_Side.png",
+          "width": 1132,
+          "height": 659
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Background_Circle.png",
+          "width": 355,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Background_Rounded.png",
+          "width": 357,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Background_Square.png",
+          "width": 358,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Blank_Circle.png",
+          "width": 356,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Blank_Rounded.png",
+          "width": 357,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Blank_Square.png",
+          "width": 357,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Blue_Circle.png",
+          "width": 356,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Blue_Rounded.png",
+          "width": 357,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Blue_Square.png",
+          "width": 357,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Circle.png",
+          "width": 356,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Green_Circle.png",
+          "width": 356,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Green_Rounded.png",
+          "width": 357,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Green_Square.png",
+          "width": 357,
+          "height": 357
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_GreyOutline_Circle.png",
+          "width": 371,
+          "height": 371
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_GreyOutline_Rounded.png",
+          "width": 371,
+          "height": 371
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_GreyOutline_Square.png",
+          "width": 371,
+          "height": 371
+        },
+        {
+          "path": "ButtonsIcons/IconButton_Large_Orange_Circle.png",
+          "width": 356,
+          "height": 357
+        }
+      ],
+      "audioCount": 0,
+      "licenseFiles": [],
+      "readmeFiles": [],
+      "pngTotal": 269
+    },
+    {
+      "archive": "CatPackFree.zip",
+      "files": 11,
+      "png": [
+        {
+          "path": "CatPackFree/Box3.png",
+          "width": 128,
+          "height": 32
+        },
+        {
+          "path": "CatPackFree/Idle.png",
+          "width": 320,
+          "height": 32
+        },
+        {
+          "path": "CatPackFree/Furnitures.png",
+          "width": 512,
+          "height": 512
+        },
+        {
+          "path": "CatPackFree/drculacat.png",
+          "width": 192,
+          "height": 32
+        }
+      ],
+      "audioCount": 0,
+      "licenseFiles": [],
+      "readmeFiles": [],
+      "pngTotal": 4
+    },
+    {
+      "archive": "JDSherbert - Ultimate UI SFX Pack (FREE).zip",
+      "files": 153,
+      "png": [],
+      "audioCount": 140,
+      "licenseFiles": [],
+      "readmeFiles": [],
+      "pngTotal": 0
+    },
+    {
+      "archive": "perplexity-ai-clone-chat-ui-design.zip",
+      "files": 99,
+      "png": [
+        {
+          "path": "public/apple-icon.png",
+          "width": 180,
+          "height": 180
+        },
+        {
+          "path": "public/icon-dark-32x32.png",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "path": "public/icon-light-32x32.png",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "path": "public/images/perplexity-logo.png",
+          "width": 300,
+          "height": 300
+        },
+        {
+          "path": "public/placeholder-logo.png",
+          "width": 256,
+          "height": 144
+        }
+      ],
+      "audioCount": 0,
+      "licenseFiles": [],
+      "readmeFiles": [],
+      "pngTotal": 5
+    },
+    {
+      "archive": "tiny-questers-bat-free.zip",
+      "files": 306,
+      "png": [
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_attack_down.png",
+          "width": 768,
+          "height": 137
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_attack_left.png",
+          "width": 1536,
+          "height": 128
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_attack_right.png",
+          "width": 1536,
+          "height": 128
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_attack_up.png",
+          "width": 768,
+          "height": 145
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_die_down.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_effect_down.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_effect_left.png",
+          "width": 320,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_effect_right.png",
+          "width": 320,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_effect_up.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_hit_down.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_idle_down.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_idle_up.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_walk_down.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_walk_left.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_walk_right.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas/bat_walk_up.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_attack_down.png",
+          "width": 1024,
+          "height": 256
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_attack_left.png",
+          "width": 2048,
+          "height": 128
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_attack_right.png",
+          "width": 2048,
+          "height": 128
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_attack_up.png",
+          "width": 1024,
+          "height": 256
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_die_down.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_effect_down.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_effect_left.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_effect_right.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_effect_up.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_hit_down.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_idle_down.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_idle_up.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_walk_down.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_walk_left.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_walk_right.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/atlas_pot/bat_walk_up.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "tiny-questers-bat/png/single/bat/attack_down/attack_down1.png",
+          "width": 64,
+          "height": 137
+        },
+        {
+          "path": "tiny-questers-bat/png/single/bat/attack_down/attack_down10.png",
+          "width": 64,
+          "height": 137
+        },
+        {
+          "path": "tiny-questers-bat/png/single/bat/attack_down/attack_down11.png",
+          "width": 64,
+          "height": 137
+        },
+        {
+          "path": "tiny-questers-bat/png/single/bat/attack_down/attack_down12.png",
+          "width": 64,
+          "height": 137
+        },
+        {
+          "path": "tiny-questers-bat/png/single/bat/attack_down/attack_down2.png",
+          "width": 64,
+          "height": 137
+        },
+        {
+          "path": "tiny-questers-bat/png/single/bat/attack_down/attack_down3.png",
+          "width": 64,
+          "height": 137
+        },
+        {
+          "path": "tiny-questers-bat/png/single/bat/attack_down/attack_down4.png",
+          "width": 64,
+          "height": 137
+        },
+        {
+          "path": "tiny-questers-bat/png/single/bat/attack_down/attack_down5.png",
+          "width": 64,
+          "height": 137
+        }
+      ],
+      "audioCount": 0,
+      "licenseFiles": [
+        "tiny-questers-bat/LICENSE.txt"
+      ],
+      "readmeFiles": [
+        "tiny-questers-bat/README.txt"
+      ],
+      "pngTotal": 272
+    },
+    {
+      "archive": "tiny-questers-npc-pack-free.zip",
+      "files": 195,
+      "png": [
+        {
+          "path": "npc_pack_free/png/atlas/female_villager_idle_down.png",
+          "width": 320,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/female_villager_idle_up.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/female_villager_walk_down.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/female_villager_walk_left.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/female_villager_walk_right.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/female_villager_walk_up.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/village_man_idle_down.png",
+          "width": 320,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/village_man_idle_up.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/village_man_walk_down.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/village_man_walk_left.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/village_man_walk_right.png",
+          "width": 384,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas/village_man_walk_up.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/female_villager_idle_down.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/female_villager_idle_up.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/female_villager_walk_down.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/female_villager_walk_left.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/female_villager_walk_right.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/female_villager_walk_up.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/village_man_idle_down.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/village_man_idle_up.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/village_man_walk_down.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/village_man_walk_left.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/village_man_walk_right.png",
+          "width": 512,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/atlas_pot/village_man_walk_up.png",
+          "width": 256,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/idle_down/idle_down1.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/idle_down/idle_down2.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/idle_down/idle_down3.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/idle_down/idle_down4.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/idle_down/idle_down5.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/idle_up/idle_up1.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/idle_up/idle_up2.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/idle_up/idle_up3.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/idle_up/idle_up4.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/walk_down/walk_down1.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/walk_down/walk_down2.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/walk_down/walk_down3.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/walk_down/walk_down4.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/walk_left/walk_left1.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/walk_left/walk_left2.png",
+          "width": 64,
+          "height": 64
+        },
+        {
+          "path": "npc_pack_free/png/single/female_villager/walk_left/walk_left3.png",
+          "width": 64,
+          "height": 64
+        }
+      ],
+      "audioCount": 0,
+      "licenseFiles": [
+        "npc_pack_free/LICENSE.txt"
+      ],
+      "readmeFiles": [
+        "npc_pack_free/README.txt"
+      ],
+      "pngTotal": 132
+    },
+    {
+      "archive": "Top-Down_Retro_Interior.zip",
+      "files": 6,
+      "png": [
+        {
+          "path": "TopDownHouse_DoorsAndWindows.png",
+          "width": 288,
+          "height": 160
+        },
+        {
+          "path": "TopDownHouse_FloorsAndWalls.png",
+          "width": 288,
+          "height": 144
+        },
+        {
+          "path": "TopDownHouse_FloorsAndWalls_OpenDoors.png",
+          "width": 128,
+          "height": 48
+        },
+        {
+          "path": "TopDownHouse_FurnitureState1.png",
+          "width": 208,
+          "height": 288
+        },
+        {
+          "path": "TopDownHouse_FurnitureState2.png",
+          "width": 208,
+          "height": 288
+        },
+        {
+          "path": "TopDownHouse_SmallItems.png",
+          "width": 128,
+          "height": 128
+        }
+      ],
+      "audioCount": 0,
+      "licenseFiles": [],
+      "readmeFiles": [],
+      "pngTotal": 6
+    }
+  ]
+}

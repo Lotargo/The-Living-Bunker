@@ -8,18 +8,23 @@ const MainMenu = {
         const settingsBtn = document.getElementById('settings-btn') as HTMLButtonElement;
         const saveSettingsBtn = document.getElementById('save-settings-btn') as HTMLButtonElement;
         const closeSettingsBtn = document.getElementById('close-settings-btn') as HTMLButtonElement;
+        const pauseBtn = document.getElementById('pause-btn') as HTMLButtonElement;
 
         continueBtn.disabled = localStorage.getItem(SAVE_FLAG) !== '1';
 
         newGameBtn.addEventListener('click', function(): void {
             restartSimulation();
             localStorage.setItem(SAVE_FLAG, '1');
+            Runtime.paused = false;
+            MainMenu.updatePauseButton();
             MainMenu.hide();
             addLog('SYSTEM', 'New simulation started.');
         });
 
         continueBtn.addEventListener('click', function(): void {
             localStorage.setItem(SAVE_FLAG, '1');
+            Runtime.paused = false;
+            MainMenu.updatePauseButton();
             MainMenu.hide();
             addLog('SYSTEM', 'Simulation continued.');
         });
@@ -32,11 +37,21 @@ const MainMenu = {
             MainMenu.hideSettings();
         });
 
+        pauseBtn.addEventListener('click', function(): void {
+            Runtime.paused = !Runtime.paused;
+            if (Runtime.paused) {
+                BrainClient.clearQueue();
+            }
+            MainMenu.updatePauseButton();
+            addLog('SYSTEM', Runtime.paused ? 'Simulation paused.' : 'Simulation resumed.');
+        });
+
         saveSettingsBtn.addEventListener('click', function(): void {
             MainMenu.saveSettings();
         });
 
         MainMenu.loadSettings();
+        MainMenu.updatePauseButton();
     },
 
     hide: function(): void {
@@ -106,5 +121,10 @@ const MainMenu = {
 
     setStatus: function(text: string): void {
         document.getElementById('settings-status')!.textContent = text;
+    },
+
+    updatePauseButton: function(): void {
+        const pauseBtn = document.getElementById('pause-btn') as HTMLButtonElement;
+        pauseBtn.textContent = Runtime.paused ? 'PAUSED' : 'PAUSE';
     }
 };

@@ -58,6 +58,7 @@ function rebuildStaticList(): void {
 }
 
 function loop(): void {
+    Runtime.frame++;
     renderer.clear();
 
     for (let x: number = 0; x < GRID_SIZE; x++) {
@@ -71,9 +72,11 @@ function loop(): void {
         }
     }
 
-    world.residents.forEach(function(r: Resident): void { r.update(); });
-    AnomalyManager.update();
-    BunkerMoments.update();
+    if (!Runtime.paused) {
+        world.residents.forEach(function(r: Resident): void { r.update(); });
+        AnomalyManager.update();
+        BunkerMoments.update();
+    }
 
     if (world.staticDirty || cachedStaticViewVersion !== renderer.viewVersion) {
         rebuildStaticList();
@@ -98,7 +101,12 @@ function loop(): void {
         if (item.type === 'obj' || item.type === 'wall') {
             renderer.drawTile(item.ref.type, item.x, item.ref.y);
         } else if (item.type === 'res') {
-            renderer.drawTile(item.ref.sprite, item.x, item.y);
+            const frame: SpriteFrameConfig | null = item.ref.getSpriteFrame();
+            if (frame) {
+                renderer.drawSpriteFrame(frame.image, item.x, item.y, frame.frameW, frame.frameH, Math.floor(item.ref.animationTick / 8), frame.scale || 1);
+            } else {
+                renderer.drawTile(item.ref.sprite, item.x, item.y);
+            }
             const thought: string = item.ref.state === 'THINKING' ? "..." : item.ref.lastThought;
             const display: string = thought.length > 20 ? thought.substring(0, 18) + '..' : thought;
             renderer.drawText(display, item.x, item.y, '#FFFFFF');
@@ -126,7 +134,21 @@ const assetNames: string[] = [
     'char_red.png', 'char_blue.png', 'char_green.png',
     'fridge.png', 'bed.png', 'table.png', 'chair.png', 'sofa.png', 'computer.png', 'radio.png',
     'toilet.png', 'sink.png', 'shower.png', 'stove.png', 'tv.png', 'plant.png', 'rug.png',
-    'ghost.png', 'glitch.png', 'cat_luna.png', 'cat_evil.png'
+    'ghost.png', 'glitch.png', 'cat_luna.png', 'cat_evil.png',
+    'vendor/characters/village_man_idle_down.png',
+    'vendor/characters/village_man_idle_up.png',
+    'vendor/characters/village_man_walk_down.png',
+    'vendor/characters/village_man_walk_left.png',
+    'vendor/characters/village_man_walk_right.png',
+    'vendor/characters/village_man_walk_up.png',
+    'vendor/characters/female_villager_idle_down.png',
+    'vendor/characters/female_villager_walk_down.png',
+    'vendor/characters/female_villager_walk_left.png',
+    'vendor/characters/female_villager_walk_right.png',
+    'vendor/characters/female_villager_walk_up.png',
+    'vendor/characters/luna_idle.png',
+    'vendor/monsters/bat_idle_down.png',
+    'vendor/monsters/bat_walk_down.png'
 ];
 
 renderer.loadAssets(assetNames, function(): void {

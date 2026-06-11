@@ -4,23 +4,28 @@ This file tracks observed gameplay, AI, UX, and visual problems before we start 
 
 ## Current Bugs
 
-- [ ] **Luna loops into constant meowing**
+- [/] **Luna loops into constant meowing**
   Luna can repeatedly emit "Meow" reactions too aggressively, creating noise instead of meaningful warning behavior.
+  First pass: duplicate Luna logs are throttled and non-danger meows are normalized. Still needs better cat-state design.
 
-- [ ] **Residents lack visible animation and convincing movement**
+- [/] **Residents lack visible animation and convincing movement**
   Main characters feel static. They do not currently communicate walking, idling, interacting, or emotional state through animation.
+  First pass: Tiny Questers NPC atlases are imported and residents render idle/walk frames. Still pseudo-isometric, not full top-down yet.
 
-- [ ] **Runtime rate limiting is not game-aware**
+- [x] **Runtime rate limiting is not game-aware**
   The simulation can trigger chaotic request bursts. This risks wasting API quota and makes behavior feel uncontrolled.
+  First pass: `BrainClient` now queues LLM decisions and spaces requests out; paused simulation blocks new decision requests.
 
-- [ ] **No pause button**
+- [x] **No pause button**
   There is no reliable in-game pause control to stop simulation updates and prevent further API calls.
+  First pass: HUD pause button stops resident/anomaly/bunker updates and blocks queued LLM decisions.
 
 - [ ] **The bunker feels visually sparse**
   The grid has too much empty space and not enough room dressing, props, clutter, visual storytelling, or mood details.
 
-- [ ] **Characters can get stuck in or ignore textures/obstacles**
+- [/] **Characters can get stuck in or ignore textures/obstacles**
   Movement and interaction logic can place residents into blocked or visually occupied spaces, or let them behave as if obstacles do not matter.
+  First pass: object movement now targets the nearest reachable adjacent tile instead of blindly pathing into the object's own tile.
 
 - [ ] **Autonomy logic is underdeveloped**
   Residents do not yet have strong routines, priorities, memory-driven behavior, or believable self-directed plans.

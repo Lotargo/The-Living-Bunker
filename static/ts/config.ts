@@ -1,6 +1,12 @@
 const GRID_SIZE: number = 64;
 const TILE_SIZE: number = 64;
 
+const Runtime = {
+    paused: true,
+    apiPaused: false,
+    frame: 0
+};
+
 const FLOOR_CONCRETE: number = 0;
 const FLOOR_WOOD: number = 2;
 const FLOOR_TILE: number = 3;
@@ -31,7 +37,9 @@ const COOLDOWNS = {
     ANOMALY_IDLE: 60,
     ANOMALY_RANDOM_MOVE_CHANCE: 0.03,
     ERROR_RETRY: 100,
-    CAT_STARE: 60
+    CAT_STARE: 60,
+    CAT_VOICE_LOG: 240,
+    THOUGHT_LOG: 120
 };
 
 const ANOMALY = {
@@ -49,6 +57,11 @@ const UI = {
     UPDATE_INTERVAL_MS: 250,
     MAX_EVENT_LOG_ENTRIES: 120,
     MAX_CONSOLE_LINES: 160
+};
+
+const BRAIN = {
+    MIN_REQUEST_INTERVAL_MS: 650,
+    MAX_QUEUE_SIZE: 16
 };
 
 const ROOM = {

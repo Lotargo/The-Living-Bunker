@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "notes": "Raw archives are kept untouched. Processed assets should be generated/copied from these sources.",
+  "assets": [
+    {
+      "id": "ultimate_ui_sfx",
+      "name": "Ultimate UI SFX Pack (FREE)",
+      "author": "JDSherbert",
+      "url": "https://jdsherbert.itch.io/ultimate-ui-sfx-pack",
+      "raw": "raw/JDSherbert - Ultimate UI SFX Pack (FREE).zip",
+      "license": {
+        "status": "external_or_downloaded_pdf",
+        "files": ["raw/LICENSE.pdf"]
+      },
+      "type": ["audio", "ui"],
+      "format": ["wav", "ogg", "mp3", "m4a"],
+      "integrationStatus": "candidate",
+      "plannedUse": "Menu clicks, console feedback, settings save/error sounds."
+    },
+    {
+      "id": "top_down_retro_interior",
+      "name": "Top-Down Retro Interior",
+      "author": "Penzilla",
+      "url": "https://penzilla.itch.io/top-down-retro-interior",
+      "raw": "raw/Top-Down_Retro_Interior.zip",
+      "license": {
+        "status": "downloaded_pdf",
+        "files": ["raw/PenzillaDesign_StandardLicense.pdf"]
+      },
+      "type": ["tileset", "interior", "props"],
+      "format": ["png"],
+      "observed": {
+        "sheets": [
+          "TopDownHouse_FloorsAndWalls.png 288x144",
+          "TopDownHouse_FurnitureState1.png 208x288",
+          "TopDownHouse_FurnitureState2.png 208x288",
+          "TopDownHouse_SmallItems.png 128x128"
+        ]
+      },
+      "integrationStatus": "candidate",
+      "plannedUse": "Top-down bunker rooms, furniture, clutter, and visual density."
+    },
+    {
+      "id": "cat_pack_free",
+      "name": "Cat Pack Free",
+      "author": "ToffeeCraft",
+      "url": "https://toffeecraft.itch.io/cat-pack",
+      "raw": "raw/CatPackFree.zip",
+      "license": {
+        "status": "license_missing",
+        "files": []
+      },
+      "type": ["cat", "sprite"],
+      "format": ["png"],
+      "observed": {
+        "sheets": [
+          "Idle.png 320x32",
+          "Box3.png 128x32",
+          "drculacat.png 192x32",
+          "Furnitures.png 512x512"
+        ]
+      },
+      "integrationStatus": "candidate_needs_animation_review",
+      "plannedUse": "Potential Luna idle/portrait sprite; walking coverage needs confirmation."
+    },
+    {
+      "id": "tiny_questers_npc",
+      "name": "Tiny Questers Free 2 NPC Pack",
+      "author": "bobddadoo",
+      "url": "https://bobddadoo.itch.io/tiny-questers-free-2-npc-pack",
+      "raw": "raw/tiny-questers-npc-pack-free.zip",
+      "license": {
+        "status": "bundled",
+        "files": ["npc_pack_free/LICENSE.txt", "npc_pack_free/README.txt"]
+      },
+      "type": ["character", "animation"],
+      "format": ["png", "gif"],
+      "observed": {
+        "frameHeight": 64,
+        "animations": ["idle_down", "idle_up", "walk_down", "walk_left", "walk_right", "walk_up"]
+      },
+      "integrationStatus": "primary_candidate",
+      "plannedUse": "Resident sprites and first real movement animation pass."
+    },
+    {
+      "id": "tiny_questers_bat",
+      "name": "Tiny Questers Bat Free",
+      "author": "bobddadoo",
+      "url": "https://bobddadoo.itch.io/monster-starter-pack",
+      "raw": "raw/tiny-questers-bat-free.zip",
+      "license": {
+        "status": "bundled",
+        "files": ["tiny-questers-bat/LICENSE.txt", "tiny-questers-bat/README.txt"]
+      },
+      "type": ["monster", "animation"],
+      "format": ["png", "gif"],
+      "observed": {
+        "frameHeight": 64,
+        "animations": ["idle", "walk", "attack", "hit", "die", "effect"]
+      },
+      "integrationStatus": "primary_candidate",
+      "plannedUse": "Animated anomaly prototype."
+    },
+    {
+      "id": "basic_gui_bundle",
+      "name": "Basic GUI Bundle",
+      "author": "Penzilla",
+      "url": "https://penzilla.itch.io/basic-gui-bundle",
+      "raw": "raw/Basic_GUI_Bundle.zip",
+      "license": {
+        "status": "downloaded_pdf",
+        "files": ["raw/PenzillaDesign_StandardLicense.pdf"]
+      },
+      "type": ["ui"],
+      "format": ["png", "svg"],
+      "observed": {
+        "pngCount": 269,
+        "svgIncluded": true
+      },
+      "integrationStatus": "candidate",
+      "plannedUse": "Replace CSS-only menu panels/buttons with asset-backed UI."
+    },
+    {
+      "id": "perplexity_ai_clone_chat_ui_design",
+      "name": "Perplexity AI Clone Chat UI Design",
+      "author": "unknown",
+      "url": "unknown",
+      "raw": "raw/perplexity-ai-clone-chat-ui-design.zip",
+      "license": {
+        "status": "needs_review",
+        "files": []
+      },
+      "type": ["ui", "web"],
+      "format": ["tsx", "css", "png"],
+      "integrationStatus": "needs_review",
+      "plannedUse": "Not part of the current game art pass until reviewed."
+    }
+  ]
+}

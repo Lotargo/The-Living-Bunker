@@ -9,3 +9,7 @@ node_modules/
 static/js/game.js
 static/js/game.js.map
 REFACTOR_MAP.md*
+third_party_assets/raw/*
+third_party_assets/processed/*
+!third_party_assets/raw/.gitkeep
+!third_party_assets/processed/.gitkeep

@@ -31,6 +31,8 @@ class Anomaly {
     }
 
     update(): boolean {
+        if (Runtime.paused) return true;
+
         this.lifespan--;
         if (this.lifespan <= 0) return false;
 

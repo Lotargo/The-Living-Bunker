@@ -160,3 +160,10 @@ interface RuntimeSettings {
     openaiApiKeyConfigured?: boolean;
     openaiModel?: string;
 }
+
+interface SpriteFrameConfig {
+    image: string;
+    frameW: number;
+    frameH: number;
+    scale?: number;
+}

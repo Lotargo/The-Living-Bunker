@@ -15,6 +15,10 @@ class Resident {
     cooldown: number;
     whisperCount: number;
     memories: string[];
+    facing: string;
+    animationTick: number;
+    lastLoggedThought: string;
+    thoughtLogCooldown: number;
 
     constructor(name: string, color: string, startX: number, startY: number, type?: string) {
         this.name = name;
@@ -46,9 +50,19 @@ class Resident {
 
         this.whisperCount = 0;
         this.memories = [];
+        this.facing = 'down';
+        this.animationTick = 0;
+        this.lastLoggedThought = '';
+        this.thoughtLogCooldown = 0;
     }
 
     update(_dt?: number): void {
+        if (Runtime.paused) return;
+
+        if (this.thoughtLogCooldown > 0) {
+            this.thoughtLogCooldown--;
+        }
+
         this.needs.hunger += NEEDS.DECAY_HUNGER;
         this.needs.energy += NEEDS.DECAY_ENERGY;
         this.needs.fun += NEEDS.DECAY_FUN;
@@ -82,6 +96,8 @@ class Resident {
         const speed: number = this.type === 'cat' ? MOVEMENT.CAT_SPEED : MOVEMENT.HUMAN_SPEED;
         const dx: number = next.x - this.x;
         const dy: number = next.y - this.y;
+        this.updateFacing(dx, dy);
+        this.animationTick++;
 
         if (Math.abs(dx) < speed && Math.abs(dy) < speed) {
             this.x = next.x;
@@ -91,6 +107,30 @@ class Resident {
             this.x += Math.sign(dx) * speed;
             this.y += Math.sign(dy) * speed;
         }
+    }
+
+    updateFacing(dx: number, dy: number): void {
+        if (Math.abs(dx) > Math.abs(dy)) {
+            this.facing = dx > 0 ? 'right' : 'left';
+        } else if (Math.abs(dy) > 0) {
+            this.facing = dy > 0 ? 'down' : 'up';
+        }
+    }
+
+    getSpriteFrame(): SpriteFrameConfig | null {
+        const moving: boolean = this.state === 'MOVING';
+        if (this.type === 'cat') {
+            return { image: 'vendor/characters/luna_idle.png', frameW: 32, frameH: 32, scale: 1.2 };
+        }
+
+        const action: string = moving ? 'walk' : 'idle';
+        if (this.name === 'Green') {
+            const greenDir: string = action === 'idle' ? 'down' : this.facing;
+            return { image: 'vendor/characters/female_villager_' + action + '_' + greenDir + '.png', frameW: 64, frameH: 64, scale: 1.1 };
+        }
+
+        const dir: string = action === 'idle' ? (this.facing === 'up' ? 'up' : 'down') : this.facing;
+        return { image: 'vendor/characters/village_man_' + action + '_' + dir + '.png', frameW: 64, frameH: 64, scale: 1.1 };
     }
 
     async think(): Promise<void> {
@@ -140,13 +180,15 @@ class Resident {
         try {
             const decision: Decision = await BrainClient.decide(context);
 
-            this.lastThought = decision.thought || "No thought";
+            this.lastThought = this.normalizeThought(decision.thought || "No thought");
             EventBus.emit('agent.thought', 'agent', {
                 actor: this.name,
                 thought: this.lastThought,
                 intent: decision.real_intent
             });
-            addLog(this.name, '"' + this.lastThought + '"');
+            if (this.shouldLogThought(this.lastThought)) {
+                addLog(this.name, '"' + this.lastThought + '"');
+            }
 
             this.processDecision(decision);
 
@@ -155,6 +197,25 @@ class Resident {
             this.state = "IDLE";
             this.cooldown = COOLDOWNS.ERROR_RETRY;
         }
+    }
+
+    normalizeThought(thought: string): string {
+        if (this.type === 'cat' && thought.toLowerCase().includes('meow')) {
+            const dangerVisible: boolean = world.anomalies.some(function(a: Anomaly): boolean {
+                return a.stage === 'GESTATING' || a.stage === 'ACTIVE';
+            });
+            return dangerVisible ? thought : 'Meow.';
+        }
+        return thought;
+    }
+
+    shouldLogThought(thought: string): boolean {
+        if (thought === this.lastLoggedThought && this.thoughtLogCooldown > 0) {
+            return false;
+        }
+        this.lastLoggedThought = thought;
+        this.thoughtLogCooldown = this.type === 'cat' ? COOLDOWNS.CAT_VOICE_LOG : COOLDOWNS.THOUGHT_LOG;
+        return true;
     }
 
     processDecision(d: Decision): void {
@@ -199,8 +260,14 @@ class Resident {
             const targetRes: Resident | undefined = world.residents.find(function(r: Resident): boolean { return r.name === act.target; });
 
             if (targetObj) {
-                tx = targetObj.x;
-                ty = targetObj.y;
+                const reachable: PathNode | null = this.findReachableNeighbor(targetObj.x, targetObj.y);
+                if (!reachable) {
+                    addLog(this.name, "Cannot reach " + targetObj.id + ".");
+                    this.cooldown = COOLDOWNS.ERROR_RETRY;
+                    return;
+                }
+                tx = reachable.x;
+                ty = reachable.y;
             } else if (targetRes) {
                 tx = targetRes.x;
                 ty = targetRes.y;
@@ -254,5 +321,26 @@ class Resident {
         else if (act.type === 'WAIT') {
             this.cooldown = act.duration || 0;
         }
+    }
+
+    findReachableNeighbor(tx: number, ty: number): PathNode | null {
+        const candidates: PathNode[] = [
+            { x: Math.round(tx), y: Math.round(ty) },
+            { x: Math.round(tx) + 1, y: Math.round(ty) },
+            { x: Math.round(tx) - 1, y: Math.round(ty) },
+            { x: Math.round(tx), y: Math.round(ty) + 1 },
+            { x: Math.round(tx), y: Math.round(ty) - 1 }
+        ];
+
+        let best: { node: PathNode; pathLen: number } | null = null;
+        for (const candidate of candidates) {
+            if (!pf.isWalkable(candidate.x, candidate.y)) continue;
+            const path: PathNode[] | null = pf.findPath(Math.round(this.x), Math.round(this.y), candidate.x, candidate.y);
+            if (!path || path.length === 0) continue;
+            if (!best || path.length < best.pathLen) {
+                best = { node: candidate, pathLen: path.length };
+            }
+        }
+        return best ? best.node : null;
     }
 }

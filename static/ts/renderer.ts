@@ -155,6 +155,31 @@ class Renderer {
         this.ctx.globalAlpha = 1.0;
     }
 
+    drawSpriteFrame(imgName: string, gx: number, gy: number, frameW: number, frameH: number, frame: number, scale: number = 1): void {
+        const img: HTMLImageElement | undefined = this.assets[imgName];
+        if (!img) return;
+
+        const frames: number = Math.max(1, Math.floor(img.width / frameW));
+        const frameIndex: number = Math.abs(frame) % frames;
+        const pos: ScreenPos = this.isoToScreen(gx, gy);
+        const drawW: number = frameW * this.zoom * scale;
+        const drawH: number = frameH * this.zoom * scale;
+        const drawX: number = pos.x - drawW / 2;
+        const drawY: number = pos.y + this.tileH - drawH;
+
+        this.ctx.drawImage(
+            img,
+            frameIndex * frameW,
+            0,
+            frameW,
+            frameH,
+            drawX,
+            drawY,
+            drawW,
+            drawH
+        );
+    }
+
     drawText(text: string, gx: number, gy: number, color: string = "white"): void {
         if (!text) return;
         const pos: ScreenPos = this.isoToScreen(gx, gy);
