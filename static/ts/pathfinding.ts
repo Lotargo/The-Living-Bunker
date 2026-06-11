@@ -1,20 +1,20 @@
 class BinaryHeap {
-    /** @param {Function} scoreFn - returns the priority score for an element. */
-    constructor(scoreFn) {
+    content: AStarNode[];
+    scoreFn: (node: AStarNode) => number;
+
+    constructor(scoreFn: (node: AStarNode) => number) {
         this.content = [];
         this.scoreFn = scoreFn;
     }
 
-    /** Inserts an element and restores heap order upward. */
-    push(element) {
+    push(element: AStarNode): void {
         this.content.push(element);
         this._bubbleUp(this.content.length - 1);
     }
 
-    /** Removes and returns the lowest-scored element, restoring heap order downward. */
-    pop() {
-        const result = this.content[0];
-        const end = this.content.pop();
+    pop(): AStarNode {
+        const result: AStarNode = this.content[0];
+        const end: AStarNode = this.content.pop()!;
         if (this.content.length > 0) {
             this.content[0] = end;
             this._sinkDown(0);
@@ -22,18 +22,16 @@ class BinaryHeap {
         return result;
     }
 
-    /** Returns the number of elements in the heap. */
-    size() {
+    size(): number {
         return this.content.length;
     }
 
-    /** Moves element at index n up until heap order is satisfied. */
-    _bubbleUp(n) {
-        const element = this.content[n];
-        const score = this.scoreFn(element);
+    private _bubbleUp(n: number): void {
+        const element: AStarNode = this.content[n];
+        const score: number = this.scoreFn(element);
         while (n > 0) {
-            const parentN = Math.floor((n + 1) / 2) - 1;
-            const parent = this.content[parentN];
+            const parentN: number = Math.floor((n + 1) / 2) - 1;
+            const parent: AStarNode = this.content[parentN];
             if (score >= this.scoreFn(parent)) break;
             this.content[parentN] = element;
             this.content[n] = parent;
@@ -41,27 +39,26 @@ class BinaryHeap {
         }
     }
 
-    /** Moves element at index n down until heap order is satisfied. */
-    _sinkDown(n) {
-        const length = this.content.length;
-        const element = this.content[n];
-        const elemScore = this.scoreFn(element);
+    private _sinkDown(n: number): void {
+        const length: number = this.content.length;
+        const element: AStarNode = this.content[n];
+        const elemScore: number = this.scoreFn(element);
 
         while (true) {
-            let child2N = (n + 1) * 2;
-            let child1N = child2N - 1;
-            let swap = null;
-            let child1Score = null;
+            let child2N: number = (n + 1) * 2;
+            let child1N: number = child2N - 1;
+            let swap: number | null = null;
+            let child1Score: number = Infinity;
 
             if (child1N < length) {
-                const child1 = this.content[child1N];
+                const child1: AStarNode = this.content[child1N];
                 child1Score = this.scoreFn(child1);
                 if (child1Score < elemScore) swap = child1N;
             }
 
             if (child2N < length) {
-                const child2 = this.content[child2N];
-                const child2Score = this.scoreFn(child2);
+                const child2: AStarNode = this.content[child2N];
+                const child2Score: number = this.scoreFn(child2);
                 if (child2Score < (swap === null ? elemScore : child1Score)) {
                     swap = child2N;
                 }
@@ -77,47 +74,45 @@ class BinaryHeap {
 }
 
 class Pathfinding {
-    /** @param {number} gridSize - width/height of the square grid. */
-    constructor(gridSize) {
+    size: number;
+    grid: number[][];
+
+    constructor(gridSize: number) {
         this.size = gridSize;
         this.grid = create2DGrid(gridSize, 0);
     }
 
-    /** Marks cell (x, y) as an obstacle. */
-    setObstacle(x, y) {
+    setObstacle(x: number, y: number): void {
         if (x >= 0 && x < this.size && y >= 0 && y < this.size) {
             this.grid[x][y] = 1;
         }
     }
 
-    /** Removes obstacle at cell (x, y). */
-    clearObstacle(x, y) {
+    clearObstacle(x: number, y: number): void {
         if (x >= 0 && x < this.size && y >= 0 && y < this.size) {
             this.grid[x][y] = 0;
         }
     }
 
-    /** Returns true if cell (x, y) is within bounds and not an obstacle. */
-    isWalkable(x, y) {
+    isWalkable(x: number, y: number): boolean {
         return x >= 0 && x < this.size && y >= 0 && y < this.size && this.grid[x][y] === 0;
     }
 
-    /** A* search from (startX, startY) to (endX, endY). Returns an array of {x,y} nodes or null. */
-    findPath(startX, startY, endX, endY) {
+    findPath(startX: number, startY: number, endX: number, endY: number): PathNode[] | null {
         if (!this.isWalkable(startX, startY) || !this.isWalkable(endX, endY)) return null;
 
-        const start = { x: startX, y: startY, g: 0, f: 0, parent: null };
-        const openHeap = new BinaryHeap(function(node) { return node.f; });
+        const start: AStarNode = { x: startX, y: startY, g: 0, f: 0, parent: null };
+        const openHeap: BinaryHeap = new BinaryHeap(function(node: AStarNode): number { return node.f; });
         openHeap.push(start);
 
-        const closedSet = new Set();
+        const closedSet: Set<string> = new Set();
 
         while (openHeap.size() > 0) {
-            const current = openHeap.pop();
+            const current: AStarNode = openHeap.pop();
 
             if (current.x === endX && current.y === endY) {
-                const path = [];
-                let temp = current;
+                const path: PathNode[] = [];
+                let temp: AStarNode | null = current;
                 while (temp) {
                     path.push({ x: temp.x, y: temp.y });
                     temp = temp.parent;
@@ -127,23 +122,25 @@ class Pathfinding {
 
             closedSet.add(current.x + ',' + current.y);
 
-            const neighbors = [
+            const neighbors: PathNode[] = [
                 { x: current.x + 1, y: current.y },
                 { x: current.x - 1, y: current.y },
                 { x: current.x, y: current.y + 1 },
                 { x: current.x, y: current.y - 1 }
             ];
 
-            for (let n of neighbors) {
+            for (const n of neighbors) {
                 if (!this.isWalkable(n.x, n.y)) continue;
-                const key = n.x + ',' + n.y;
+                const key: string = n.x + ',' + n.y;
                 if (closedSet.has(key)) continue;
 
-                const gScore = current.g + 1;
-                const h = Math.abs(n.x - endX) + Math.abs(n.y - endY);
-                const fScore = gScore + h;
+                const gScore: number = current.g + 1;
+                const h: number = Math.abs(n.x - endX) + Math.abs(n.y - endY);
+                const fScore: number = gScore + h;
 
-                const neighborInOpen = openHeap.content.find(function(o) { return o.x === n.x && o.y === n.y; });
+                const neighborInOpen: AStarNode | undefined = openHeap.content.find(
+                    function(o: AStarNode): boolean { return o.x === n.x && o.y === n.y; }
+                );
 
                 if (!neighborInOpen) {
                     openHeap.push({ x: n.x, y: n.y, g: gScore, f: fScore, parent: current });

@@ -5,4 +5,7 @@ server.log
 venv/
 .venv/
 *.egg-info/
+node_modules/
+static/js/game.js
+static/js/game.js.map
 REFACTOR_MAP.md*

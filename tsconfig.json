@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "none",
+    "outFile": "./static/js/game.js",
+    "strict": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "removeComments": false,
+    "sourceMap": false,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "rootDir": "./static/ts",
+    "typeRoots": ["./static/ts/types"],
+    "ignoreDeprecations": "6.0"
+  },
+  "files": [
+    "static/ts/types/globals.d.ts",
+    "static/ts/types/ambient.d.ts",
+    "static/ts/config.ts",
+    "static/ts/StateManager.ts",
+    "static/ts/helpers.ts",
+    "static/ts/pathfinding.ts",
+    "static/ts/renderer.ts",
+    "static/ts/WorldState.ts",
+    "static/ts/Resident.ts",
+    "static/ts/Anomaly.ts",
+    "static/ts/RoomBuilder.ts",
+    "static/ts/UIController.ts",
+    "static/ts/ConsoleController.ts",
+    "static/ts/main.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "tests"
+  ]
+}

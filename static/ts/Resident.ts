@@ -1,6 +1,22 @@
 class Resident {
-    /** @param {string} name @param {string} color @param {number} startX @param {number} startY @param {string} [type] */
-    constructor(name, color, startX, startY, type) {
+    name: string;
+    color: string;
+    x: number;
+    y: number;
+    type: string;
+    sprite: string;
+    state: string;
+    path: PathNode[];
+    target: string | null;
+    needs: Needs;
+    health: number;
+    lastThought: string;
+    actionQueue: { type: string; target?: string; action?: string; duration?: number }[];
+    cooldown: number;
+    whisperCount: number;
+    memories: string[];
+
+    constructor(name: string, color: string, startX: number, startY: number, type?: string) {
         this.name = name;
         this.color = color;
         this.x = startX;
@@ -32,8 +48,7 @@ class Resident {
         this.memories = [];
     }
 
-    /** Decays needs each tick; processes movement, action queue, or triggers think(). */
-    update(dt) {
+    update(_dt?: number): void {
         this.needs.hunger += NEEDS.DECAY_HUNGER;
         this.needs.energy += NEEDS.DECAY_ENERGY;
         this.needs.fun += NEEDS.DECAY_FUN;
@@ -48,7 +63,7 @@ class Resident {
             this.moveAlongPath();
         } else if (this.state === "IDLE") {
             if (this.actionQueue.length > 0) {
-                const nextAction = this.actionQueue.shift();
+                const nextAction = this.actionQueue.shift()!;
                 this.executeAction(nextAction);
             } else {
                 if (Math.random() < NEEDS.THINK_CHANCE || this.needs.hunger > NEEDS.THINK_THRESHOLD_HUNGER || this.needs.energy < NEEDS.THINK_THRESHOLD_ENERGY) {
@@ -58,16 +73,15 @@ class Resident {
         }
     }
 
-    /** Moves the resident one step toward the next path node. */
-    moveAlongPath() {
+    moveAlongPath(): void {
         if (this.path.length === 0) {
             this.state = "IDLE";
             return;
         }
-        const next = this.path[0];
-        const speed = this.type === 'cat' ? MOVEMENT.CAT_SPEED : MOVEMENT.HUMAN_SPEED;
-        const dx = next.x - this.x;
-        const dy = next.y - this.y;
+        const next: PathNode = this.path[0];
+        const speed: number = this.type === 'cat' ? MOVEMENT.CAT_SPEED : MOVEMENT.HUMAN_SPEED;
+        const dx: number = next.x - this.x;
+        const dy: number = next.y - this.y;
 
         if (Math.abs(dx) < speed && Math.abs(dy) < speed) {
             this.x = next.x;
@@ -79,42 +93,42 @@ class Resident {
         }
     }
 
-    /** Gathers context and asks the AI for a decision, then processes it. */
-    async think() {
+    async think(): Promise<void> {
         this.state = "THINKING";
+        const self: Resident = this;
 
-        let nearby = world.objects.map(function(o) {
+        let nearby: NearbyObject[] = world.objects.map(function(o: WorldObject): NearbyObject {
             return {
                 id: o.id,
                 type: o.type,
-                dist: Math.abs(o.x - this.x) + Math.abs(o.y - this.y)
+                dist: Math.abs(o.x - self.x) + Math.abs(o.y - self.y)
             };
-        }, this).sort(function(a,b) { return a.dist - b.dist; }).slice(0, 8);
+        }).sort(function(a: NearbyObject, b: NearbyObject): number { return (a.dist || 0) - (b.dist || 0); }).slice(0, 8);
 
-        let visibleAnomalies = world.anomalies.map(function(a) {
+        let visibleAnomalies: VisibleAnomaly[] = world.anomalies.map(function(a: Anomaly): VisibleAnomaly {
             return {
                 type: a.type,
                 stage: a.stage,
-                dist: Math.abs(a.x - this.x) + Math.abs(a.y - this.y)
+                dist: Math.abs(a.x - self.x) + Math.abs(a.y - self.y)
             };
-        }, this).filter(function(a) {
-            if (this.type === 'cat') return a.dist < 15;
+        }).filter(function(a: VisibleAnomaly): boolean {
+            if (self.type === 'cat') return a.dist < 15;
             return a.stage === 'ACTIVE' && a.dist < 10;
-        }, this);
+        });
 
         if (this.type !== 'cat') {
-            const luna = world.residents.find(function(r) { return r.name === 'Luna'; });
+            const luna: Resident | undefined = world.residents.find(function(r: Resident): boolean { return r.name === 'Luna'; });
             if (luna && (Math.abs(luna.x - this.x) + Math.abs(luna.y - this.y)) < 8) {
                 nearby.push({ id: 'Luna', type: 'Cat', behavior: luna.lastThought });
             }
         }
 
-        const context = {
+        const context: Context = {
             name: this.name,
             state: "IDLE",
             needs: this.needs,
             health: this.health,
-            nearby: nearby.map(function(o) { return { id: o.id, type: o.type, behavior: o.behavior }; }),
+            nearby: nearby.map(function(o: NearbyObject) { return { id: o.id, type: o.type, behavior: o.behavior }; }),
             anomalies: visibleAnomalies,
             atmosphere: world.atmosphere,
             memory: {
@@ -124,12 +138,12 @@ class Resident {
         };
 
         try {
-            const res = await fetch('/api/decide', {
+            const res: Response = await fetch('/api/decide', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(context)
             });
-            const decision = await res.json();
+            const decision: Decision = await res.json();
 
             this.lastThought = decision.thought || "No thought";
             addLog(this.name, '"' + this.lastThought + '"');
@@ -143,28 +157,27 @@ class Resident {
         }
     }
 
-    /** Pushes actions onto the queue based on the AI decision object. */
-    processDecision(d) {
-        const target = d.target;
+    processDecision(d: Decision): void {
+        const target: string | undefined = d.target;
 
         if (d.action === "MOVE") {
             this.actionQueue.push({ type: 'MOVE', target: target });
         }
         else if (d.action === "STARE") {
-             this.state = "IDLE";
-             this.cooldown = COOLDOWNS.CAT_STARE;
-             addLog(this.name, "Stares intently at nothing...");
+            this.state = "IDLE";
+            this.cooldown = COOLDOWNS.CAT_STARE;
+            addLog(this.name, "Stares intently at nothing...");
         }
         else if (["EAT", "SLEEP", "SIT", "PLAY", "LISTEN", "USE", "SHOWER", "WATCH", "INSPECT", "HISS", "PURR"].includes(d.action)) {
-            const targetObj = world.objects.find(function(o) { return o.id === target; });
+            const targetObj: WorldObject | undefined = world.objects.find(function(o: WorldObject): boolean { return o.id === target; });
             if (targetObj) {
-                const dist = Math.abs(targetObj.x - this.x) + Math.abs(targetObj.y - this.y);
+                const dist: number = Math.abs(targetObj.x - this.x) + Math.abs(targetObj.y - this.y);
                 if (dist > 1.5) {
                     this.actionQueue.push({ type: 'MOVE', target: target });
                 }
                 this.actionQueue.push({ type: 'INTERACT', action: d.action, target: target });
             } else {
-                 this.actionQueue.push({ type: 'WAIT', duration: 30 });
+                this.actionQueue.push({ type: 'WAIT', duration: 30 });
             }
         }
         else {
@@ -173,12 +186,12 @@ class Resident {
         this.state = "IDLE";
     }
 
-    /** Executes a single action: MOVE, INTERACT, or WAIT. */
-    executeAction(act) {
+    executeAction(act: { type: string; target?: string; action?: string; duration?: number }): void {
         if (act.type === 'MOVE') {
-            let tx, ty;
-            const targetObj = world.objects.find(function(o) { return o.id === act.target; });
-            const targetRes = world.residents.find(function(r) { return r.name === act.target; });
+            let tx: number | undefined;
+            let ty: number | undefined;
+            const targetObj: WorldObject | undefined = world.objects.find(function(o: WorldObject): boolean { return o.id === act.target; });
+            const targetRes: Resident | undefined = world.residents.find(function(r: Resident): boolean { return r.name === act.target; });
 
             if (targetObj) {
                 tx = targetObj.x;
@@ -187,20 +200,20 @@ class Resident {
                 tx = targetRes.x;
                 ty = targetRes.y;
             } else if (act.target === 'random') {
-                 tx = Math.floor(Math.random() * GRID_SIZE);
-                 ty = Math.floor(Math.random() * GRID_SIZE);
+                tx = Math.floor(Math.random() * GRID_SIZE);
+                ty = Math.floor(Math.random() * GRID_SIZE);
             } else {
-                 return;
+                return;
             }
 
-            const path = pf.findPath(Math.round(this.x), Math.round(this.y), tx, ty);
+            const path: PathNode[] | null = pf.findPath(Math.round(this.x), Math.round(this.y), tx!, ty!);
             if (path && path.length > 0) {
                 this.path = path;
                 this.state = "MOVING";
             }
         }
         else if (act.type === 'INTERACT') {
-            const op = act.action;
+            const op: string = act.action || '';
             this.cooldown = COOLDOWNS.INTERACT;
 
             if (op === 'EAT') {
@@ -213,7 +226,7 @@ class Resident {
             }
         }
         else if (act.type === 'WAIT') {
-            this.cooldown = act.duration;
+            this.cooldown = act.duration || 0;
         }
     }
 }

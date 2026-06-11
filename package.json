@@ -1,0 +1,30 @@
+{
+  "name": "the-living-bunker",
+  "version": "1.0.0",
+  "description": "**Living Bunker** is an autonomous agent simulation exploring the boundaries of AI semiotics, non-verbal communication, and emergent behavior in a confined environment.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "del static\\js\\game.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lotargo/The-Living-Bunker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Lotargo/The-Living-Bunker/issues"
+  },
+  "homepage": "https://github.com/Lotargo/The-Living-Bunker#readme",
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}
