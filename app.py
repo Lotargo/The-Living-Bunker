@@ -272,8 +272,7 @@ def decide():
                 content = resp_json['choices'][0]['message']['content']
                 try:
                     response_data = json.loads(content)
-                except:
-                    # sometimes LLM puts markdown code blocks
+                except json.JSONDecodeError:
                     content = content.replace("```json", "").replace("```", "")
                     response_data = json.loads(content)
             else:
@@ -380,15 +379,15 @@ def architect():
             content = resp_json['choices'][0]['message']['content']
             try:
                 architect_response = json.loads(content)
-            except ValueError:
-                 # Diegetic error handling
+            except json.JSONDecodeError:
                  print(f"Architect Error: Invalid JSON received. Content: {content}")
                  return jsonify({
                      "response": "Connection interference... Signal lost. (Invalid Protocol)",
                      "commands": []
                  })
             except Exception as e:
-                # Fallback for other parsing errors
+                if isinstance(e, json.JSONDecodeError):
+                    raise
                 content = content.replace("```json", "").replace("```", "")
                 try:
                     architect_response = json.loads(content)
@@ -412,4 +411,6 @@ def architect():
         return jsonify({"response": "Connection interference... Signal lost.", "commands": []})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    debug_mode = os.environ.get('FLASK_DEBUG', '0').lower() in ('1', 'true', 'yes')
+    host = os.environ.get('FLASK_HOST', '127.0.0.1')
+    app.run(host=host, port=5000, debug=debug_mode)

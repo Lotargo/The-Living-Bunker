@@ -62,14 +62,18 @@ function initMap() {
         for(let i=x; i<x+w; i++) {
              world.walls.push({ x: i, y: y, type: 'wall_right.png' });
              world.map[i][y] = 1;
+             if (pf) pf.setObstacle(i, y);
              world.walls.push({ x: i, y: y+h, type: 'wall_right.png' });
              world.map[i][y+h] = 1;
+             if (pf) pf.setObstacle(i, y+h);
         }
         for(let j=y; j<y+h; j++) {
              world.walls.push({ x: x, y: j, type: 'wall_left.png' });
              world.map[x][j] = 1;
+             if (pf) pf.setObstacle(x, j);
              world.walls.push({ x: x+w, y: j, type: 'wall_left.png' });
              world.map[x+w][j] = 1;
+             if (pf) pf.setObstacle(x+w, j);
         }
     }
 
@@ -393,10 +397,12 @@ class Anomaly {
         // Doppelganger specific death
         if (this.type === 'Doppelganger') {
             const luna = world.residents.find(r => r.name === 'Luna');
-            const dist = Math.abs(luna.x - this.x) + Math.abs(luna.y - this.y);
-            if (dist < 4) {
-                addLog("Doppelgänger", "SCREEECH! (Dissolves upon meeting original)");
-                return false; // Dies
+            if (luna) {
+                const dist = Math.abs(luna.x - this.x) + Math.abs(luna.y - this.y);
+                if (dist < 4) {
+                    addLog("Doppelgänger", "SCREEECH! (Dissolves upon meeting original)");
+                    return false;
+                }
             }
         }
 
@@ -455,8 +461,10 @@ class Anomaly {
             if (decision.action === 'HAUNT' || decision.action === 'MOVE' || decision.action === 'MIMIC') {
                 if (world.residents.length > 0) {
                     const target = world.residents[Math.floor(Math.random() * world.residents.length)];
-                    this.x = target.x + (Math.random() - 0.5) * 4;
-                    this.y = target.y + (Math.random() - 0.5) * 4;
+                    if (target) {
+                        this.x = target.x + (Math.random() - 0.5) * 4;
+                        this.y = target.y + (Math.random() - 0.5) * 4;
+                    }
                 }
             }
             this.cooldown = 60;
@@ -567,18 +575,18 @@ const RoomBuilder = {
         for(let i=rect.x; i<rect.x+rect.w; i++) {
              world.walls.push({ x: i, y: rect.y, type: 'wall_right.png' });
              world.map[i][rect.y] = 1;
+             if (pf) pf.setObstacle(i, rect.y);
              world.walls.push({ x: i, y: rect.y+rect.h, type: 'wall_right.png' });
              world.map[i][rect.y+rect.h] = 1;
-             pf.setObstacle(i, rect.y);
-             pf.setObstacle(i, rect.y+rect.h);
+             if (pf) pf.setObstacle(i, rect.y+rect.h);
         }
         for(let j=rect.y; j<rect.y+rect.h; j++) {
              world.walls.push({ x: rect.x, y: j, type: 'wall_left.png' });
              world.map[rect.x][j] = 1;
+             if (pf) pf.setObstacle(rect.x, j);
              world.walls.push({ x: rect.x+rect.w, y: j, type: 'wall_left.png' });
              world.map[rect.x+rect.w][j] = 1;
-             pf.setObstacle(rect.x, j);
-             pf.setObstacle(rect.x+rect.w, j);
+             if (pf) pf.setObstacle(rect.x+rect.w, j);
         }
 
         // Furnish
@@ -637,9 +645,10 @@ world.residents.push(new Resident("Blue", "Blue", 15, 17));
 world.residents.push(new Resident("Green", "Green", 15, 19));
 world.residents.push(new Resident("Luna", "Black", 10, 10, 'cat'));
 
+// Safety sync: ensure pf knows about all initial walls
 for(let x=0; x<GRID_SIZE; x++) {
     for(let y=0; y<GRID_SIZE; y++) {
-        if (world.map[x][y] === 1) pf.setObstacle(x, y);
+        if (world.map[x][y] === 1 && pf) pf.setObstacle(x, y);
     }
 }
 
@@ -647,16 +656,21 @@ function addLog(who, msg) {
     const log = document.getElementById('logs');
     const div = document.createElement('div');
     div.className = 'log-entry';
-    div.innerHTML = `<b>${who}:</b> ${msg}`;
+    const strong = document.createElement('strong');
+    strong.textContent = `${who}: `;
+    div.appendChild(strong);
+    div.appendChild(document.createTextNode(msg));
     log.prepend(div);
 }
 
 function updateUI() {
     const list = document.getElementById('residents-list');
     list.innerHTML = '';
-    // Atmosphere
     const atm = document.createElement('div');
-    atm.innerHTML = `<b>Atmosphere:</b> ${world.atmosphere}`;
+    const atmStrong = document.createElement('strong');
+    atmStrong.textContent = 'Atmosphere: ';
+    atm.appendChild(atmStrong);
+    atm.appendChild(document.createTextNode(world.atmosphere));
     list.appendChild(atm);
 
     world.residents.forEach(r => {
@@ -664,15 +678,34 @@ function updateUI() {
         div.className = 'resident-card';
         if (r.type === 'cat') div.style.border = "1px solid #9b59b6";
 
-        div.innerHTML = `
-            <h4>${r.name}</h4>
-            <div style="font-size:10px">${r.lastThought}</div>
-            <div class="bar-container" title="Health"><div class="bar-fill" style="width:${Math.min(100, r.health)}%; background:#2ecc71;"></div></div>
-            <div class="bar-container" title="Hunger"><div class="bar-fill" style="width:${Math.min(100, r.needs.hunger)}%; background:#e74c3c;"></div></div>
-            <div class="bar-container" title="Energy"><div class="bar-fill" style="width:${Math.min(100, r.needs.energy)}%; background:#f1c40f;"></div></div>
-            <div class="bar-container" title="Fun"><div class="bar-fill" style="width:${Math.min(100, r.needs.fun)}%; background:#3498db;"></div></div>
-            <div class="bar-container" title="Hygiene"><div class="bar-fill" style="width:${Math.min(100, r.needs.hygiene)}%; background:#27ae60;"></div></div>
-        `;
+        const h4 = document.createElement('h4');
+        h4.textContent = r.name;
+        div.appendChild(h4);
+
+        const thought = document.createElement('div');
+        thought.style.fontSize = '10px';
+        thought.textContent = r.lastThought;
+        div.appendChild(thought);
+
+        const bars = [
+            { key: 'health', color: '#2ecc71', val: r.health },
+            { key: 'needs.hunger', color: '#e74c3c', val: r.needs.hunger },
+            { key: 'needs.energy', color: '#f1c40f', val: r.needs.energy },
+            { key: 'needs.fun', color: '#3498db', val: r.needs.fun },
+            { key: 'needs.hygiene', color: '#27ae60', val: r.needs.hygiene },
+        ];
+        bars.forEach(b => {
+            const bar = document.createElement('div');
+            bar.className = 'bar-container';
+            bar.title = b.key;
+            const fill = document.createElement('div');
+            fill.className = 'bar-fill';
+            fill.style.width = `${Math.min(100, b.val)}%`;
+            fill.style.background = b.color;
+            bar.appendChild(fill);
+            div.appendChild(bar);
+        });
+
         list.appendChild(div);
     });
 }
@@ -747,7 +780,6 @@ const assetNames = [
 ];
 
 renderer.loadAssets(assetNames, () => {
-    console.log("Assets Loaded");
     loop();
 });
 
@@ -802,8 +834,6 @@ function logConsole(type, text) {
 }
 
 function executeGodCommand(cmd) {
-    console.log("Executing:", cmd);
-
     if (cmd.action === 'SPAWN') {
         const type = cmd.type; // Ghost, Glitch, Doppelganger, Poltergeist
         let loc = cmd.location || 'Random';
