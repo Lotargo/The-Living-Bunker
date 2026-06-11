@@ -8,18 +8,18 @@ function create2DGrid(size, initial) {
 /** Builds wall tiles around the perimeter of a room rect and marks them as obstacles. */
 function buildRoomWalls(rect) {
     for(let i=rect.x; i<rect.x+rect.w; i++) {
-         world.walls.push({ x: i, y: rect.y, type: 'wall_right.png' });
+         world.addWall({ x: i, y: rect.y, type: 'wall_right.png' });
          world.map[i][rect.y] = 1;
          if (typeof pf !== 'undefined' && pf) pf.setObstacle(i, rect.y);
-         world.walls.push({ x: i, y: rect.y+rect.h, type: 'wall_right.png' });
+         world.addWall({ x: i, y: rect.y+rect.h, type: 'wall_right.png' });
          world.map[i][rect.y+rect.h] = 1;
          if (typeof pf !== 'undefined' && pf) pf.setObstacle(i, rect.y+rect.h);
     }
     for(let j=rect.y; j<rect.y+rect.h; j++) {
-         world.walls.push({ x: rect.x, y: j, type: 'wall_left.png' });
+         world.addWall({ x: rect.x, y: j, type: 'wall_left.png' });
          world.map[rect.x][j] = 1;
          if (typeof pf !== 'undefined' && pf) pf.setObstacle(rect.x, j);
-         world.walls.push({ x: rect.x+rect.w, y: j, type: 'wall_left.png' });
+         world.addWall({ x: rect.x+rect.w, y: j, type: 'wall_left.png' });
          world.map[rect.x+rect.w][j] = 1;
          if (typeof pf !== 'undefined' && pf) pf.setObstacle(rect.x+rect.w, j);
     }

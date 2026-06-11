@@ -60,13 +60,13 @@ const RoomBuilder = {
         if (['Library', 'LivingRoom', 'Bedroom'].includes(type)) floor = FLOOR_WOOD;
         if (['Kitchen', 'Medbay'].includes(type)) floor = FLOOR_TILE;
 
-        world.rooms.push({ name: name, x: rect.x, y: rect.y, w: rect.w, h: rect.h });
+        world.addRoom({ name: name, x: rect.x, y: rect.y, w: rect.w, h: rect.h });
         fillRoomFloors(rect, floor);
         buildRoomWalls(rect);
 
         const template = FurnitureTemplates[type] || FurnitureTemplates['Empty'];
         template.forEach(function(item) {
-            world.objects.push({
+            world.addObject({
                 id: item.id + "_" + Math.floor(Math.random()*999),
                 type: item.type,
                 x: rect.x + item.dx,
@@ -83,7 +83,7 @@ const RoomBuilder = {
         const cy2 = Math.floor(roomB.y + roomB.h/2);
 
         const dig = function(x, y) {
-            world.walls = world.walls.filter(function(w) { return !(w.x === x && w.y === y); });
+            world.removeWall(x, y);
             world.map[x][y] = 0;
             if (world.floorTypes[x][y] === 0) world.floorTypes[x][y] = 1;
             if (typeof pf !== 'undefined' && pf) pf.clearObstacle(x, y);

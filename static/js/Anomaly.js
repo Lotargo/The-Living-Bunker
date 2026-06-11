@@ -28,10 +28,10 @@ class Anomaly {
             if (this.gestationTimer <= 0) {
                 this.stage = 'ACTIVE';
                 addLog("SYSTEM", "ANOMALY MANIFESTED: " + this.type);
-                world.atmosphere = "Heavy Static";
+                world.setAtmosphere("Heavy Static");
             } else {
                 if (Math.random() < ANOMALY.ATMOSPHERE_PRECURSOR_CHANCE) {
-                    world.atmosphere = "Cold Draft";
+                    world.setAtmosphere("Cold Draft");
                 }
             }
             return true;
@@ -122,16 +122,16 @@ const AnomalyManager = {
     spawnChance: ANOMALY.SPAWN_CHANCE,
     /** Updates all anomalies, manages atmosphere, and randomly spawns new ones. */
     update: function() {
-        world.anomalies = world.anomalies.filter(function(a) { return a.update(); });
+        world.removeAnomalies(function(a) { return a.update(); });
 
-        if (world.anomalies.length === 0) world.atmosphere = "Normal";
+        if (world.anomalies.length === 0) world.setAtmosphere("Normal");
 
         if (Math.random() < AnomalyManager.spawnChance && world.anomalies.length < ANOMALY.MAX_ANOMALIES) {
             const types = ['Ghost', 'Glitch', 'Doppelganger'];
             const type = types[Math.floor(Math.random() * types.length)];
             const x = Math.random() * GRID_SIZE;
             const y = Math.random() * GRID_SIZE;
-            world.anomalies.push(new Anomaly(type, x, y));
+            world.addAnomaly(new Anomaly(type, x, y));
         }
     }
 };

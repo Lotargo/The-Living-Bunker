@@ -4,10 +4,10 @@ const pf = new Pathfinding(GRID_SIZE);
 
 initMap();
 
-world.residents.push(new Resident("Red", "Red", 15, 15));
-world.residents.push(new Resident("Blue", "Blue", 15, 17));
-world.residents.push(new Resident("Green", "Green", 15, 19));
-world.residents.push(new Resident("Luna", "Black", 10, 10, 'cat'));
+world.addResident(new Resident("Red", "Red", 15, 15));
+world.addResident(new Resident("Blue", "Blue", 15, 17));
+world.addResident(new Resident("Green", "Green", 15, 19));
+world.addResident(new Resident("Luna", "Black", 10, 10, 'cat'));
 
 for(let x=0; x<GRID_SIZE; x++) {
     for(let y=0; y<GRID_SIZE; y++) {
@@ -21,6 +21,23 @@ function isTileVisible(gx, gy) {
     const margin = renderer.tileW * 2;
     return pos.x > -margin && pos.x < renderer.width + margin &&
            pos.y > -margin && pos.y < renderer.height + margin;
+}
+
+let cachedStaticList = [];
+
+function rebuildStaticList() {
+    cachedStaticList = [];
+    world.objects.forEach(function(o) {
+        if (isTileVisible(o.x, o.y)) {
+            cachedStaticList.push({ type: 'obj', ref: o, x: o.x, y: o.y, sortZ: o.x + o.y });
+        }
+    });
+    world.walls.forEach(function(w) {
+        if (isTileVisible(w.x, w.y)) {
+            cachedStaticList.push({ type: 'wall', ref: w, x: w.x, y: w.y, sortZ: w.x + w.y });
+        }
+    });
+    world.clearStaticDirty();
 }
 
 /** Main game loop: clears canvas, draws floors/walls/objects/residents/anomalies, and updates UI. */
@@ -41,28 +58,23 @@ function loop() {
     world.residents.forEach(function(r) { r.update(); });
     AnomalyManager.update();
 
-    let renderList = [];
-    world.objects.forEach(function(o) {
-        if (isTileVisible(o.x, o.y)) {
-            renderList.push({ type: 'obj', ref: o, x: o.x, y: o.y, sortZ: o.x + o.y });
-        }
-    });
-    world.walls.forEach(function(w) {
-        if (isTileVisible(w.x, w.y)) {
-            renderList.push({ type: 'wall', ref: w, x: w.x, y: w.y, sortZ: w.x + w.y });
-        }
-    });
+    if (world.staticDirty) {
+        rebuildStaticList();
+    }
+
+    let dynamicList = [];
     world.residents.forEach(function(r) {
         if (isTileVisible(r.x, r.y)) {
-            renderList.push({ type: 'res', ref: r, x: r.x, y: r.y, sortZ: r.x + r.y });
+            dynamicList.push({ type: 'res', ref: r, x: r.x, y: r.y, sortZ: r.x + r.y });
         }
     });
     world.anomalies.forEach(function(a) {
         if (isTileVisible(a.x, a.y)) {
-            renderList.push({ type: 'anomaly', ref: a, x: a.x, y: a.y, sortZ: a.x + a.y + 1 });
+            dynamicList.push({ type: 'anomaly', ref: a, x: a.x, y: a.y, sortZ: a.x + a.y + 1 });
         }
     });
 
+    const renderList = cachedStaticList.concat(dynamicList);
     renderList.sort(function(a, b) { return a.sortZ - b.sortZ; });
 
     renderList.forEach(function(item) {

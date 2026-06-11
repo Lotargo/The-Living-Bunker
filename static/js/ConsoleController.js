@@ -6,12 +6,11 @@ function executeGodCommand(cmd) {
 
         let x = 0, y = 0;
 
-        if (loc === 'Kitchen') { x = 4; y = 4; }
-        else if (loc === 'LivingRoom') { x = 6; y = 14; }
-        else if (loc === 'BedroomRed') { x = 25; y = 4; }
-        else if (loc === 'BedroomBlue') { x = 25; y = 14; }
-        else if (loc === 'Lab') { x = 25; y = 25; }
-        else {
+        const center = getRoomSpawnCenter(loc);
+        if (center) {
+            x = center.x;
+            y = center.y;
+        } else {
             x = Math.random() * GRID_SIZE;
             y = Math.random() * GRID_SIZE;
         }
@@ -30,12 +29,12 @@ function executeGodCommand(cmd) {
              addLog('SYSTEM', 'WARNING: POLTERGEIST DETECTED!');
         }
 
-        world.anomalies.push(anomaly);
+        world.addAnomaly(anomaly);
         logConsole('system', 'Spawned ' + type + ' at ' + loc + '.');
     }
 
     else if (cmd.action === 'ATMOSPHERE') {
-        world.atmosphere = cmd.type;
+        world.setAtmosphere(cmd.type);
         logConsole('system', 'Atmosphere changed to: ' + cmd.type);
     }
 
@@ -67,7 +66,11 @@ function executeGodCommand(cmd) {
         addLog('SYSTEM', 'WARNING: Residents exhibiting pack panic behavior.');
 
         let targetX = 15, targetY = 15;
-        if (loc === 'LivingRoom') { targetX = 6; targetY = 14; }
+        const center = getRoomSpawnCenter(loc);
+        if (center) {
+            targetX = center.x;
+            targetY = center.y;
+        }
 
         world.residents.forEach(function(r) {
              r.actionQueue = [];
