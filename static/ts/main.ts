@@ -148,7 +148,26 @@ const assetNames: string[] = [
     'vendor/characters/female_villager_walk_up.png',
     'vendor/characters/luna_idle.png',
     'vendor/monsters/bat_idle_down.png',
-    'vendor/monsters/bat_walk_down.png'
+    'vendor/monsters/bat_walk_down.png',
+    'vendor/interior/floor_wood.png',
+    'vendor/interior/floor_concrete.png',
+    'vendor/interior/floor_tile.png',
+    'vendor/interior/wall.png',
+    'vendor/interior/fridge.png',
+    'vendor/interior/stove.png',
+    'vendor/interior/bathtub.png',
+    'vendor/interior/toilet.png',
+    'vendor/interior/mirror.png',
+    'vendor/interior/table.png',
+    'vendor/interior/sofa.png',
+    'vendor/interior/bookshelf.png',
+    'vendor/interior/bed.png',
+    'vendor/interior/chair.png',
+    'vendor/interior/bottle.png',
+    'vendor/interior/plant_small.png',
+    'vendor/interior/crate.png',
+    'vendor/interior/papers.png',
+    'vendor/interior/barrel.png'
 ];
 
 renderer.loadAssets(assetNames, function(): void {

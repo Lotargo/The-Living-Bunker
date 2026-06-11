@@ -290,12 +290,10 @@ class Resident {
             if (targetObj) {
                 const dist: number = Math.abs(targetObj.x - this.x) + Math.abs(targetObj.y - this.y);
                 if (dist > 1.5) {
-                    const path: PathNode[] | null = pf.findPath(
-                        Math.round(this.x),
-                        Math.round(this.y),
-                        Math.round(targetObj.x),
-                        Math.round(targetObj.y)
-                    );
+                    const reachable: PathNode | null = this.findReachableNeighbor(targetObj.x, targetObj.y);
+                    const path: PathNode[] | null = reachable
+                        ? pf.findPath(Math.round(this.x), Math.round(this.y), reachable.x, reachable.y)
+                        : null;
                     if (path && path.length > 0) {
                         this.path = path;
                         this.actionQueue.unshift(act);

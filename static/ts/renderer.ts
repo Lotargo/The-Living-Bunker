@@ -30,13 +30,13 @@ class Renderer {
         this.loaded = 0;
         this.toLoad = 0;
 
-        this.baseTileW = 64;
-        this.baseTileH = 32;
+        this.baseTileW = VISUAL.TILE_WIDTH;
+        this.baseTileH = VISUAL.TILE_HEIGHT;
         this.zoom = 1.0;
         this.tileW = this.baseTileW * this.zoom;
         this.tileH = this.baseTileH * this.zoom;
-        this.offsetX = this.width / 2;
-        this.offsetY = 100;
+        this.offsetX = VISUAL.MODE === 'topdown' ? 120 : this.width / 2;
+        this.offsetY = 80;
 
         this.isDragging = false;
         this.lastMouseX = 0;
@@ -97,18 +97,33 @@ class Renderer {
 
     loadAssets(assetList: string[], callback: () => void): void {
         this.toLoad = assetList.length;
+        if (this.toLoad === 0) {
+            callback();
+            return;
+        }
         assetList.forEach((name: string) => {
             const img: HTMLImageElement = new Image();
-            img.src = `assets/${name}`;
-            img.onload = () => {
+            const markDone = () => {
                 this.loaded++;
                 if (this.loaded === this.toLoad) callback();
             };
+            img.onload = markDone;
+            img.onerror = () => {
+                console.warn('Failed to load asset:', name);
+                markDone();
+            };
+            img.src = `assets/${name}`;
             this.assets[name] = img;
         });
     }
 
     isoToScreen(gx: number, gy: number): ScreenPos {
+        if (VISUAL.MODE === 'topdown') {
+            return {
+                x: gx * this.tileW + this.offsetX,
+                y: gy * this.tileH + this.offsetY
+            };
+        }
         return {
             x: (gx - gy) * (this.tileW / 2) + this.offsetX,
             y: (gx + gy) * (this.tileH / 2) + this.offsetY
@@ -121,6 +136,10 @@ class Renderer {
     }
 
     drawTile(imgName: string, gx: number, gy: number, zIndexOffset: number = 0): void {
+        if (VISUAL.MODE === 'topdown') {
+            this.drawTopDownTile(imgName, gx, gy);
+            return;
+        }
         if (!this.assets[imgName]) return;
         const pos: ScreenPos = this.isoToScreen(gx, gy);
         const img: HTMLImageElement = this.assets[imgName];
@@ -155,6 +174,49 @@ class Renderer {
         this.ctx.globalAlpha = 1.0;
     }
 
+    mapTopDownAsset(imgName: string): string {
+        const map: Record<string, string> = {
+            'floor.png': 'vendor/interior/floor_concrete.png',
+            'floor_wood.png': 'vendor/interior/floor_wood.png',
+            'floor_tile.png': 'vendor/interior/floor_tile.png',
+            'wall_left.png': 'vendor/interior/wall.png',
+            'wall_right.png': 'vendor/interior/wall.png',
+            'fridge.png': 'vendor/interior/fridge.png',
+            'stove.png': 'vendor/interior/stove.png',
+            'table.png': 'vendor/interior/table.png',
+            'chair.png': 'vendor/interior/chair.png',
+            'sofa.png': 'vendor/interior/sofa.png',
+            'bed.png': 'vendor/interior/bed.png',
+            'toilet.png': 'vendor/interior/toilet.png',
+            'shower.png': 'vendor/interior/bathtub.png',
+            'sink.png': 'vendor/interior/mirror.png',
+            'plant.png': 'vendor/interior/plant_small.png',
+            'rug.png': 'vendor/interior/crate.png',
+            'computer.png': 'vendor/interior/papers.png',
+            'radio.png': 'vendor/interior/bottle.png',
+            'tv.png': 'vendor/interior/bookshelf.png',
+            'bottle.png': 'vendor/interior/bottle.png',
+            'papers.png': 'vendor/interior/papers.png',
+            'crate.png': 'vendor/interior/crate.png'
+        };
+        return map[imgName] || imgName;
+    }
+
+    drawTopDownTile(imgName: string, gx: number, gy: number): void {
+        const mapped: string = this.mapTopDownAsset(imgName);
+        const img: HTMLImageElement | undefined = this.assets[mapped];
+        if (!img) return;
+
+        const pos: ScreenPos = this.isoToScreen(gx, gy);
+        const isFloorOrWall: boolean = mapped.includes('floor_') || mapped.includes('/wall');
+        const drawW: number = isFloorOrWall ? this.tileW : img.width * this.zoom * VISUAL.PROP_SCALE;
+        const drawH: number = isFloorOrWall ? this.tileH : img.height * this.zoom * VISUAL.PROP_SCALE;
+        const drawX: number = isFloorOrWall ? pos.x : pos.x + this.tileW / 2 - drawW / 2;
+        const drawY: number = isFloorOrWall ? pos.y : pos.y + this.tileH - drawH;
+
+        this.ctx.drawImage(img, drawX, drawY, drawW, drawH);
+    }
+
     drawSpriteFrame(imgName: string, gx: number, gy: number, frameW: number, frameH: number, frame: number, scale: number = 1): void {
         const img: HTMLImageElement | undefined = this.assets[imgName];
         if (!img) return;
@@ -164,8 +226,8 @@ class Renderer {
         const pos: ScreenPos = this.isoToScreen(gx, gy);
         const drawW: number = frameW * this.zoom * scale;
         const drawH: number = frameH * this.zoom * scale;
-        const drawX: number = pos.x - drawW / 2;
-        const drawY: number = pos.y + this.tileH - drawH;
+        const drawX: number = VISUAL.MODE === 'topdown' ? pos.x + this.tileW / 2 - drawW / 2 : pos.x - drawW / 2;
+        const drawY: number = VISUAL.MODE === 'topdown' ? pos.y + this.tileH - drawH : pos.y + this.tileH - drawH;
 
         this.ctx.drawImage(
             img,
@@ -185,7 +247,7 @@ class Renderer {
         const pos: ScreenPos = this.isoToScreen(gx, gy);
 
         const tx: number = pos.x;
-        const ty: number = pos.y - 40;
+        const ty: number = VISUAL.MODE === 'topdown' ? pos.y - 14 : pos.y - 40;
 
         this.ctx.font = "12px monospace";
         const padding: number = 6;

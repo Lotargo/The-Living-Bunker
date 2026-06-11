@@ -7,6 +7,13 @@ const Runtime = {
     frame: 0
 };
 
+const VISUAL = {
+    MODE: 'topdown',
+    TILE_WIDTH: 32,
+    TILE_HEIGHT: 32,
+    PROP_SCALE: 2
+};
+
 const FLOOR_CONCRETE: number = 0;
 const FLOOR_WOOD: number = 2;
 const FLOOR_TILE: number = 3;

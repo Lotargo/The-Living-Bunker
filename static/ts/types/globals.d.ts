@@ -17,6 +17,7 @@ interface WorldObject {
     x: number;
     y: number;
     owner?: string;
+    blocksMovement?: boolean;
 }
 
 interface Room {
