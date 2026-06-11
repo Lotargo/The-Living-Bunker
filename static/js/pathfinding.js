@@ -93,7 +93,7 @@ class Pathfinding {
     }
 
     findPath(startX, startY, endX, endY) {
-        if (!this.isWalkable(endX, endY)) return null;
+        if (!this.isWalkable(startX, startY) || !this.isWalkable(endX, endY)) return null;
 
         const start = { x: startX, y: startY, g: 0, f: 0, parent: null };
         const openHeap = new BinaryHeap(function(node) { return node.f; });
