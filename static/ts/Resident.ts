@@ -214,6 +214,27 @@ class Resident {
         }
         else if (act.type === 'INTERACT') {
             const op: string = act.action || '';
+            const targetObj: WorldObject | undefined = world.objects.find(function(o: WorldObject): boolean { return o.id === act.target; });
+            if (targetObj) {
+                const dist: number = Math.abs(targetObj.x - this.x) + Math.abs(targetObj.y - this.y);
+                if (dist > 1.5) {
+                    const path: PathNode[] | null = pf.findPath(
+                        Math.round(this.x),
+                        Math.round(this.y),
+                        Math.round(targetObj.x),
+                        Math.round(targetObj.y)
+                    );
+                    if (path && path.length > 0) {
+                        this.path = path;
+                        this.actionQueue.unshift(act);
+                        this.state = "MOVING";
+                    } else {
+                        this.cooldown = COOLDOWNS.ERROR_RETRY;
+                        addLog(this.name, "Cannot reach " + targetObj.id + ".");
+                    }
+                    return;
+                }
+            }
             this.cooldown = COOLDOWNS.INTERACT;
 
             if (op === 'EAT') {

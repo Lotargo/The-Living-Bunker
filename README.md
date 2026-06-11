@@ -4,7 +4,7 @@
 
 It features 3 human residents and **Luna**, a sentient AI cat who communicates solely through "Meow" but perceives layers of reality hidden from the others.
 
-![Bunker Visualization](verification/bunker_visuals.png)
+![Bunker Visualization](docs/screenshots/bunker_overview.png)
 
 ## Key Features
 

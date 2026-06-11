@@ -23,6 +23,8 @@ function isTileVisible(gx: number, gy: number): boolean {
 }
 
 let cachedStaticList: RenderItem[] = [];
+let cachedStaticViewVersion: number = -1;
+let lastUiUpdate: number = 0;
 
 function rebuildStaticList(): void {
     cachedStaticList = [];
@@ -37,6 +39,7 @@ function rebuildStaticList(): void {
         }
     });
     world.clearStaticDirty();
+    cachedStaticViewVersion = renderer.viewVersion;
 }
 
 function loop(): void {
@@ -56,7 +59,7 @@ function loop(): void {
     world.residents.forEach(function(r: Resident): void { r.update(); });
     AnomalyManager.update();
 
-    if (world.staticDirty) {
+    if (world.staticDirty || cachedStaticViewVersion !== renderer.viewVersion) {
         rebuildStaticList();
     }
 
@@ -93,7 +96,11 @@ function loop(): void {
         }
     });
 
-    updateUI();
+    const now: number = performance.now();
+    if (now - lastUiUpdate >= UI.UPDATE_INTERVAL_MS) {
+        updateUI();
+        lastUiUpdate = now;
+    }
     requestAnimationFrame(loop);
 }
 

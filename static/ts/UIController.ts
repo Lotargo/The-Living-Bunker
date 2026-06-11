@@ -7,6 +7,9 @@ function addLog(who: string, msg: string): void {
     div.appendChild(strong);
     div.appendChild(document.createTextNode(msg));
     log.prepend(div);
+    while (log.children.length > UI.MAX_EVENT_LOG_ENTRIES) {
+        log.removeChild(log.lastElementChild!);
+    }
 }
 
 function updateUI(): void {
@@ -62,5 +65,8 @@ function logConsole(type: string, text: string): void {
     div.className = 'console-line ' + type;
     div.innerText = (type === 'user' ? '> ' : '') + text;
     consoleOutput.appendChild(div);
+    while (consoleOutput.children.length > UI.MAX_CONSOLE_LINES) {
+        consoleOutput.removeChild(consoleOutput.firstElementChild!);
+    }
     consoleOutput.scrollTop = consoleOutput.scrollHeight;
 }

@@ -16,6 +16,7 @@ class Renderer {
     isDragging: boolean;
     lastMouseX: number;
     lastMouseY: number;
+    viewVersion: number;
 
     constructor(canvasId: string) {
         this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
@@ -40,11 +41,24 @@ class Renderer {
         this.isDragging = false;
         this.lastMouseX = 0;
         this.lastMouseY = 0;
+        this.viewVersion = 0;
 
         this.setupInput();
     }
 
+    markViewDirty(): void {
+        this.viewVersion++;
+    }
+
     setupInput(): void {
+        window.addEventListener('resize', () => {
+            this.width = window.innerWidth;
+            this.height = window.innerHeight;
+            this.canvas.width = this.width;
+            this.canvas.height = this.height;
+            this.markViewDirty();
+        });
+
         this.canvas.addEventListener('mousedown', (e: MouseEvent) => {
             this.isDragging = true;
             this.lastMouseX = e.clientX;
@@ -63,6 +77,7 @@ class Renderer {
                 this.offsetY += dy;
                 this.lastMouseX = e.clientX;
                 this.lastMouseY = e.clientY;
+                this.markViewDirty();
             }
         });
 
@@ -76,6 +91,7 @@ class Renderer {
             }
             this.tileW = this.baseTileW * this.zoom;
             this.tileH = this.baseTileH * this.zoom;
+            this.markViewDirty();
         }, { passive: false });
     }
 

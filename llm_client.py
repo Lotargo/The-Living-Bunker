@@ -16,6 +16,8 @@ PROVIDER_KEYS = {
     "cerebras": CEREBRAS_API_KEY
 }
 
+REQUEST_TIMEOUT_SECONDS = float(os.environ.get("LLM_REQUEST_TIMEOUT_SECONDS", "30"))
+
 def call_llm(provider: str, model: str, messages: list[dict], temperature: float = 0.8) -> requests.Response:
     api_key = PROVIDER_KEYS.get(provider)
     api_url = PROVIDER_URLS.get(provider)
@@ -33,7 +35,8 @@ def call_llm(provider: str, model: str, messages: list[dict], temperature: float
     resp = requests.post(
         api_url,
         headers={"Authorization": f"Bearer {api_key}"},
-        json=payload
+        json=payload,
+        timeout=REQUEST_TIMEOUT_SECONDS
     )
 
     return resp

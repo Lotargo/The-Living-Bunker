@@ -1,15 +1,18 @@
 # System Architecture
 
-The **Living Bunker** is a hybrid simulation combining a Python Flask backend for logic/intelligence and a Vanilla JavaScript frontend for visualization.
+The **Living Bunker** is a hybrid simulation combining a thin Python HTTP backend, an LLM orchestration layer, and a Vanilla JavaScript/TypeScript frontend for visualization and local simulation.
 
 ## High-Level Overview
 
-1.  **The "Brain" (Backend - Python/Flask):**
+1.  **The "Brain" (Backend - Python):**
     *   **Role:** Handles high-level decision making for agents.
     *   **LLM Integration:** Connects to Groq (Llama 3.1 8b/70b) and Cerebras (Llama 3.3 70b) APIs.
     *   **Context Management:** Constructs prompt payloads containing World State, Agent Needs, and Nearby Entities.
+    *   **HTTP Adapter:** `app.py` owns Flask route parsing, rate limiting, static files, and JSON responses.
+    *   **Orchestration:** `ai_orchestrator.py` owns prompt construction, model/provider selection, LLM fallback behavior, and Architect command mutation.
     *   **Endpoints:**
-        *   `/api/decide`: Receives agent state, returns JSON thought/action.
+        *   `/api/decide`: Receives agent/anomaly state, returns JSON thought/action.
+        *   `/api/architect`: Receives user narrative input, returns narrative response and world commands.
 
 2.  **The "Reflexes" (Frontend - JS/HTML5):**
     *   **Role:** Handles real-time simulation, pathfinding, movement, and rendering.
@@ -34,7 +37,8 @@ The **Living Bunker** is a hybrid simulation combining a Python Flask backend fo
     *   Resident decides it needs to think (based on random chance or needs).
     *   Frontend sends `POST /api/decide` with current context (Nearby objects, visible anomalies, atmosphere).
 2.  **Backend Processing:**
-    *   `app.py` selects the appropriate Persona and LLM Provider.
+    *   `app.py` validates the request body and delegates to `ai_orchestrator.py`.
+    *   `ai_orchestrator.py` selects the appropriate Persona and LLM Provider.
     *   Constructs a system prompt (e.g., "You are Luna the cat...") and user prompt.
     *   Calls LLM API.
     *   Parses JSON response (`thought`, `action`, `target`).
@@ -46,6 +50,17 @@ The **Living Bunker** is a hybrid simulation combining a Python Flask backend fo
 ## Key Technologies
 
 *   **Flask:** Lightweight web server.
+*   **TypeScript:** Source language for the browser simulation, bundled with `tsc --outFile`.
 *   **Playwright:** Used for automated verification and scenario testing.
-*   **Pathfinding.js:** A* algorithm for grid movement (custom implementation in `pathfinding.js`).
+*   **Custom A\* Pathfinding:** Grid movement implementation in `static/ts/pathfinding.ts`.
 *   **Canvas API:** Rendering the isometric world.
+
+## Realtime Backend Roadmap
+
+The current REST API is enough for a prototype, but a game-shaped architecture should move toward a realtime event protocol.
+
+1.  **Stabilize contracts:** Treat `DecisionRequest`, `DecisionResponse`, `ArchitectRequest`, `ArchitectResponse`, and world commands as versioned messages. This is the key prerequisite for Unity, Unreal, Godot, or a future Rust/Axum backend.
+2.  **Add WebSocket transport:** Keep REST endpoints for simple calls, then add a `/ws` channel for events such as `world.command`, `agent.thought`, `agent.action`, `log.entry`, and `architect.response`.
+3.  **Introduce a server event bus:** Route Architect output and LLM decisions through an internal event queue before they reach the browser. This makes WebSocket broadcasting natural and avoids coupling UI code directly to HTTP responses.
+4.  **Move authoritative state gradually:** The browser can keep rendering and local animation, while the backend increasingly owns canonical world events and validation.
+5.  **Consider Axum after contracts settle:** Rust/Axum becomes valuable once the protocol is stable and the backend owns realtime state. Until then, Flask is acceptable as a thin adapter over the orchestration layer.
