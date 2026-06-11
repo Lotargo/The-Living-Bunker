@@ -37,7 +37,7 @@ const RoomBuilder = {
     },
 
     isValid: function(rect) {
-        if (rect.x < 1 || rect.y < 1 || rect.x + rect.w >= GRID_SIZE - 1 || rect.y + rect.h >= GRID_SIZE - 1) return false;
+        if (rect.x < 1 || rect.y < 1 || rect.x + rect.w >= GRID_SIZE || rect.y + rect.h >= GRID_SIZE) return false;
 
         for (let r of world.rooms) {
             if (rect.x < r.x + r.w && rect.x + rect.w > r.x &&
