@@ -3,11 +3,12 @@ import sys
 import pytest
 sys.path.insert(0, '.')
 
-from generate_assets import (
+from generators import (
     TextureGenerator, create_floor_tile, create_wall_tile,
     create_character, create_cat_asset, create_detailed_furniture,
     create_anomaly_assets, ASSET_DIR
 )
+from generators.furniture import FURNITURE_TYPES
 
 import PIL
 from PIL import Image
@@ -17,7 +18,11 @@ from PIL import Image
 def patch_asset_dir(monkeypatch, tmp_path):
     asset_dir = tmp_path / "static" / "assets"
     asset_dir.mkdir(parents=True)
-    monkeypatch.setattr('generate_assets.ASSET_DIR', str(asset_dir))
+    monkeypatch.setattr('generators.ASSET_DIR', str(asset_dir))
+    monkeypatch.setattr('generators.textures.ASSET_DIR', str(asset_dir))
+    monkeypatch.setattr('generators.furniture.ASSET_DIR', str(asset_dir))
+    monkeypatch.setattr('generators.characters.ASSET_DIR', str(asset_dir))
+    monkeypatch.setattr('generators.anomalies.ASSET_DIR', str(asset_dir))
     return str(asset_dir)
 
 
