@@ -78,6 +78,7 @@ class StateManager {
 
     setAtmosphere(atm: string): void {
         this.atmosphere = atm;
+        EventBus.emit('world.atmosphere', 'system', { atmosphere: atm });
     }
 
     resetMap(size: number): void {

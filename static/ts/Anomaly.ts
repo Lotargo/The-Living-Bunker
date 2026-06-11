@@ -88,17 +88,22 @@ class Anomaly {
         };
 
         try {
-            const res: Response = await fetch('/api/decide', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(context)
-            });
-            const decision: Decision = await res.json();
+            const decision: Decision = await BrainClient.decide(context);
             this.lastThought = decision.thought || "...";
+            EventBus.emit('agent.thought', 'agent', {
+                actor: this.type,
+                thought: this.lastThought
+            });
 
             if (this.stage === 'ACTIVE') {
                 addLog(this.type, 'Said: "' + this.lastThought + '"');
             }
+
+            EventBus.emit('agent.action', 'agent', {
+                actor: this.type,
+                action: decision.action,
+                target: decision.target
+            });
 
             if (decision.reveal && this.type === 'Doppelganger') {
                 this.revealed = true;

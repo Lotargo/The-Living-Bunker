@@ -58,6 +58,7 @@ function loop(): void {
 
     world.residents.forEach(function(r: Resident): void { r.update(); });
     AnomalyManager.update();
+    BunkerMoments.update();
 
     if (world.staticDirty || cachedStaticViewVersion !== renderer.viewVersion) {
         rebuildStaticList();

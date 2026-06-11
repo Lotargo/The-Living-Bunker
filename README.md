@@ -25,6 +25,10 @@ It features 3 human residents and **Luna**, a sentient AI cat who communicates s
     export GROQ_API_KEY="your_key"
     export CEREBRAS_API_KEY="your_key"
     ```
+    Or run without keys in demo mode:
+    ```bash
+    export LIVING_BUNKER_DEMO=1
+    ```
 3.  **Generate Assets:**
     ```bash
     python generate_assets.py
@@ -39,6 +43,8 @@ It features 3 human residents and **Luna**, a sentient AI cat who communicates s
 
 *   [Setup & Installation](docs/setup.md)
 *   [Working Map](docs/working_map.md)
+*   [Active Sprint](docs/sprint.md)
+*   [Runtime Contracts](docs/contracts.md)
 *   [Architecture Overview](docs/architecture.md)
 *   [Agents & Luna (The Cat)](docs/agents.md)
 *   [Anomalies & Atmosphere](docs/anomalies.md)

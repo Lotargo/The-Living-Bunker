@@ -138,14 +138,14 @@ class Resident {
         };
 
         try {
-            const res: Response = await fetch('/api/decide', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(context)
-            });
-            const decision: Decision = await res.json();
+            const decision: Decision = await BrainClient.decide(context);
 
             this.lastThought = decision.thought || "No thought";
+            EventBus.emit('agent.thought', 'agent', {
+                actor: this.name,
+                thought: this.lastThought,
+                intent: decision.real_intent
+            });
             addLog(this.name, '"' + this.lastThought + '"');
 
             this.processDecision(decision);
@@ -159,6 +159,11 @@ class Resident {
 
     processDecision(d: Decision): void {
         const target: string | undefined = d.target;
+        EventBus.emit('agent.action', 'agent', {
+            actor: this.name,
+            action: d.action,
+            target: target
+        });
 
         if (d.action === "MOVE") {
             this.actionQueue.push({ type: 'MOVE', target: target });

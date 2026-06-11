@@ -42,6 +42,8 @@ The portfolio value is not "enterprise game backend". The value is showing how f
 5.  **Creative Pass**
     Add more bunker moments: nervous habits, cat warning patterns, false alarms, object reactions, room-specific ambience, and anomaly side effects.
 
+The current implementation focus is tracked in [Active Sprint](sprint.md).
+
 ## Later Work
 
 1.  **WebSocket**

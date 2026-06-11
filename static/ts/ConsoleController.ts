@@ -121,19 +121,22 @@ consoleInput.addEventListener('keydown', async function(e: KeyboardEvent): Promi
         consoleInput.disabled = true;
 
         try {
-            const res: Response = await fetch('/api/architect', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: text })
-            });
-            const data: ArchitectResponse = await res.json();
+            const data: ArchitectResponse = await BrainClient.architect(text);
 
             if (data.response) {
                 logConsole('architect', data.response);
             }
 
+            EventBus.emit('architect.response', 'architect', {
+                response: data.response || '',
+                commands: data.commands || []
+            });
+
             if (data.commands && Array.isArray(data.commands)) {
-                data.commands.forEach(function(cmd: GodCommand): void { executeGodCommand(cmd); });
+                data.commands.forEach(function(cmd: GodCommand): void {
+                    EventBus.emit('world.command', 'architect', { command: cmd });
+                    executeGodCommand(cmd);
+                });
             }
 
         } catch (err) {

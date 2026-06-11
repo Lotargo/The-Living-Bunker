@@ -3,7 +3,7 @@
 ## Prerequisites
 
 *   **Python 3.10+**
-*   **API Keys:**
+*   **API Keys (optional for demo mode):**
     *   **Groq API Key**: For fast, efficient inference (Red, Green, Doppelgänger).
     *   **Cerebras API Key**: For high-speed, high-intelligence inference (Blue, Luna).
 
@@ -22,11 +22,17 @@
     *Dependencies include `Flask`, `requests`, `Pillow`.*
 
 3.  **Environment Variables:**
-    Set your API keys. You can export them in your shell or create a `.env` file (if you add `python-dotenv`).
+    Set your API keys for live LLM behavior. You can export them in your shell or create a `.env` file.
 
     ```bash
     export GROQ_API_KEY="your_groq_key_here"
     export CEREBRAS_API_KEY="your_cerebras_key_here"
+    ```
+
+    To run without API keys, enable demo mode:
+
+    ```bash
+    export LIVING_BUNKER_DEMO=1
     ```
 
 4.  **Generate Assets:**
@@ -51,5 +57,5 @@
 ## Troubleshooting
 
 *   **Missing Assets:** If images are broken, ensure `generate_assets.py` ran successfully.
-*   **API Errors:** Check `server.log` or console output. Ensure API keys are valid and you are not rate-limited.
+*   **API Errors:** Check `server.log` or console output. Ensure API keys are valid and you are not rate-limited, or use `LIVING_BUNKER_DEMO=1`.
 *   **UI Glitches:** Clear browser cache if asset generation changed sprites significantly.

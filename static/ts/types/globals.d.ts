@@ -49,6 +49,7 @@ interface Decision {
     action: string;
     target?: string;
     thought?: string;
+    real_intent?: string;
     reveal?: boolean;
 }
 
@@ -131,7 +132,22 @@ interface AnomalyContext {
     lunaDist: number;
 }
 
+interface ArchitectRequest {
+    prompt: string;
+}
+
 interface ArchitectResponse {
     response?: string;
     commands?: GodCommand[];
 }
+
+interface RuntimeEvent {
+    version: 'v1';
+    id: string;
+    type: string;
+    ts: number;
+    source: string;
+    [key: string]: any;
+}
+
+type RuntimeEventHandler = (event: RuntimeEvent) => void;

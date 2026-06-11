@@ -55,6 +55,10 @@ The **Living Bunker** is a hybrid simulation combining a thin Python HTTP backen
 *   **Custom A\* Pathfinding:** Grid movement implementation in `static/ts/pathfinding.ts`.
 *   **Canvas API:** Rendering the isometric world.
 
+## Runtime Contracts
+
+The current request, response, command, and event shapes are documented in [Runtime Contracts](contracts.md). These contracts are the working boundary between the browser simulation, Flask routes, Python LLM orchestration, demo mode, and future realtime transport.
+
 ## Realtime Backend Direction
 
 The current REST API is enough for a prototype, but a game-shaped architecture should move toward a realtime event protocol.

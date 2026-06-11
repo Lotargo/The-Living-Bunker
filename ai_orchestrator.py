@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from typing import Any
 
 from config import (
@@ -13,8 +14,17 @@ from config import (
     PERSONAS,
     SYSTEM_INSTRUCTION,
 )
-from llm_client import call_llm, get_fallback_response, parse_json_response
+from demo_mode import demo_architect_response, demo_decision
+from llm_client import call_llm, get_fallback_response, has_provider_config, parse_json_response
 from mutations import process_mutations
+
+
+def _demo_enabled() -> bool:
+    return os.environ.get("LIVING_BUNKER_DEMO", "0").lower() in ("1", "true", "yes", "on")
+
+
+def _should_use_demo(provider: str) -> bool:
+    return _demo_enabled() or not has_provider_config(provider)
 
 
 def _chat_content(response_json: dict[str, Any]) -> str:
@@ -98,6 +108,9 @@ def decide_for_actor(data: dict[str, Any]) -> dict[str, Any]:
         {"role": "user", "content": prompt},
     ]
 
+    if _should_use_demo(provider):
+        return demo_decision(data)
+
     try:
         response = call_llm(provider, model, messages, temperature=temperature)
         if response.status_code != 200:
@@ -116,6 +129,9 @@ def run_architect_prompt(user_prompt: str) -> dict[str, Any]:
         {"role": "system", "content": ARCHITECT_SYSTEM},
         {"role": "user", "content": user_prompt},
     ]
+
+    if _should_use_demo("cerebras"):
+        return demo_architect_response(user_prompt)
 
     try:
         response = call_llm("cerebras", ARCHITECT_MODEL, messages, temperature=0.9)

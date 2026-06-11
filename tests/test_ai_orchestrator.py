@@ -24,6 +24,7 @@ def test_decide_for_actor_rejects_unknown_resident():
 
 def test_decide_for_actor_uses_persona_temperature(monkeypatch):
     calls = []
+    monkeypatch.setattr(ai_orchestrator, "_should_use_demo", lambda provider: False)
 
     def fake_call_llm(provider, model, messages, temperature):
         calls.append(
@@ -58,6 +59,7 @@ def test_decide_for_actor_uses_persona_temperature(monkeypatch):
 
 
 def test_decide_for_actor_returns_fallback_on_provider_error(monkeypatch):
+    monkeypatch.setattr(ai_orchestrator, "_should_use_demo", lambda provider: False)
     monkeypatch.setattr(
         ai_orchestrator,
         "call_llm",
@@ -78,6 +80,8 @@ def test_decide_for_actor_returns_fallback_on_provider_error(monkeypatch):
 
 
 def test_run_architect_prompt_applies_command_mutations(monkeypatch):
+    monkeypatch.setattr(ai_orchestrator, "_should_use_demo", lambda provider: False)
+
     def fake_call_llm(provider, model, messages, temperature):
         return FakeResponse(
             200,
@@ -103,3 +107,30 @@ def test_run_architect_prompt_applies_command_mutations(monkeypatch):
 
     assert result["response"] == "ok"
     assert result["commands"][0]["type"] == "Poltergeist"
+
+
+def test_decide_for_actor_uses_demo_when_provider_config_missing(monkeypatch):
+    monkeypatch.setattr(ai_orchestrator, "has_provider_config", lambda provider: False)
+
+    result = ai_orchestrator.decide_for_actor(
+        {
+            "type": "resident",
+            "name": "Luna",
+            "state": "IDLE",
+            "nearby": [],
+            "anomalies": [{"type": "Ghost", "stage": "GESTATING", "dist": 3}],
+            "needs": {},
+        }
+    )
+
+    assert result["action"] == "STARE"
+    assert result["thought"] == "MEEEOW!!"
+
+
+def test_run_architect_prompt_uses_demo_when_enabled(monkeypatch):
+    monkeypatch.setenv("LIVING_BUNKER_DEMO", "1")
+
+    result = ai_orchestrator.run_architect_prompt("summon a ghost")
+
+    assert result["response"].startswith("Demo Architect")
+    assert any(command["action"] == "SPAWN" for command in result["commands"])

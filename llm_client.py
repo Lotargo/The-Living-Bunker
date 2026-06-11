@@ -18,6 +18,10 @@ PROVIDER_KEYS = {
 
 REQUEST_TIMEOUT_SECONDS = float(os.environ.get("LLM_REQUEST_TIMEOUT_SECONDS", "30"))
 
+def has_provider_config(provider: str) -> bool:
+    return bool(PROVIDER_KEYS.get(provider) and PROVIDER_URLS.get(provider))
+
+
 def call_llm(provider: str, model: str, messages: list[dict], temperature: float = 0.8) -> requests.Response:
     api_key = PROVIDER_KEYS.get(provider)
     api_url = PROVIDER_URLS.get(provider)
