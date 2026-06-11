@@ -20,7 +20,7 @@ PROVIDER_KEYS = {
 REQUEST_TIMEOUT_SECONDS = float(os.environ.get("LLM_REQUEST_TIMEOUT_SECONDS", "30"))
 
 def has_provider_config(provider: str) -> bool:
-    if provider == "openai_compatible":
+    if provider in ("openai_compatible", "opencode_zen", "ollama"):
         custom = custom_provider_config()
         return bool(custom["api_key"] and custom["api_url"])
     return bool(PROVIDER_KEYS.get(provider) and PROVIDER_URLS.get(provider))
@@ -29,7 +29,7 @@ def has_provider_config(provider: str) -> bool:
 def call_llm(provider: str, model: str, messages: list[dict], temperature: float = 0.8) -> requests.Response:
     api_key = PROVIDER_KEYS.get(provider)
     api_url = PROVIDER_URLS.get(provider)
-    if provider == "openai_compatible":
+    if provider in ("openai_compatible", "opencode_zen", "ollama"):
         custom = custom_provider_config()
         api_key = custom["api_key"]
         api_url = custom["api_url"]
@@ -44,9 +44,13 @@ def call_llm(provider: str, model: str, messages: list[dict], temperature: float
         "temperature": temperature
     }
 
+    headers = {"Authorization": f"Bearer {api_key}"}
+    if provider == "ollama":
+        headers = {}
+
     resp = requests.post(
         api_url,
-        headers={"Authorization": f"Bearer {api_key}"},
+        headers=headers,
         json=payload,
         timeout=REQUEST_TIMEOUT_SECONDS
     )

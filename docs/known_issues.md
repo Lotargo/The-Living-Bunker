@@ -52,8 +52,8 @@ This file tracks observed gameplay, AI, UX, and visual problems before we start 
 
 ## Asset Pipeline
 
-- [ ] **Third-party asset packs not yet imported**
-  Asset packs in `third_party_assets/raw/` (Tiny Questers NPC, CatPack, Top-Down Retro Interior, Basic GUI Bundle, etc.) have not been fully extracted, sliced, and mapped into the game renderer. This blocks further visual polish and proportion fixes.
+- [x] **Third-party asset packs not yet imported**
+  Asset packs in `third_party_assets/raw/` — импорт завершён. Добавлено ~100+ новых ассетов: UI элементы (38), двери/окна (30), анимации батов (14+), спрайты NPC (13), кот (2), аудио (7). Пак perplexity-ai-clone пропущен (React компоненты, не подходят).
 
 ## Notes
 
@@ -61,3 +61,26 @@ This file tracks observed gameplay, AI, UX, and visual problems before we start 
 - Fixes should be vertical: improve one visible behavior from prompt/decision through movement/UI/world feedback.
 - Pause, request pacing, and autonomy should come before heavier live-provider testing.
 - Proportion and generation fixes depend on completing the asset import pipeline first.
+
+## Feature Requests
+
+- [ ] **Per-character provider assignment**
+  Currently characters use hardcoded providers (Groq for Red/Doppelganger, Cerebras for Blue/Green/Luna). Need ability to assign custom provider + model per character via config. Custom provider should have higher priority than `LIVING_BUNKER_PROVIDER_MODE=default`.
+
+- [ ] **Provider fallback system with retry logic**
+  Implement fallback chain: per-character provider → default provider → demo mode.
+  - 3 retries with 1/2/4 second delays
+  - After 3 failures on per-character provider, switch to default provider
+  - If default works, try original provider after 60 seconds
+  - If fails again, wait 120 seconds, then 180 seconds
+  - After 3 failures on each level, stop retrying and stay on that level
+  - Same logic applies when default provider fails → demo mode
+
+- [ ] **Demo mode behavior detection**
+  When characters are in demo mode, other characters should notice strange behavior and react based on their role (e.g., Red gets paranoid, Blue analyzes, Green dismisses).
+
+- [ ] **Token context window limit**
+  Implement sliding window for token context to avoid overwhelming models. Default limit: 20000 tokens. Should be configurable via settings.
+
+- [ ] **LIVING_BUNKER_DEMO env var UX**
+  Current value `0` is confusing. Change to accept `true/false` in addition to `1/0` for better intuitiveness.

@@ -1,0 +1,382 @@
+{
+  "version": "1.0",
+  "categories": {
+    "floors": {
+      "description": "Напольные тайлы для покрытия комнат",
+      "tileable": true,
+      "assets": {
+        "floor_wood": {
+          "path": "vendor/interior/floor_wood.png",
+          "size": [32, 32],
+          "variants": ["light", "medium", "dark"],
+          "rooms": ["bedroom", "livingroom"]
+        },
+        "floor_tile": {
+          "path": "vendor/interior/floor_tile.png",
+          "size": [32, 32],
+          "variants": ["clean", "dirty"],
+          "rooms": ["kitchen", "bathroom"]
+        },
+        "floor_concrete": {
+          "path": "vendor/interior/floor_concrete.png",
+          "size": [32, 32],
+          "variants": ["plain", "cracked"],
+          "rooms": ["lab", "corridor"]
+        }
+      }
+    },
+    "walls": {
+      "description": "Стены, двери и окна",
+      "tileable": false,
+      "assets": {
+        "wall": {
+          "path": "vendor/interior/wall.png",
+          "size": [32, 32],
+          "variants": ["brick", "stone", "wood"]
+        },
+        "door_closed": {
+          "path": "vendor/interior/door_wood_dark.png",
+          "size": [32, 40],
+          "variants": {
+            "dark": "door_wood_dark.png",
+            "medium": "door_wood_medium.png",
+            "light": "door_wood_light.png",
+            "arched": "door_wood_dark_arched.png",
+            "double": "door_wood_dark_double.png"
+          }
+        },
+        "door_open": {
+          "path": "vendor/interior/door_open_frame_wood.png",
+          "size": [32, 48],
+          "variants": {
+            "wood": "door_open_frame_wood.png",
+            "brick": "door_open_frame_brick.png",
+            "stone": "door_open_frame_stone.png"
+          }
+        },
+        "window": {
+          "path": "vendor/interior/window_small.png",
+          "size": [32, 40],
+          "variants": {
+            "small": "window_small.png",
+            "medium": "window_medium.png",
+            "large": "window_large.png",
+            "curtain": "window_small_curtain.png",
+            "frost": "window_small_frost.png"
+          }
+        }
+      }
+    },
+    "furniture": {
+      "description": "Мебель для обустройства комнат",
+      "tileable": false,
+      "blocking": true,
+      "assets": {
+        "bed": {
+          "path": "vendor/interior/bed.png",
+          "size": [32, 48],
+          "category": "sleeping",
+          "rooms": ["bedroom"]
+        },
+        "table": {
+          "path": "vendor/interior/table.png",
+          "size": [32, 32],
+          "category": "surface",
+          "rooms": ["kitchen", "lab"]
+        },
+        "chair": {
+          "path": "vendor/interior/chair.png",
+          "size": [32, 32],
+          "category": "seating",
+          "rooms": ["kitchen", "lab"]
+        },
+        "sofa": {
+          "path": "vendor/interior/sofa.png",
+          "size": [48, 32],
+          "category": "seating",
+          "rooms": ["livingroom"]
+        },
+        "fridge": {
+          "path": "vendor/interior/fridge.png",
+          "size": [32, 48],
+          "category": "appliance",
+          "rooms": ["kitchen"]
+        },
+        "stove": {
+          "path": "vendor/interior/stove.png",
+          "size": [32, 32],
+          "category": "appliance",
+          "rooms": ["kitchen"]
+        },
+        "toilet": {
+          "path": "vendor/interior/toilet.png",
+          "size": [32, 32],
+          "category": "bathroom",
+          "rooms": ["bathroom"]
+        },
+        "sink": {
+          "path": "vendor/interior/sink.png",
+          "size": [32, 32],
+          "category": "bathroom",
+          "rooms": ["bathroom"]
+        },
+        "shower": {
+          "path": "vendor/interior/shower.png",
+          "size": [32, 48],
+          "category": "bathroom",
+          "rooms": ["bathroom"]
+        },
+        "bookshelf": {
+          "path": "vendor/interior/bookshelf.png",
+          "size": [32, 48],
+          "category": "storage",
+          "rooms": ["livingroom", "lab"]
+        },
+        "computer": {
+          "path": "vendor/interior/computer.png",
+          "size": [32, 32],
+          "category": "electronics",
+          "rooms": ["lab"]
+        },
+        "tv": {
+          "path": "vendor/interior/tv.png",
+          "size": [32, 32],
+          "category": "electronics",
+          "rooms": ["livingroom"]
+        },
+        "radio": {
+          "path": "vendor/interior/radio.png",
+          "size": [32, 32],
+          "category": "electronics",
+          "rooms": ["livingroom", "lab"]
+        }
+      }
+    },
+    "props": {
+      "description": "Декоративные предметы, не блокирующие движение",
+      "tileable": false,
+      "blocking": false,
+      "assets": {
+        "plant": {
+          "path": "vendor/interior/plant_small.png",
+          "size": [32, 32],
+          "category": "decor"
+        },
+        "rug": {
+          "path": "vendor/interior/rug.png",
+          "size": [48, 48],
+          "category": "floor_cover"
+        },
+        "mirror": {
+          "path": "vendor/interior/mirror.png",
+          "size": [32, 32],
+          "category": "decor"
+        },
+        "bottle": {
+          "path": "vendor/interior/bottle.png",
+          "size": [16, 16],
+          "category": "clutter"
+        },
+        "papers": {
+          "path": "vendor/interior/papers.png",
+          "size": [32, 32],
+          "category": "clutter"
+        },
+        "crate": {
+          "path": "vendor/interior/crate.png",
+          "size": [32, 32],
+          "category": "storage"
+        },
+        "barrel": {
+          "path": "vendor/interior/barrel.png",
+          "size": [32, 32],
+          "category": "storage"
+        }
+      }
+    },
+    "characters": {
+      "description": "Спрайты жителей бункера",
+      "animated": true,
+      "frame_size": [64, 64],
+      "assets": {
+        "village_man": {
+          "idle_down": "vendor/characters/village_man_idle_down.png",
+          "idle_up": "vendor/characters/village_man_idle_up.png",
+          "walk_down": "vendor/characters/village_man_walk_down.png",
+          "walk_up": "vendor/characters/village_man_walk_up.png",
+          "walk_left": "vendor/characters/village_man_walk_left.png",
+          "walk_right": "vendor/characters/village_man_walk_right.png"
+        },
+        "female_villager": {
+          "idle_down": "vendor/characters/female_villager_idle_down.png",
+          "idle_up": "vendor/characters/female_villager_idle_up.png",
+          "walk_down": "vendor/characters/female_villager_walk_down.png",
+          "walk_up": "vendor/characters/female_villager_walk_up.png",
+          "walk_left": "vendor/characters/female_villager_walk_left.png",
+          "walk_right": "vendor/characters/female_villager_walk_right.png"
+        },
+        "luna": {
+          "idle": "vendor/characters/luna_idle.png",
+          "box": "vendor/characters/luna_box.png",
+          "size": [32, 32]
+        }
+      }
+    },
+    "anomalies": {
+      "description": "Аномалии и враги",
+      "animated": true,
+      "assets": {
+        "ghost": {
+          "path": "ghost.png",
+          "size": [32, 48],
+          "alpha": 0.6
+        },
+        "glitch": {
+          "path": "glitch.png",
+          "size": [32, 32],
+          "jitter": true
+        },
+        "bat": {
+          "idle_down": "vendor/monsters/bat_idle_down.png",
+          "idle_up": "vendor/monsters/bat_idle_up.png",
+          "walk_down": "vendor/monsters/bat_walk_down.png",
+          "walk_up": "vendor/monsters/bat_walk_up.png",
+          "walk_left": "vendor/monsters/bat_walk_left.png",
+          "walk_right": "vendor/monsters/bat_walk_right.png",
+          "attack_down": "vendor/monsters/bat_attack_down.png",
+          "attack_up": "vendor/monsters/bat_attack_up.png",
+          "attack_left": "vendor/monsters/bat_attack_left.png",
+          "attack_right": "vendor/monsters/bat_attack_right.png",
+          "hit": "vendor/monsters/bat_hit_down.png",
+          "die": "vendor/monsters/bat_die_down.png",
+          "frame_size": [64, 64]
+        }
+      }
+    },
+    "ui": {
+      "description": "Элементы пользовательского интерфейса",
+      "assets": {
+        "buttons": {
+          "menu": "vendor/ui/btn_menu.png",
+          "check": "vendor/ui/btn_check.png",
+          "close_red": "vendor/ui/btn_close_red.png",
+          "close_green": "vendor/ui/btn_close_green.png",
+          "toggle_normal": "vendor/ui/btn_toggle_normal.png",
+          "toggle_outline": "vendor/ui/btn_toggle_outline.png"
+        },
+        "icons": {
+          "pause": "vendor/ui/icon_pause.png",
+          "home": "vendor/ui/icon_home.png",
+          "menu": "vendor/ui/icon_menu.png",
+          "confirm": "vendor/ui/icon_confirm.png",
+          "close": "vendor/ui/icon_close.png",
+          "key": "vendor/ui/icon_key.png",
+          "lock": "vendor/ui/icon_lock.png",
+          "coin": "vendor/ui/icon_coin.png",
+          "diamond": "vendor/ui/icon_diamond.png",
+          "star": "vendor/ui/icon_star.png",
+          "star_empty": "vendor/ui/icon_star_grey.png"
+        },
+        "health": {
+          "heart_full": "vendor/ui/heart_full.png",
+          "heart_half": "vendor/ui/heart_half.png",
+          "heart_empty": "vendor/ui/heart_empty.png",
+          "heart_full_large": "vendor/ui/heart_full_large.png",
+          "heart_half_large": "vendor/ui/heart_half_large.png",
+          "heart_empty_large": "vendor/ui/heart_empty_large.png"
+        },
+        "slots": {
+          "square": "vendor/ui/icon_slot_square.png",
+          "square_outline": "vendor/ui/icon_slot_square_outline.png",
+          "rounded": "vendor/ui/icon_slot_rounded.png",
+          "rounded_outline": "vendor/ui/icon_slot_rounded_outline.png",
+          "circle": "vendor/ui/icon_slot_circle.png"
+        },
+        "sliders": {
+          "thumb": "vendor/ui/slider_thumb.png",
+          "fill": "vendor/ui/slider_fill.png",
+          "fill_blue": "vendor/ui/slider_fill_blue.png",
+          "pointer": "vendor/ui/slider_pointer_green.png"
+        }
+      }
+    },
+    "audio": {
+      "description": "Звуковые эффекты",
+      "assets": {
+        "ui_click": "audio/ui_click.wav",
+        "ui_hover": "audio/ui_hover.wav",
+        "ui_cancel": "audio/ui_cancel.wav",
+        "ui_error": "audio/ui_error.wav",
+        "ui_open": "audio/ui_open.wav",
+        "ui_close": "audio/ui_close.wav",
+        "ui_swipe": "audio/ui_swipe.wav"
+      }
+    }
+  },
+  "room_templates": {
+    "kitchen": {
+      "floors": ["floor_tile"],
+      "walls": ["wall"],
+      "furniture_required": ["fridge", "stove", "table", "chair"],
+      "furniture_optional": ["crate", "barrel", "bottle"],
+      "props": ["plant", "papers"],
+      "size": { "min": [8, 6], "max": [12, 10] }
+    },
+    "livingroom": {
+      "floors": ["floor_wood"],
+      "walls": ["wall"],
+      "furniture_required": ["sofa", "tv", "bookshelf"],
+      "furniture_optional": ["radio", "table"],
+      "props": ["rug", "plant", "mirror"],
+      "size": { "min": [10, 8], "max": [14, 12] }
+    },
+    "bedroom": {
+      "floors": ["floor_wood"],
+      "walls": ["wall"],
+      "furniture_required": ["bed"],
+      "furniture_optional": ["table", "chair", "bookshelf"],
+      "props": ["plant", "mirror"],
+      "size": { "min": [8, 6], "max": [10, 8] }
+    },
+    "bathroom": {
+      "floors": ["floor_tile"],
+      "walls": ["wall"],
+      "furniture_required": ["toilet", "sink", "shower"],
+      "furniture_optional": [],
+      "props": ["mirror"],
+      "size": { "min": [6, 5], "max": [8, 7] }
+    },
+    "lab": {
+      "floors": ["floor_concrete"],
+      "walls": ["wall"],
+      "furniture_required": ["computer", "table", "chair"],
+      "furniture_optional": ["radio", "bookshelf"],
+      "props": ["papers", "crate"],
+      "size": { "min": [8, 6], "max": [12, 10] }
+    },
+    "corridor": {
+      "floors": ["floor_concrete"],
+      "walls": ["wall"],
+      "furniture_required": [],
+      "furniture_optional": ["plant"],
+      "props": ["papers"],
+      "size": { "min": [3, 6], "max": [4, 12] }
+    },
+    "storage": {
+      "floors": ["floor_concrete"],
+      "walls": ["wall"],
+      "furniture_required": ["crate", "barrel"],
+      "furniture_optional": ["crate", "table"],
+      "props": ["bottle", "papers"],
+      "size": { "min": [8, 6], "max": [10, 8] }
+    },
+    "medbay": {
+      "floors": ["floor_tile"],
+      "walls": ["wall"],
+      "furniture_required": ["bed", "sink", "table"],
+      "furniture_optional": ["chair", "bookshelf"],
+      "props": ["mirror", "papers"],
+      "size": { "min": [8, 6], "max": [10, 8] }
+    }
+  }
+}

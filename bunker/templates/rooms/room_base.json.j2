@@ -1,0 +1,42 @@
+{# Базовый шаблон для генерации комнаты #}
+{
+  "name": "{{ name }}",
+  "type": "{{ room_type }}",
+  "x": {{ x }},
+  "y": {{ y }},
+  "w": {{ width }},
+  "h": {{ height }},
+  "floor": "{{ floor_type }}",
+  "spawnCenter": {% if spawn_x is not none %}{ "x": {{ spawn_x }}, "y": {{ spawn_y }} }{% else %}null{% endif %},
+  "furniture": [
+    {% for item in furniture %}
+    {
+      "id": "{{ item.id }}",
+      "type": "{{ item.type }}",
+      "dx": {{ item.dx }},
+      "dy": {{ item.dy }}{% if item.owner is defined %},
+      "owner": "{{ item.owner }}"{% endif %}{% if item.rotation is defined %},
+      "rotation": {{ item.rotation }}{% endif %}
+    }{% if not loop.last %},{% endif %}
+
+    {% endfor %}
+  ],
+  "doors": [
+    {% for door in doors %}
+    { "x": {{ door.x }}, "y": {{ door.y }}, "type": "{{ door.type | default('door_open_frame_wood') }}" }{% if not loop.last %},{% endif %}
+
+    {% endfor %}
+  ],
+  "windows": [
+    {% for window in windows %}
+    { "x": {{ window.x }}, "y": {{ window.y }}, "type": "{{ window.type }}" }{% if not loop.last %},{% endif %}
+
+    {% endfor %}
+  ],
+  "props": [
+    {% for prop in props %}
+    { "type": "{{ prop.type }}", "x": {{ prop.x }}, "y": {{ prop.y }} }{% if not loop.last %},{% endif %}
+
+    {% endfor %}
+  ]
+}

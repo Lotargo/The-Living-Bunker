@@ -157,6 +157,15 @@ select {
     cursor: pointer;
 }
 
+.hud-button.menu-btn {
+    left: 370px;
+}
+
+.hud-button.menu-btn:hover {
+    background: #f7d774;
+    color: #111;
+}
+
 .resident-card {
     border-bottom: 1px solid #444;
     padding: 5px 0;
@@ -266,4 +275,227 @@ select {
     font-family: 'Courier New', Courier, monospace;
     font-size: 16px;
     outline: none;
+}
+
+/* Constructor Modal */
+.constructor-panel {
+    width: min(900px, calc(100vw - 32px));
+    max-height: calc(100vh - 64px);
+    background: #11161b;
+    border: 4px solid #d8f3dc;
+    box-shadow: 0 0 0 4px #18232b, 0 18px 0 rgba(0,0,0,0.35);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.constructor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.constructor-header .pixel-button {
+    width: auto;
+    margin: 0;
+}
+
+.constructor-body {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 16px;
+    overflow: hidden;
+}
+
+.asset-library {
+    display: flex;
+    flex-direction: column;
+    background: #0a0d10;
+    border: 2px solid #333;
+    padding: 8px;
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+}
+
+.library-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 60px;
+    padding: 6px 8px;
+    background: #1a1f25;
+    color: #888;
+    border: 2px solid #333;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.tab-btn:hover {
+    background: #2a2f35;
+    color: #aaa;
+}
+
+.tab-btn.active {
+    background: #d8f3dc;
+    color: #111;
+    border-color: #d8f3dc;
+}
+
+.asset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 6px;
+}
+
+.asset-item {
+    width: 64px;
+    height: 64px;
+    background: #1a1f25;
+    border: 2px solid #333;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    transition: border-color 0.1s;
+}
+
+.asset-item:hover {
+    border-color: #d8f3dc;
+}
+
+.asset-item.selected {
+    border-color: #f7d774;
+    background: #2a2f15;
+}
+
+.asset-item img {
+    max-width: 48px;
+    max-height: 40px;
+    image-rendering: pixelated;
+}
+
+.asset-item .asset-name {
+    font-size: 8px;
+    color: #666;
+    text-align: center;
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.constructor-tools {
+    background: #0a0d10;
+    border: 2px solid #333;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.tool-section h4 {
+    margin: 0 0 6px 0;
+    color: #f7d774;
+    font-size: 12px;
+}
+
+.selected-preview {
+    background: #1a1f25;
+    border: 2px solid #333;
+    padding: 8px;
+    text-align: center;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selected-preview img {
+    max-width: 56px;
+    max-height: 48px;
+    image-rendering: pixelated;
+}
+
+.no-selection {
+    color: #555;
+    font-size: 12px;
+}
+
+.rotation-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.tool-btn {
+    width: 36px;
+    height: 36px;
+    background: #1a1f25;
+    color: #d8f3dc;
+    border: 2px solid #444;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tool-btn:hover {
+    background: #2a3f35;
+    border-color: #d8f3dc;
+}
+
+#rotation-degrees {
+    color: #fff;
+    font-size: 14px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.room-type-select {
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+.constructor-tools select {
+    width: 100%;
+    box-sizing: border-box;
+    background: #05080a;
+    color: #e8f4ff;
+    border: 2px solid #4f6f7f;
+    padding: 6px;
+    margin-bottom: 8px;
+}
+
+.constructor-tools .pixel-button {
+    width: 100%;
+    margin: 0 0 6px 0;
+}
+
+.hotkeys-hint {
+    font-size: 10px;
+    color: #666;
+}
+
+.hotkeys-hint div {
+    margin-bottom: 3px;
+}
+
+kbd {
+    background: #1a1f25;
+    border: 1px solid #444;
+    padding: 1px 4px;
+    font-size: 10px;
+    margin-right: 4px;
 }

@@ -130,6 +130,23 @@ class Renderer {
         };
     }
 
+    screenToGrid(screenX: number, screenY: number): PathNode {
+        if (VISUAL.MODE === 'topdown') {
+            return {
+                x: Math.floor((screenX - this.offsetX) / this.tileW),
+                y: Math.floor((screenY - this.offsetY) / this.tileH)
+            };
+        }
+        const tileHalfW: number = this.tileW / 2;
+        const tileHalfH: number = this.tileH / 2;
+        const relX: number = screenX - this.offsetX;
+        const relY: number = screenY - this.offsetY;
+        return {
+            x: Math.floor((relX / tileHalfW + relY / tileHalfH) / 2),
+            y: Math.floor((relY / tileHalfH - relX / tileHalfW) / 2)
+        };
+    }
+
     clear(): void {
         this.ctx.fillStyle = '#111';
         this.ctx.fillRect(0, 0, this.width, this.height);

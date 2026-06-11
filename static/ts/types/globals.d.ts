@@ -74,6 +74,7 @@ interface GodCommand {
 
 interface RoomData {
     name: string;
+    type?: string;
     x: number;
     y: number;
     w: number;
@@ -81,7 +82,27 @@ interface RoomData {
     floor: string;
     spawnCenter: { x: number; y: number } | null;
     furniture: FurnitureData[];
-    doors: { x: number; y: number }[];
+    doors: DoorData[];
+    windows?: WindowData[];
+    props?: PropData[];
+}
+
+interface DoorData {
+    x: number;
+    y: number;
+    type?: string;
+}
+
+interface WindowData {
+    x: number;
+    y: number;
+    type: string;
+}
+
+interface PropData {
+    type: string;
+    x: number;
+    y: number;
 }
 
 interface FurnitureData {
@@ -160,6 +181,11 @@ interface RuntimeSettings {
     openaiApiKey?: string;
     openaiApiKeyConfigured?: boolean;
     openaiModel?: string;
+    opencodeZenApiKey?: string;
+    opencodeZenApiKeyConfigured?: boolean;
+    opencodeZenModel?: string;
+    ollamaBaseUrl?: string;
+    ollamaModel?: string;
 }
 
 interface SpriteFrameConfig {

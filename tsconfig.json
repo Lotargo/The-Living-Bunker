@@ -32,6 +32,8 @@
     "static/ts/RoomBuilder.ts",
     "static/ts/UIController.ts",
     "static/ts/ConsoleController.ts",
+    "static/ts/ProceduralGenerator.ts",
+    "static/ts/ConstructorController.ts",
     "static/ts/MainMenu.ts",
     "static/ts/main.ts"
   ],

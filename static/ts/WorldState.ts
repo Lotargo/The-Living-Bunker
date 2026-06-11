@@ -16,6 +16,18 @@ function buildRoomFromData(data: RoomData): void {
         });
     });
 
+    if (data.props) {
+        data.props.forEach(function(prop: PropData, i: number): void {
+            world.addObject({
+                id: data.name + '_Prop_' + i,
+                type: prop.type,
+                x: data.x + prop.x,
+                y: data.y + prop.y,
+                blocksMovement: false
+            });
+        });
+    }
+
     addRoomClutter(data);
 }
 
@@ -54,7 +66,7 @@ function initMap(): void {
     syncObjectObstacles();
 
     ROOMS_DATA.forEach(function(room: RoomData): void {
-        room.doors.forEach(function(door: { x: number; y: number }): void {
+        room.doors.forEach(function(door: DoorData): void {
             world.removeWall(door.x, door.y);
             world.map[door.x][door.y] = 0;
         });
@@ -76,4 +88,53 @@ function syncObjectObstacles(): void {
 function getRoomSpawnCenter(roomName: string): { x: number; y: number } | null {
     const data: RoomData | undefined = ROOMS_DATA.find(function(r: RoomData): boolean { return r.name === roomName; });
     return data && data.spawnCenter ? data.spawnCenter : null;
+}
+
+function fetchGeneratedRoom(
+    roomType: string,
+    x: number,
+    y: number,
+    callback: (room: RoomData | null) => void
+): void {
+    fetch('/api/generate-room', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: roomType, x: x, y: y })
+    })
+    .then(function(res: Response): Promise<RoomData> {
+        if (!res.ok) throw new Error('Generation failed');
+        return res.json();
+    })
+    .then(function(room: RoomData): void {
+        callback(room);
+    })
+    .catch(function(err: Error): void {
+        console.error('Room generation error:', err);
+        callback(null);
+    });
+}
+
+function generateAndPlaceRoom(
+    roomType: string,
+    x: number,
+    y: number,
+    callback?: (success: boolean) => void
+): void {
+    fetchGeneratedRoom(roomType, x, y, function(room: RoomData | null): void {
+        if (!room) {
+            if (callback) callback(false);
+            return;
+        }
+
+        buildRoomFromData(room);
+        syncObjectObstacles();
+
+        room.doors.forEach(function(door: DoorData): void {
+            world.removeWall(door.x, door.y);
+            world.map[door.x][door.y] = 0;
+        });
+
+        rebuildStaticList();
+        if (callback) callback(true);
+    });
 }

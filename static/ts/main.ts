@@ -1,6 +1,8 @@
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const renderer: Renderer = new Renderer('gameCanvas');
 let pf: Pathfinding = new Pathfinding(GRID_SIZE);
+let constructorCtrl: ConstructorController;
+let currentLayout: RoomLayout | null = null;
 
 initMap();
 
@@ -13,13 +15,63 @@ function restartSimulation(): void {
     world.resetAnomalies();
     world.setAtmosphere('Normal');
     pf = new Pathfinding(GRID_SIZE);
-    initMap();
-    world.addResident(new Resident("Red", "Red", 15, 15));
-    world.addResident(new Resident("Blue", "Blue", 15, 17));
-    world.addResident(new Resident("Green", "Green", 15, 19));
-    world.addResident(new Resident("Luna", "Black", 10, 10, 'cat'));
-    syncPathfindingObstacles();
-    rebuildStaticList();
+
+    proceduralGen.generateBunkerLayout().then(layout => {
+        currentLayout = layout;
+        proceduralGen.buildLayout(layout, () => {
+            world.addResident(new Resident("Red", "Red", 15, 15));
+            world.addResident(new Resident("Blue", "Blue", 15, 17));
+            world.addResident(new Resident("Green", "Green", 15, 19));
+            world.addResident(new Resident("Luna", "Black", 10, 10, 'cat'));
+            syncPathfindingObstacles();
+            rebuildStaticList();
+        });
+    }).catch(err => {
+        console.error('Procedural generation failed, using static layout:', err);
+        initMap();
+        world.addResident(new Resident("Red", "Red", 15, 15));
+        world.addResident(new Resident("Blue", "Blue", 15, 17));
+        world.addResident(new Resident("Green", "Green", 15, 19));
+        world.addResident(new Resident("Luna", "Black", 10, 10, 'cat'));
+        syncPathfindingObstacles();
+        rebuildStaticList();
+    });
+}
+
+function continueSimulation(): void {
+    world.resetMap(GRID_SIZE);
+    world.resetRooms();
+    world.resetWalls();
+    world.resetObjects();
+    world.resetResidents();
+    world.resetAnomalies();
+    world.setAtmosphere('Normal');
+    pf = new Pathfinding(GRID_SIZE);
+
+    if (currentLayout) {
+        proceduralGen.buildLayout(currentLayout, () => {
+            world.addResident(new Resident("Red", "Red", 15, 15));
+            world.addResident(new Resident("Blue", "Blue", 15, 17));
+            world.addResident(new Resident("Green", "Green", 15, 19));
+            world.addResident(new Resident("Luna", "Black", 10, 10, 'cat'));
+            syncPathfindingObstacles();
+            rebuildStaticList();
+        });
+    } else {
+        initMap();
+        world.addResident(new Resident("Red", "Red", 15, 15));
+        world.addResident(new Resident("Blue", "Blue", 15, 17));
+        world.addResident(new Resident("Green", "Green", 15, 19));
+        world.addResident(new Resident("Luna", "Black", 10, 10, 'cat'));
+        syncPathfindingObstacles();
+        rebuildStaticList();
+    }
+}
+
+function showMainMenu(): void {
+    Runtime.paused = true;
+    BrainClient.clearQueue();
+    document.getElementById('main-menu')!.classList.remove('hidden');
 }
 
 function syncPathfindingObstacles(): void {
@@ -142,13 +194,23 @@ const assetNames: string[] = [
     'vendor/characters/village_man_walk_right.png',
     'vendor/characters/village_man_walk_up.png',
     'vendor/characters/female_villager_idle_down.png',
+    'vendor/characters/female_villager_idle_up.png',
     'vendor/characters/female_villager_walk_down.png',
     'vendor/characters/female_villager_walk_left.png',
     'vendor/characters/female_villager_walk_right.png',
     'vendor/characters/female_villager_walk_up.png',
     'vendor/characters/luna_idle.png',
+    'vendor/characters/luna_box.png',
+    'vendor/characters/dracula_cat_walk.png',
     'vendor/monsters/bat_idle_down.png',
+    'vendor/monsters/bat_idle_up.png',
     'vendor/monsters/bat_walk_down.png',
+    'vendor/monsters/bat_walk_up.png',
+    'vendor/monsters/bat_walk_left.png',
+    'vendor/monsters/bat_walk_right.png',
+    'vendor/monsters/bat_attack_down.png',
+    'vendor/monsters/bat_hit_down.png',
+    'vendor/monsters/bat_die_down.png',
     'vendor/interior/floor_wood.png',
     'vendor/interior/floor_concrete.png',
     'vendor/interior/floor_tile.png',
@@ -167,11 +229,29 @@ const assetNames: string[] = [
     'vendor/interior/plant_small.png',
     'vendor/interior/crate.png',
     'vendor/interior/papers.png',
-    'vendor/interior/barrel.png'
+    'vendor/interior/barrel.png',
+    'vendor/interior/door_wood_dark.png',
+    'vendor/interior/door_wood_medium.png',
+    'vendor/interior/door_wood_light.png',
+    'vendor/interior/door_open_frame_wood.png',
+    'vendor/interior/door_open_frame_brick.png',
+    'vendor/interior/door_open_frame_stone.png',
+    'vendor/interior/window_small.png',
+    'vendor/interior/window_medium.png',
+    'vendor/interior/window_large.png',
+    'vendor/interior/window_small_curtain.png',
+    'vendor/interior/window_medium_curtain.png',
+    'vendor/interior/window_large_curtain.png',
+    'vendor/interior/window_small_frost.png',
+    'vendor/interior/window_medium_frost.png',
+    'vendor/interior/window_large_frost.png',
+    'vendor/interior/stairs_wood.png',
+    'vendor/interior/stairs_wood_railing.png'
 ];
 
 renderer.loadAssets(assetNames, function(): void {
     restartSimulation();
     MainMenu.init();
+    constructorCtrl = new ConstructorController();
     loop();
 });

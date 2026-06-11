@@ -8,6 +8,7 @@ from typing import Any
 
 from bunker.ai_orchestrator import decide_for_actor, run_architect_prompt
 from bunker.runtime_settings import get_settings, provider_mode, update_settings
+from bunker.room_generator import RoomGenerator
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
@@ -74,6 +75,42 @@ def settings() -> Any:
     if not isinstance(data, dict):
         return jsonify({"error": "Invalid JSON body"}), 400
     return jsonify(update_settings(data))
+
+
+@app.route('/api/generate-room', methods=['POST'])
+@rate_limit
+def generate_room() -> Any:
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"error": "Invalid JSON body"}), 400
+
+    room_type = data.get('type')
+    if not isinstance(room_type, str) or not room_type.strip():
+        return jsonify({"error": "Room type is required"}), 400
+
+    try:
+        gen = RoomGenerator()
+        room = gen.generate(
+            room_type=room_type.strip().lower(),
+            x=data.get('x', 0),
+            y=data.get('y', 0),
+            width=data.get('width'),
+            height=data.get('height'),
+            owner=data.get('owner'),
+            seed=data.get('seed'),
+        )
+        return jsonify(room)
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+    except Exception as exc:
+        return jsonify({"error": f"Generation failed: {str(exc)}"}), 500
+
+
+@app.route('/api/room-types', methods=['GET'])
+def room_types() -> Any:
+    gen = RoomGenerator()
+    types = list(gen.room_configs.keys())
+    return jsonify({"types": types})
 
 
 if __name__ == '__main__':

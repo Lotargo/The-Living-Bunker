@@ -29,9 +29,10 @@ def _should_use_demo(provider: str) -> bool:
 
 
 def _apply_provider_override(provider: str, model: str) -> tuple[str, str]:
-    if provider_mode() == "openai_compatible":
+    mode = provider_mode()
+    if mode in ("openai_compatible", "opencode_zen", "ollama"):
         custom = custom_provider_config()
-        return "openai_compatible", custom["model"] or model
+        return mode, custom["model"] or model
     return provider, model
 
 

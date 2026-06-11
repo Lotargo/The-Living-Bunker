@@ -12,6 +12,7 @@
             <div class="menu-subtitle">semiotic survival simulation</div>
             <button id="new-game-btn" class="pixel-button">Начать новую игру</button>
             <button id="continue-btn" class="pixel-button">Продолжить</button>
+            <button id="constructor-btn" class="pixel-button">Конструктор</button>
             <button id="settings-btn" class="pixel-button">Настройки</button>
             <div class="menu-hint">Demo mode works without API keys.</div>
         </div>
@@ -26,6 +27,8 @@
                     <option value="default">Groq/Cerebras env keys</option>
                     <option value="demo">Demo mode</option>
                     <option value="openai_compatible">OpenAI-compatible</option>
+                    <option value="opencode_zen">OpenCode Zen</option>
+                    <option value="ollama">Ollama / LM Studio</option>
                 </select>
             </label>
             <label class="settings-row">
@@ -39,6 +42,22 @@
             <label class="settings-row">
                 <span>Model</span>
                 <input id="openai-model" type="text" placeholder="gpt-4o-mini">
+            </label>
+            <label class="settings-row opencode-zen-only">
+                <span>OpenCode Zen API key</span>
+                <input id="opencode-zen-api-key" type="password" placeholder="oz-...">
+            </label>
+            <label class="settings-row opencode-zen-only">
+                <span>OpenCode Zen Model</span>
+                <input id="opencode-zen-model" type="text" placeholder="gpt-5.4-mini">
+            </label>
+            <label class="settings-row ollama-only">
+                <span>Ollama URL</span>
+                <input id="ollama-base-url" type="text" placeholder="http://localhost:11434/v1/chat/completions">
+            </label>
+            <label class="settings-row ollama-only">
+                <span>Ollama Model</span>
+                <input id="ollama-model" type="text" placeholder="llama3.1">
             </label>
             <label class="settings-row">
                 <span>Anomaly spawn rate</span>
@@ -54,6 +73,7 @@
 
     <div id="ui-layer">
         <button id="pause-btn" class="hud-button">PAUSED</button>
+        <button id="menu-btn" class="hud-button menu-btn">MENU</button>
         <div id="status-panel">
             <h2>Residents</h2>
             <div id="residents-list"></div>
@@ -75,6 +95,72 @@
         </div>
     </div>
     <canvas id="gameCanvas"></canvas>
+
+    <!-- Constructor Modal -->
+    <div id="constructor-modal" class="menu-overlay hidden">
+        <div class="constructor-panel">
+            <div class="constructor-header">
+                <div class="menu-title small">КОНСТРУКТОР</div>
+                <button id="close-constructor-btn" class="pixel-button secondary">Закрыть</button>
+            </div>
+            <div class="constructor-body">
+                <div class="asset-library">
+                    <div class="library-tabs">
+                        <button class="tab-btn active" data-category="furniture">Мебель</button>
+                        <button class="tab-btn" data-category="props">Декор</button>
+                        <button class="tab-btn" data-category="walls">Стены</button>
+                        <button class="tab-btn" data-category="floors">Полы</button>
+                    </div>
+                    <div id="asset-grid" class="asset-grid"></div>
+                </div>
+                <div class="constructor-tools">
+                    <div class="tool-section">
+                        <h4>Выбрано:</h4>
+                        <div id="selected-asset" class="selected-preview">
+                            <span class="no-selection">Не выбрано</span>
+                        </div>
+                    </div>
+                    <div class="tool-section">
+                        <h4>Поворот:</h4>
+                        <div class="rotation-controls">
+                            <button id="rotate-left-btn" class="tool-btn" title="Повернуть влево (Q)">↺</button>
+                            <span id="rotation-degrees">0°</span>
+                            <button id="rotate-right-btn" class="tool-btn" title="Повернуть вправо (E)">↻</button>
+                        </div>
+                    </div>
+                    <div class="tool-section">
+                        <h4>Действия:</h4>
+                        <button id="place-asset-btn" class="pixel-button" disabled>Разместить</button>
+                        <button id="delete-asset-btn" class="pixel-button secondary">Удалить</button>
+                    </div>
+                    <div class="tool-section">
+                        <h4>Комнаты:</h4>
+                        <select id="room-type-select">
+                            <option value="">-- Выбрать тип --</option>
+                            <option value="kitchen">Кухня</option>
+                            <option value="livingroom">Гостиная</option>
+                            <option value="bedroom">Спальня</option>
+                            <option value="bathroom">Ванная</option>
+                            <option value="lab">Лаборатория</option>
+                            <option value="storage">Кладовая</option>
+                            <option value="medbay">Медпункт</option>
+                            <option value="corridor">Коридор</option>
+                        </select>
+                        <button id="generate-room-btn" class="pixel-button">Сгенерировать</button>
+                    </div>
+                    <div class="tool-section">
+                        <h4>Горячие клавиши:</h4>
+                        <div class="hotkeys-hint">
+                            <div><kbd>Q</kbd> Повернуть влево</div>
+                            <div><kbd>E</kbd> Повернуть вправо</div>
+                            <div><kbd>R</kbd> Удалить</div>
+                            <div><kbd>Esc</kbd> Отмена</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="data/rooms.js"></script>
     <script src="js/game.js"></script>

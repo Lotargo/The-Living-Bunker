@@ -244,12 +244,17 @@ POST /api/settings
 
 ```ts
 interface RuntimeSettings {
-  providerMode: "default" | "demo" | "openai_compatible";
+  providerMode: "default" | "demo" | "openai_compatible" | "opencode_zen" | "ollama";
   demoMode?: boolean;
   openaiBaseUrl?: string;
   openaiApiKey?: string;
   openaiApiKeyConfigured?: boolean;
   openaiModel?: string;
+  opencodeZenApiKey?: string;
+  opencodeZenApiKeyConfigured?: boolean;
+  opencodeZenModel?: string;
+  ollamaBaseUrl?: string;
+  ollamaModel?: string;
 }
 ```
 
