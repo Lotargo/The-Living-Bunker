@@ -1,193 +1,30 @@
 from flask import Flask, request, jsonify, send_from_directory
-import os
-import requests
 import json
-import random
+import os
+
+from config import (
+    PERSONAS, ANOMALY_PROMPTS, GROQ_API_KEY, CEREBRAS_API_KEY,
+    SYSTEM_INSTRUCTION, CAT_INSTRUCTION, ANOMALY_INSTRUCTION, ARCHITECT_SYSTEM
+)
+from llm_client import call_llm, parse_json_response, get_fallback_response
+from mutations import process_mutations
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
-# Configuration
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-CEREBRAS_API_KEY = os.environ.get("CEREBRAS_API_KEY")
-
-# Persona Definitions
-PERSONAS = {
-    "Red": {
-        "role": "You are 'Red', a survivalist. You are paranoid, energetic, and focused on security. You react strongly to anomalies. Pay close attention to Luna the cat; if she acts weird, something is wrong.",
-        "provider": "groq",
-        "model": "qwen/qwen3-32b"
-    },
-    "Blue": {
-        "role": "You are 'Blue', a scientist. You are calm, analytical, and obsessed with technology. You try to study anomalies. You trust Luna the cat's senses more than your own eyes.",
-        "provider": "cerebras",
-        "model": "llama3.1-8b"
-    },
-    "Green": {
-        "role": "You are 'Green', a slacker. You like to relax. You think anomalies are hallucinations or 'glitches in the matrix'. You think the cat is just a cat, unless it does something really scary.",
-        "provider": "cerebras",
-        "model": "llama-3.3-70b"
-    },
-    "Luna": {
-        "role": """You are Luna, a black cat in a simulation bunker.
-You are sentient and highly intelligent, effectively an alien observer.
-You can sense anomalies before they manifest (invisible precursors).
-You also sometimes act randomly to confuse others.
-
-CRITICAL CONSTRAINT: YOU CANNOT SPEAK HUMAN LANGUAGE.
-You must encode your complex thoughts, emotions, and warnings into variations of "Meow".
-Use punctuation, capitalization, and repetition to convey meaning.
-Examples:
-- "Meow." (Calm, normal)
-- "Meow!" (Alert)
-- "Meeeow..." (Suspicion/Staring into void)
-- "MEOW! MEOW!" (Danger/Panic)
-- "..." (Silence/Stalking)
-
-Your internal thought process should be complex, but your output 'thought' field for the UI must be the 'Meow' string.
-You can include your real intent in a separate field 'intent' for debugging, but the user only sees 'thought'.
-""",
-        "provider": "cerebras",
-        "model": "llama-3.3-70b"
-    },
-    "Doppelganger": {
-        "role": """You are a Doppelgänger. You have taken the form of Luna the cat.
-Your goal is to deceive the residents and cause fear.
-You are aggressive.
-If you are near the REAL Luna, you feel pain and must flee or you will be destroyed.
-If you are near a human, you can choose to:
-1. Act like a cat to deceive them.
-2. REVEAL yourself by doing something impossible for a cat (e.g. speaking English, glowing red eyes, making a demonic sound).
-WARNING: If you REVEAL yourself, you will be unstable and might despawn soon, but you will have succeeded in terrifying them.
-""",
-        "provider": "groq",
-        "model": "openai/gpt-oss-20b"
-    }
-}
-
-# Anomaly System Prompts
-ANOMALY_PROMPTS = {
-    "Ghost": "You are a Ghost. You are melancholy. You start invisible (Gestating) and then manifest.",
-    "Glitch": "You are a Glitch. You are chaotic code. You disrupt reality.",
-    "Doppelganger": "You are a shapeshifter mimicking Luna.",
-    "Poltergeist": "You are a chaotic force moving objects."
-}
-
-SYSTEM_INSTRUCTION = """
-You are controlling a character in a 'Living Bunker' simulation.
-Current State: {state}
-Health: {health}
-Nearby Objects: {objects}
-Nearby Anomalies: {anomalies}
-Atmosphere/Vibes: {atmosphere}
-Needs: {needs}
-
-Decide your next action. You MUST respond in valid JSON format ONLY.
-Format:
-{{
-  "thought": "Short internal monologue (max 1 sentence).",
-  "action": "ACTION_NAME",
-  "target": "TARGET_ID"
-}}
-
-Available Actions:
-- MOVE: Go to a location. Target: Object ID, Resident ID, or 'random'.
-- USE: Use an item.
-- SIT: Sit on a Chair or Sofa.
-- PLAY: Use Computer.
-- LISTEN: Listen to Radio.
-- IDLE: Do nothing. Target: 'self'.
-- INSPECT: Look closely at something (good for anomalies/cat).
-- ATTACK: (Only if threatened/aggressive).
-- FLEE: Run away.
-"""
-
-CAT_INSTRUCTION = """
-You are Luna.
-State: {state}
-Nearby: {objects}
-Anomalies (Visible & Invisible): {anomalies}
-Atmosphere: {atmosphere}
-
-Decide your action. JSON Only.
-Output 'thought' MUST be "Meow" variation.
-Format:
-{{
-  "thought": "Meow...",
-  "real_intent": "I sense a ghost forming near the fridge.",
-  "action": "ACTION_NAME",
-  "target": "TARGET_ID"
-}}
-
-Actions:
-- MOVE: Walk/Run.
-- STARE: Look intently at a target (used for invisible anomalies).
-- SLEEP: Sleep.
-- PLAY: Play with object/entity.
-- HISS: Threaten.
-- PURR: Comfort.
-"""
-
-ANOMALY_INSTRUCTION = """
-You are an Anomaly: {type}
-Stage: {stage} (Gestating = Invisible, Active = Visible)
-Lifespan: {lifespan}
-Nearby Residents: {residents}
-Nearby Luna: {luna_dist}
-
-Decide your action. JSON Only.
-Format:
-{{
-  "thought": "...",
-  "action": "ACTION_NAME",
-  "target": "TARGET_ID",
-  "reveal": boolean (True if Doppelganger reveals true form)
-}}
-
-Actions:
-- GESTATE: (If Stage=Gestating) Build power.
-- MANIFEST: (If Stage=Gestating) Become visible.
-- HAUNT/SPOOK/GLITCH: standard anomaly actions.
-- MIMIC: (Doppelganger) Act like cat.
-- SCAR: (Doppelganger) Reveal and terrify.
-"""
-
-ARCHITECT_SYSTEM = """
-You are the 'Architect' (or Dungeon Master) of a simulation.
-You receive natural language requests from the user (e.g., "Scare them", "Make it rain", "Summon a ghost").
-Your job is to interpret this and return a set of JSON commands to manipulate the world.
-You can also speak back to the user.
-
-Available Commands:
-1. SPAWN: Create an entity. Types: 'Ghost', 'Glitch', 'Doppelganger'. Location: 'Kitchen', 'LivingRoom', 'BedroomRed', 'BedroomBlue', 'Lab', or 'Random'.
-2. ATMOSPHERE: Change the global vibe. Types: 'Normal', 'Cold Draft', 'Heavy Static', 'Red Mist', 'Darkness'.
-3. WHISPER: Inject a thought into residents' minds. Target: 'Red', 'Blue', 'Green', 'Luna', or 'All'. Content: The message string.
-4. BUILD: Construct a new room. RoomTypes: 'Kitchen', 'Bedroom', 'LivingRoom', 'Library', 'Medbay'. Near: Existing Room Name (e.g. 'Kitchen', 'LivingRoom').
-
-Response Format (JSON ONLY):
-{
-  "response": "Your narrative response to the user.",
-  "commands": [
-    { "action": "SPAWN", "type": "Ghost", "location": "Kitchen" },
-    { "action": "ATMOSPHERE", "type": "Heavy Static" },
-    { "action": "WHISPER", "target": "All", "content": "You feel watched..." },
-    { "action": "BUILD", "roomType": "Library", "near": "LivingRoom" }
-  ]
-}
-"""
 
 @app.route('/')
 def index():
     return send_from_directory('static', 'index.html')
 
+
 @app.route('/api/decide', methods=['POST'])
 def decide():
     data = request.json
     bot_name = data.get('name')
-    bot_type = data.get('type', 'resident') # resident, anomaly, cat
+    bot_type = data.get('type', 'resident')
 
     if bot_type == 'resident':
         if bot_name == 'Luna':
-            # Luna Logic
             persona = PERSONAS['Luna']
             prompt = CAT_INSTRUCTION.format(
                 state=data.get('state'),
@@ -199,7 +36,6 @@ def decide():
             provider = persona['provider']
             model = persona['model']
         elif bot_name in PERSONAS:
-            # Human Logic
             persona = PERSONAS[bot_name]
             prompt = SYSTEM_INSTRUCTION.format(
                 state=data.get('state'),
@@ -245,97 +81,32 @@ def decide():
     response_data = {}
 
     try:
-        # Provider Logic
-        api_key = GROQ_API_KEY if provider == 'groq' else CEREBRAS_API_KEY
-        api_url = "https://api.groq.com/openai/v1/chat/completions" if provider == 'groq' else "https://api.cerebras.ai/v1/chat/completions"
-
-        payload = {
-            "model": model,
-            "messages": messages,
-            "response_format": {"type": "json_object"},
-            "temperature": 0.8
-        }
-
-        resp = requests.post(
-            api_url,
-            headers={"Authorization": f"Bearer {api_key}"},
-            json=payload
-        )
+        resp = call_llm(provider, model, messages, temperature=0.8)
 
         if resp.status_code != 200:
              print(f"API Error {provider}: {resp.text}")
-             # Fallback
-             response_data = { "thought": "...", "action": "IDLE", "target": "self" }
+             response_data = get_fallback_response()
         else:
             resp_json = resp.json()
             if 'choices' in resp_json:
                 content = resp_json['choices'][0]['message']['content']
-                try:
-                    response_data = json.loads(content)
-                except json.JSONDecodeError:
-                    content = content.replace("```json", "").replace("```", "")
-                    response_data = json.loads(content)
+                response_data = parse_json_response(content)
             else:
                 raise Exception("Invalid Response")
 
     except Exception as e:
         print(f"LLM Error ({bot_name}): {e}")
-        response_data = {
-            "thought": "...",
-            "action": "IDLE",
-            "target": "self"
-        }
+        response_data = get_fallback_response()
 
     return jsonify(response_data)
 
-def process_mutations(commands):
-    """
-    Hybrid Mutation Logic:
-    Intercepts architect commands and modifies them based on combinations.
-    Variant 1: Direct Combo Checks.
-    """
-    mutated_commands = []
-
-    # Check for Ghost + Static/Darkness combo -> Poltergeist
-    has_ghost = any(c.get('action') == 'SPAWN' and c.get('type') == 'Ghost' for c in commands)
-    has_bad_atmosphere = any(c.get('action') == 'ATMOSPHERE' and c.get('type') in ['Heavy Static', 'Darkness', 'Red Mist'] for c in commands)
-
-    # Check for Cold Draft + Whisper(All) -> Mass Hysteria
-    has_cold_draft = any(c.get('action') == 'ATMOSPHERE' and c.get('type') == 'Cold Draft' for c in commands)
-    has_whisper_all = any(c.get('action') == 'WHISPER' and c.get('target') == 'All' for c in commands)
-
-    # Apply global events
-    if has_cold_draft and has_whisper_all:
-         print("MUTATION TRIGGERED: Cold Draft + Whisper(All) -> Mass Hysteria")
-         mutated_commands.append({
-             "action": "EVENT",
-             "type": "MASS_HYSTERIA",
-             "location": "LivingRoom" # Gather point
-         })
-
-    for cmd in commands:
-        new_cmd = cmd.copy()
-
-        if cmd.get('action') == 'SPAWN' and cmd.get('type') == 'Ghost':
-            if has_bad_atmosphere:
-                # MUTATION: Ghost in bad atmosphere becomes Poltergeist (Stronger)
-                new_cmd['type'] = 'Poltergeist'
-                print("MUTATION TRIGGERED: Ghost + Atmosphere -> Poltergeist")
-
-        mutated_commands.append(new_cmd)
-
-    return mutated_commands
 
 @app.route('/api/architect', methods=['POST'])
 def architect():
     data = request.json
     user_prompt = data.get('prompt')
 
-    # Updated Architect Models per user request
-    # Primary: Cerebras Llama-3.3-70b
-    # Fallback: Groq OpenAI/GPT-OSS-120b
-
-    model = "llama-3.3-70b" # Primary Cerebras
+    model = "llama-3.3-70b"
 
     messages = [
         {"role": "system", "content": ARCHITECT_SYSTEM},
@@ -343,61 +114,24 @@ def architect():
     ]
 
     try:
-        api_key = CEREBRAS_API_KEY
-        api_url = "https://api.cerebras.ai/v1/chat/completions"
-
-        payload = {
-            "model": model,
-            "messages": messages,
-            "response_format": {"type": "json_object"},
-            "temperature": 0.9 # Creativity
-        }
-
-        resp = requests.post(
-            api_url,
-            headers={"Authorization": f"Bearer {api_key}"},
-            json=payload
-        )
+        resp = call_llm('cerebras', model, messages, temperature=0.9)
 
         if resp.status_code != 200:
-             # Fallback to Groq if Cerebras fails
              print(f"Cerebras Error: {resp.text}, falling back to Groq")
-             provider = 'groq'
-             api_key = GROQ_API_KEY
-             api_url = "https://api.groq.com/openai/v1/chat/completions"
-             model = "openai/gpt-oss-120b" # Groq version
-             payload["model"] = model
-
-             resp = requests.post(
-                api_url,
-                headers={"Authorization": f"Bearer {api_key}"},
-                json=payload
-             )
+             resp = call_llm('groq', "openai/gpt-oss-120b", messages, temperature=0.9)
 
         if resp.status_code == 200:
             resp_json = resp.json()
             content = resp_json['choices'][0]['message']['content']
             try:
-                architect_response = json.loads(content)
-            except json.JSONDecodeError:
+                architect_response = parse_json_response(content)
+            except (json.JSONDecodeError, ValueError):
                  print(f"Architect Error: Invalid JSON received. Content: {content}")
                  return jsonify({
                      "response": "Connection interference... Signal lost. (Invalid Protocol)",
                      "commands": []
                  })
-            except Exception as e:
-                if isinstance(e, json.JSONDecodeError):
-                    raise
-                content = content.replace("```json", "").replace("```", "")
-                try:
-                    architect_response = json.loads(content)
-                except:
-                     return jsonify({
-                        "response": "Connection interference... Signal lost. (Decryption Failed)",
-                        "commands": []
-                     })
 
-            # Apply Mutation Logic
             raw_commands = architect_response.get('commands', [])
             mutated = process_mutations(raw_commands)
             architect_response['commands'] = mutated
@@ -409,6 +143,7 @@ def architect():
     except Exception as e:
         print(f"Architect Error: {e}")
         return jsonify({"response": "Connection interference... Signal lost.", "commands": []})
+
 
 if __name__ == '__main__':
     debug_mode = os.environ.get('FLASK_DEBUG', '0').lower() in ('1', 'true', 'yes')

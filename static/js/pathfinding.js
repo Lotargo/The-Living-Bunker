@@ -2,12 +2,18 @@ class Pathfinding {
     constructor(gridSize) {
         this.size = gridSize;
         // 0 = Walkable, 1 = Wall
-        this.grid = Array(gridSize).fill().map(() => Array(gridSize).fill(0));
+        this.grid = create2DGrid(gridSize, 0);
     }
 
     setObstacle(x, y) {
         if (x >= 0 && x < this.size && y >= 0 && y < this.size) {
             this.grid[x][y] = 1;
+        }
+    }
+
+    clearObstacle(x, y) {
+        if (x >= 0 && x < this.size && y >= 0 && y < this.size) {
+            this.grid[x][y] = 0;
         }
     }
 
