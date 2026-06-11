@@ -62,6 +62,7 @@ The launcher installs/checks dependencies, builds TypeScript, generates missing 
 *   [Active Sprint](docs/sprint.md)
 *   [Runtime Contracts](docs/contracts.md)
 *   [Architecture Overview](docs/architecture.md)
+*   [Known Issues](docs/known_issues.md)
 *   [Agents & Luna (The Cat)](docs/agents.md)
 *   [Anomalies & Atmosphere](docs/anomalies.md)
 *   [Architect Mode (God Console)](docs/architect_mode.md)
