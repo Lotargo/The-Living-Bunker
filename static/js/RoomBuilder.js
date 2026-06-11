@@ -6,9 +6,9 @@ const RoomBuilder = {
             return false;
         }
 
-        const width = 10;
-        const height = 8;
-        const padding = 2;
+        const width = ROOM.DEFAULT_WIDTH;
+        const height = ROOM.DEFAULT_HEIGHT;
+        const padding = ROOM.CORRIDOR_PADDING;
 
         const candidates = [
             { x: target.x, y: target.y - height - padding, w: width, h: height },

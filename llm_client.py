@@ -1,10 +1,11 @@
 import json
+import os
 import requests
 from config import GROQ_API_KEY, CEREBRAS_API_KEY
 
 PROVIDER_URLS = {
-    "groq": "https://api.groq.com/openai/v1/chat/completions",
-    "cerebras": "https://api.cerebras.ai/v1/chat/completions"
+    "groq": os.environ.get("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions"),
+    "cerebras": os.environ.get("CEREBRAS_API_URL", "https://api.cerebras.ai/v1/chat/completions")
 }
 
 PROVIDER_KEYS = {

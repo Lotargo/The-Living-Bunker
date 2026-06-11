@@ -16,10 +16,10 @@ class Resident {
         this.target = null;
 
         this.needs = {
-            hunger: 50,
-            energy: 60,
-            fun: 50,
-            hygiene: 50
+            hunger: NEEDS.INITIAL_HUNGER,
+            energy: NEEDS.INITIAL_ENERGY,
+            fun: NEEDS.INITIAL_FUN,
+            hygiene: NEEDS.INITIAL_HYGIENE
         };
         this.health = 100;
 
@@ -32,10 +32,10 @@ class Resident {
     }
 
     update(dt) {
-        this.needs.hunger += 0.03;
-        this.needs.energy -= 0.01;
-        this.needs.fun -= 0.02;
-        this.needs.hygiene -= 0.02;
+        this.needs.hunger += NEEDS.DECAY_HUNGER;
+        this.needs.energy += NEEDS.DECAY_ENERGY;
+        this.needs.fun += NEEDS.DECAY_FUN;
+        this.needs.hygiene += NEEDS.DECAY_HYGIENE;
 
         if (this.cooldown > 0) {
             this.cooldown--;
@@ -49,7 +49,7 @@ class Resident {
                 const nextAction = this.actionQueue.shift();
                 this.executeAction(nextAction);
             } else {
-                if (Math.random() < 0.02 || this.needs.hunger > 70 || this.needs.energy < 30) {
+                if (Math.random() < NEEDS.THINK_CHANCE || this.needs.hunger > NEEDS.THINK_THRESHOLD_HUNGER || this.needs.energy < NEEDS.THINK_THRESHOLD_ENERGY) {
                     this.think();
                 }
             }
@@ -62,7 +62,7 @@ class Resident {
             return;
         }
         const next = this.path[0];
-        const speed = this.type === 'cat' ? 0.15 : 0.1;
+        const speed = this.type === 'cat' ? MOVEMENT.CAT_SPEED : MOVEMENT.HUMAN_SPEED;
         const dx = next.x - this.x;
         const dy = next.y - this.y;
 
@@ -135,7 +135,7 @@ class Resident {
         } catch (e) {
             console.error(e);
             this.state = "IDLE";
-            this.cooldown = 100;
+            this.cooldown = COOLDOWNS.ERROR_RETRY;
         }
     }
 
@@ -147,7 +147,7 @@ class Resident {
         }
         else if (d.action === "STARE") {
              this.state = "IDLE";
-             this.cooldown = 60;
+             this.cooldown = COOLDOWNS.CAT_STARE;
              addLog(this.name, "Stares intently at nothing...");
         }
         else if (["EAT", "SLEEP", "SIT", "PLAY", "LISTEN", "USE", "SHOWER", "WATCH", "INSPECT", "HISS", "PURR"].includes(d.action)) {
@@ -195,13 +195,13 @@ class Resident {
         }
         else if (act.type === 'INTERACT') {
             const op = act.action;
-            this.cooldown = 100;
+            this.cooldown = COOLDOWNS.INTERACT;
 
             if (op === 'EAT') {
                 this.needs.hunger = Math.max(0, this.needs.hunger - 50);
             } else if (op === 'SLEEP') {
                 this.needs.energy = 100;
-                this.cooldown = 300;
+                this.cooldown = COOLDOWNS.SLEEP;
             } else if (op === 'SIT' || op === 'PLAY' || op === 'USE' || op === 'LISTEN' || op === 'WATCH') {
                 this.needs.fun += 20;
             }

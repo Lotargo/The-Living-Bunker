@@ -3,9 +3,9 @@ class Anomaly {
         this.type = type;
         this.x = x;
         this.y = y;
-        this.lifespan = 800 + Math.random() * 500;
+        this.lifespan = ANOMALY.BASE_LIFESPAN + Math.random() * ANOMALY.LIFESPAN_VARIANCE;
         this.stage = 'GESTATING';
-        this.gestationTimer = 200 + Math.random() * 300;
+        this.gestationTimer = ANOMALY.BASE_GESTATION + Math.random() * ANOMALY.GESTATION_VARIANCE;
 
         this.goal = "Cause confusion";
         this.lastThought = "Manifesting...";
@@ -28,7 +28,7 @@ class Anomaly {
                 addLog("SYSTEM", "ANOMALY MANIFESTED: " + this.type);
                 world.atmosphere = "Heavy Static";
             } else {
-                if (Math.random() < 0.005) {
+                if (Math.random() < ANOMALY.ATMOSPHERE_PRECURSOR_CHANCE) {
                     world.atmosphere = "Cold Draft";
                 }
             }
@@ -51,7 +51,7 @@ class Anomaly {
             }
         }
 
-        if (Math.random() < 0.03) {
+        if (Math.random() < ANOMALY.RANDOM_MOVE_CHANCE) {
             this.think();
         } else {
             this.x += (Math.random() - 0.5) * 0.2;
@@ -109,7 +109,7 @@ class Anomaly {
                     }
                 }
             }
-            this.cooldown = 60;
+            this.cooldown = COOLDOWNS.ANOMALY_THINK;
         } catch(e) {
             console.error(e);
         }
@@ -117,13 +117,13 @@ class Anomaly {
 }
 
 const AnomalyManager = {
-    spawnChance: 0.002,
+    spawnChance: ANOMALY.SPAWN_CHANCE,
     update: function() {
         world.anomalies = world.anomalies.filter(function(a) { return a.update(); });
 
         if (world.anomalies.length === 0) world.atmosphere = "Normal";
 
-        if (Math.random() < AnomalyManager.spawnChance && world.anomalies.length < 2) {
+        if (Math.random() < AnomalyManager.spawnChance && world.anomalies.length < ANOMALY.MAX_ANOMALIES) {
             const types = ['Ghost', 'Glitch', 'Doppelganger'];
             const type = types[Math.floor(Math.random() * types.length)];
             const x = Math.random() * GRID_SIZE;

@@ -3,21 +3,27 @@ import os
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 CEREBRAS_API_KEY = os.environ.get("CEREBRAS_API_KEY")
 
+def _env_or(key, default):
+    return os.environ.get(key, default)
+
 PERSONAS = {
     "Red": {
         "role": "You are 'Red', a survivalist. You are paranoid, energetic, and focused on security. You react strongly to anomalies. Pay close attention to Luna the cat; if she acts weird, something is wrong.",
         "provider": "groq",
-        "model": "qwen/qwen3-32b"
+        "model": _env_or("MODEL_RED", "qwen/qwen3-32b"),
+        "temperature": 0.8
     },
     "Blue": {
         "role": "You are 'Blue', a scientist. You are calm, analytical, and obsessed with technology. You try to study anomalies. You trust Luna the cat's senses more than your own eyes.",
         "provider": "cerebras",
-        "model": "llama3.1-8b"
+        "model": _env_or("MODEL_BLUE", "llama3.1-8b"),
+        "temperature": 0.8
     },
     "Green": {
         "role": "You are 'Green', a slacker. You like to relax. You think anomalies are hallucinations or 'glitches in the matrix'. You think the cat is just a cat, unless it does something really scary.",
         "provider": "cerebras",
-        "model": "llama-3.3-70b"
+        "model": _env_or("MODEL_GREEN", "llama-3.3-70b"),
+        "temperature": 0.8
     },
     "Luna": {
         "role": """You are Luna, a black cat in a simulation bunker.
@@ -39,7 +45,8 @@ Your internal thought process should be complex, but your output 'thought' field
 You can include your real intent in a separate field 'intent' for debugging, but the user only sees 'thought'.
 """,
         "provider": "cerebras",
-        "model": "llama-3.3-70b"
+        "model": _env_or("MODEL_LUNA", "llama-3.3-70b"),
+        "temperature": 0.8
     },
     "Doppelganger": {
         "role": """You are a Doppelgänger. You have taken the form of Luna the cat.
@@ -52,9 +59,13 @@ If you are near a human, you can choose to:
 WARNING: If you REVEAL yourself, you will be unstable and might despawn soon, but you will have succeeded in terrifying them.
 """,
         "provider": "groq",
-        "model": "openai/gpt-oss-20b"
+        "model": _env_or("MODEL_DOPPELGANGER", "openai/gpt-oss-20b"),
+        "temperature": 0.8
     }
 }
+
+ARCHITECT_MODEL = _env_or("MODEL_ARCHITECT", "llama-3.3-70b")
+ARCHITECT_FALLBACK_MODEL = _env_or("MODEL_ARCHITECT_FALLBACK", "openai/gpt-oss-120b")
 
 ANOMALY_PROMPTS = {
     "Ghost": "You are a Ghost. You are melancholy. You start invisible (Gestating) and then manifest.",

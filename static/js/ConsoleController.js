@@ -24,7 +24,7 @@ function executeGodCommand(cmd) {
         const anomaly = new Anomaly(type, x, y);
         if (type === 'Poltergeist') {
              anomaly.sprite = 'ghost.png';
-             anomaly.lifespan = 2000;
+             anomaly.lifespan = ROOM.POLTERGEIST_LIFESPAN;
              anomaly.stage = 'ACTIVE';
              addLog('SYSTEM', 'WARNING: POLTERGEIST DETECTED!');
         }

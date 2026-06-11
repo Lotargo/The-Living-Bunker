@@ -15,11 +15,19 @@ for(let x=0; x<GRID_SIZE; x++) {
     }
 }
 
+function isTileVisible(gx, gy) {
+    const pos = renderer.isoToScreen(gx, gy);
+    const margin = renderer.tileW * 2;
+    return pos.x > -margin && pos.x < renderer.width + margin &&
+           pos.y > -margin && pos.y < renderer.height + margin;
+}
+
 function loop() {
     renderer.clear();
 
     for (let x = 0; x < GRID_SIZE; x++) {
         for (let y = 0; y < GRID_SIZE; y++) {
+            if (!isTileVisible(x, y)) continue;
             let ft = world.floorTypes[x][y];
             let fSprite = 'floor.png';
             if (ft === FLOOR_WOOD) fSprite = 'floor_wood.png';
@@ -32,11 +40,25 @@ function loop() {
     AnomalyManager.update();
 
     let renderList = [];
-    world.objects.forEach(function(o) { renderList.push({ type: 'obj', ref: o, x: o.x, y: o.y, sortZ: o.x + o.y }); });
-    world.walls.forEach(function(w) { renderList.push({ type: 'wall', ref: w, x: w.x, y: w.y, sortZ: w.x + w.y }); });
-    world.residents.forEach(function(r) { renderList.push({ type: 'res', ref: r, x: r.x, y: r.y, sortZ: r.x + r.y }); });
+    world.objects.forEach(function(o) {
+        if (isTileVisible(o.x, o.y)) {
+            renderList.push({ type: 'obj', ref: o, x: o.x, y: o.y, sortZ: o.x + o.y });
+        }
+    });
+    world.walls.forEach(function(w) {
+        if (isTileVisible(w.x, w.y)) {
+            renderList.push({ type: 'wall', ref: w, x: w.x, y: w.y, sortZ: w.x + w.y });
+        }
+    });
+    world.residents.forEach(function(r) {
+        if (isTileVisible(r.x, r.y)) {
+            renderList.push({ type: 'res', ref: r, x: r.x, y: r.y, sortZ: r.x + r.y });
+        }
+    });
     world.anomalies.forEach(function(a) {
-        renderList.push({ type: 'anomaly', ref: a, x: a.x, y: a.y, sortZ: a.x + a.y + 1 });
+        if (isTileVisible(a.x, a.y)) {
+            renderList.push({ type: 'anomaly', ref: a, x: a.x, y: a.y, sortZ: a.x + a.y + 1 });
+        }
     });
 
     renderList.sort(function(a, b) { return a.sortZ - b.sortZ; });

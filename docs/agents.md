@@ -6,19 +6,19 @@ The simulation features autonomous agents driven by LLMs. Each has a unique pers
 
 ### 1. Red (The Survivalist)
 *   **Role:** Paranoid, security-focused, energetic.
-*   **Model:** Groq (`llama-3.1-8b-instant`).
+*   **Model:** Groq (`qwen/qwen3-32b`, configurable via `MODEL_RED` env var).
 *   **Behavior:** Reacts strongly to anomalies, maintains high energy, often inspects walls/doors.
 *   **Prompt Key:** "Pay close attention to Luna... if she acts weird, something is wrong."
 
 ### 2. Blue (The Scientist)
 *   **Role:** Analytical, calm, obsessed with data.
-*   **Model:** Cerebras (`llama-3.3-70b`).
+*   **Model:** Cerebras (`llama3.1-8b`, configurable via `MODEL_BLUE` env var).
 *   **Behavior:** Investigates anomalies rather than fleeing. Uses the computer frequently.
 *   **Prompt Key:** "Trust Luna the cat's senses more than your own eyes."
 
 ### 3. Green (The Slacker)
 *   **Role:** Relaxed, skeptical, lazy.
-*   **Model:** Cerebras (`llama3.1-8b`).
+*   **Model:** Cerebras (`llama-3.3-70b`, configurable via `MODEL_GREEN` env var).
 *   **Behavior:** Dismisses anomalies as hallucinations. Prioritizes sleep and food.
 
 ## Luna (The Cat)
@@ -26,7 +26,7 @@ The simulation features autonomous agents driven by LLMs. Each has a unique pers
 Luna is a unique "Semiotic Alien" agent designed to test the limits of LLM expression and non-verbal communication.
 
 *   **Role:** Sentient observer, anomaly detector.
-*   **Model:** Cerebras (`llama-3.3-70b`).
+*   **Model:** Cerebras (`llama-3.3-70b`, configurable via `MODEL_LUNA` env var).
 *   **Special Ability:** **True Sight**. Luna can see `GESTATING` (invisible) anomalies.
 *   **Constraint: The "Meow" Protocol:**
     *   Luna **cannot** speak human languages in the `thought` field displayed to UI.

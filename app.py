@@ -4,6 +4,7 @@ import os
 
 from config import (
     PERSONAS, ANOMALY_PROMPTS, GROQ_API_KEY, CEREBRAS_API_KEY,
+    ARCHITECT_MODEL, ARCHITECT_FALLBACK_MODEL,
     SYSTEM_INSTRUCTION, CAT_INSTRUCTION, ANOMALY_INSTRUCTION, ARCHITECT_SYSTEM
 )
 from llm_client import call_llm, parse_json_response, get_fallback_response
@@ -106,19 +107,17 @@ def architect():
     data = request.json
     user_prompt = data.get('prompt')
 
-    model = "llama-3.3-70b"
-
     messages = [
         {"role": "system", "content": ARCHITECT_SYSTEM},
         {"role": "user", "content": user_prompt}
     ]
 
     try:
-        resp = call_llm('cerebras', model, messages, temperature=0.9)
+        resp = call_llm('cerebras', ARCHITECT_MODEL, messages, temperature=0.9)
 
         if resp.status_code != 200:
              print(f"Cerebras Error: {resp.text}, falling back to Groq")
-             resp = call_llm('groq', "openai/gpt-oss-120b", messages, temperature=0.9)
+             resp = call_llm('groq', ARCHITECT_FALLBACK_MODEL, messages, temperature=0.9)
 
         if resp.status_code == 200:
             resp_json = resp.json()
